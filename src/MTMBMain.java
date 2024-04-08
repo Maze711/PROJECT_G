@@ -18,6 +18,7 @@ public class MTMBMain extends JFrame {
 				try {
 					MTMBMain frame = new MTMBMain();
 					frame.setVisible(true);
+					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
