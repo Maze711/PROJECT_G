@@ -18,6 +18,9 @@ public class MTMBMain extends JFrame {
 				try {
 					MTMBMain frame = new MTMBMain();
 					frame.setVisible(true);
+                    frame.setLocationRelativeTo(null);
+                    frame.setResizable(false);
+                    frame.setTitle("MTMB"); // sets a title of frame
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
