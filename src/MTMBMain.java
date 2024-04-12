@@ -8,7 +8,6 @@ import javax.swing.JTextField;
 import java.awt.BorderLayout;
 import javax.swing.JToggleButton;
 import javax.swing.border.LineBorder;
-import javax.swing.SwingConstants;
 
 
 public class MTMBMain extends JFrame {
@@ -49,8 +48,14 @@ public class MTMBMain extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+//		INFORMATION TAB FOR LOGO AND TITLE OF THE SYSTEM
+		InfoRoundedCorner InfoFrame = new InfoRoundedCorner(200);
+		InfoFrame.setBounds(532, 23, 614, 679);
+		InfoFrame.setBackground(Color.decode("#00537A"));
+		contentPane.add(InfoFrame);
+		
 		JPanel LoginFrame = new JPanel();
-		LoginFrame.setBounds(95, 190, 334, 417);
+		LoginFrame.setBounds(90, 190, 334, 417);
 		contentPane.setOpaque(false);
 		LoginFrame.setOpaque(false);
 		contentPane.add(LoginFrame);
@@ -59,39 +64,9 @@ public class MTMBMain extends JFrame {
 		Font PrimaryFont = FontLoader.getFont("Primary", 64);
 		Font SecondaryFont = FontLoader.getFont("Secondary", 24);
 		Font PrimaryEBFont = FontLoader.getFont("PrimaryEB32", 24);
-		Font PrimaryEB48Font = FontLoader.getFont("PrimaryEB32", 48); // FONT SIZE 48
 		
 //		The LoginFrame have properties of ABSOLUTE Layout
 		LoginFrame.setLayout(new BorderLayout(0, 0));
-		
-		
-//		INFORMATION TAB FOR LOGO AND TITLE OF THE SYSTEM
-		InfoRoundedCorner InfoFrame = new InfoRoundedCorner(130);
-		InfoFrame.setBounds(488, 22, 1000, 685);
-		InfoFrame.setBackground(Color.decode("#00537A"));
-		contentPane.add(InfoFrame);
-		InfoFrame.setLayout(null);
-		
-		JLabel MTMBTitle = new JLabel("Impound");
-		MTMBTitle.setHorizontalAlignment(SwingConstants.CENTER);
-		MTMBTitle.setForeground(new Color(255, 186, 66));
-		MTMBTitle.setBounds(95, 367, 345, 149);
-		MTMBTitle.setFont(PrimaryEB48Font);
-		InfoFrame.add(MTMBTitle);
-		
-		JLabel MTMBTitle2 = new JLabel("Inventory");
-		MTMBTitle2.setHorizontalAlignment(SwingConstants.CENTER);
-		MTMBTitle2.setForeground(new Color(255, 186, 66));
-		MTMBTitle2.setFont(PrimaryEB48Font);
-		MTMBTitle2.setBounds(95, 440, 345, 149);
-		InfoFrame.add(MTMBTitle2);
-		
-		JLabel MTMBTitle3 = new JLabel("System");
-		MTMBTitle3.setHorizontalAlignment(SwingConstants.CENTER);
-		MTMBTitle3.setForeground(new Color(255, 186, 66));
-		MTMBTitle3.setFont(PrimaryEB48Font);
-		MTMBTitle3.setBounds(95, 512, 345, 149);
-		InfoFrame.add(MTMBTitle3);
 		
 //		SECONDARY PANEL INSIDE LOGIN FRAME
 		JPanel PanelLoginLabel = new JPanel();
