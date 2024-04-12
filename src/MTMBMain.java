@@ -2,19 +2,10 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import java.awt.geom.RoundRectangle2D;
-import java.io.File;
-
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
-import java.awt.FlowLayout;
 import java.awt.BorderLayout;
-import javax.swing.BoxLayout;
-import java.awt.GridLayout;
-import java.awt.CardLayout;
-import javax.swing.SwingConstants;
 import javax.swing.JToggleButton;
 import javax.swing.border.LineBorder;
 
@@ -58,13 +49,13 @@ public class MTMBMain extends JFrame {
 		contentPane.setLayout(null);
 		
 //		INFORMATION TAB FOR LOGO AND TITLE OF THE SYSTEM
-		JPanel InfoFrame = new JPanel();
-		InfoFrame.setBounds(462, -2, 562, 768);
+		InfoRoundedCorner InfoFrame = new InfoRoundedCorner(200);
+		InfoFrame.setBounds(532, 23, 614, 679);
 		InfoFrame.setBackground(Color.decode("#00537A"));
 		contentPane.add(InfoFrame);
 		
 		JPanel LoginFrame = new JPanel();
-		LoginFrame.setBounds(64, 190, 334, 417);
+		LoginFrame.setBounds(90, 190, 334, 417);
 		contentPane.setOpaque(false);
 		LoginFrame.setOpaque(false);
 		contentPane.add(LoginFrame);
@@ -91,8 +82,7 @@ public class MTMBMain extends JFrame {
 		LoginFrame.add(InputPanel, BorderLayout.CENTER);
 		InputPanel.setOpaque(false);
 		InputPanel.setLayout(null);
-		
-		
+	
 		UsernameTxtField = new JTextField();
 		UsernameTxtField.setForeground(new Color(11, 30, 51));
 		UsernameTxtField.setBackground(new Color(232, 248, 255));
