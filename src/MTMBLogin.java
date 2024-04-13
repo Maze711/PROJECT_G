@@ -9,6 +9,7 @@ import java.awt.BorderLayout;
 import javax.swing.JToggleButton;
 import javax.swing.border.LineBorder;
 import javax.swing.SwingConstants;
+import javax.swing.ImageIcon;
 
 
 public class MTMBLogin extends JFrame {
@@ -55,7 +56,7 @@ public class MTMBLogin extends JFrame {
 		LoginFrame.setOpaque(false);
 		contentPane.add(LoginFrame);
 		
-//		CUSTOME FONT FAMILY STYLE
+//		CUSTOM FONT FAMILY STYLE
 		Font PrimaryFont = FontLoader.getFont("Primary", 64);
 		Font SecondaryFont = FontLoader.getFont("Secondary", 24);
 		Font PrimaryEBFont = FontLoader.getFont("PrimaryEB32", 24);
@@ -92,6 +93,11 @@ public class MTMBLogin extends JFrame {
 		MTMBTitle3.setFont(PrimaryEB48Font);
 		MTMBTitle3.setBounds(87, 512, 345, 149);
 		InfoFrame.add(MTMBTitle3);
+		
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\admin\\git\\PROJECT_G\\Resources\\Images\\logomain.png"));
+		lblNewLabel.setBounds(177, 160, 208, 216);
+		InfoFrame.add(lblNewLabel);
 		
 //		SECONDARY PANEL INSIDE LOGIN FRAME
 		JPanel PanelLoginLabel = new JPanel();
