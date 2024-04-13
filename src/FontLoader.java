@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FontLoader {
-    private static final String FONTS_DIRECTORY = "Fonts/";
+    private static final String FONTS_DIRECTORY = "Resources/Fonts/";
     private static final Map<String, Font> fontMap = new HashMap<>();
 
     static {
