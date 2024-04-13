@@ -27,7 +27,7 @@ public class MTMBLogin extends JFrame {
 				try {
 					MTMBLogin frame = new MTMBLogin();
 					frame.setVisible(true);
-                    frame.setLocationRelativeTo(null);
+                    frame.setLocationRelativeTo(null);	 
                     frame.setResizable(false);
                     frame.setTitle("MTMB"); // sets a title of frame
 				} catch (Exception e) {
