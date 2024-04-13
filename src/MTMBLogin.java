@@ -11,7 +11,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.SwingConstants;
 
 
-public class MTMBMain extends JFrame {
+public class MTMBLogin extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -25,7 +25,7 @@ public class MTMBMain extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MTMBMain frame = new MTMBMain();
+					MTMBLogin frame = new MTMBLogin();
 					frame.setVisible(true);
                     frame.setLocationRelativeTo(null);
                     frame.setResizable(false);
@@ -40,7 +40,7 @@ public class MTMBMain extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public MTMBMain() {
+	public MTMBLogin() {
 		setBackground(new Color(238, 246, 255));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1024, 768);
