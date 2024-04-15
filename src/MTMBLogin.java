@@ -79,7 +79,7 @@ public class MTMBLogin extends JFrame {
 		JLabel MTMBTitle = new JLabel("Impound");
 		MTMBTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		MTMBTitle.setForeground(new Color(255, 186, 66));
-		MTMBTitle.setBounds(87, 367, 345, 149);
+		MTMBTitle.setBounds(101, 367, 345, 149);
 		MTMBTitle.setFont(PrimaryEB48Font);
 		InfoFrame.add(MTMBTitle);
 		
@@ -87,19 +87,19 @@ public class MTMBLogin extends JFrame {
 		MTMBTitle2.setHorizontalAlignment(SwingConstants.CENTER);
 		MTMBTitle2.setForeground(new Color(255, 186, 66));
 		MTMBTitle2.setFont(PrimaryEB48Font);
-		MTMBTitle2.setBounds(87, 440, 345, 149);
+		MTMBTitle2.setBounds(101, 440, 345, 149);
 		InfoFrame.add(MTMBTitle2);
 		
 		JLabel MTMBTitle3 = new JLabel("System");
 		MTMBTitle3.setHorizontalAlignment(SwingConstants.CENTER);
 		MTMBTitle3.setForeground(new Color(255, 186, 66));
 		MTMBTitle3.setFont(PrimaryEB48Font);
-		MTMBTitle3.setBounds(87, 512, 345, 149);
+		MTMBTitle3.setBounds(101, 512, 345, 149);
 		InfoFrame.add(MTMBTitle3);
 		
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\admin\\git\\PROJECT_G\\Resources\\Images\\logomain.png"));
-		lblNewLabel.setBounds(177, 160, 208, 216);
+		lblNewLabel.setIcon(new ImageIcon("Resources\\Images\\logomain.png"));
+		lblNewLabel.setBounds(163, 160, 208, 216);
 		InfoFrame.add(lblNewLabel);
 		
 //		SECONDARY PANEL INSIDE LOGIN FRAME
