@@ -10,6 +10,8 @@ import javax.swing.JToggleButton;
 import javax.swing.border.LineBorder;
 import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 
 public class MTMBLogin extends JFrame {
@@ -60,6 +62,7 @@ public class MTMBLogin extends JFrame {
 		Font PrimaryFont = FontLoader.getFont("Primary", 64);
 		Font SecondaryFont = FontLoader.getFont("Secondary", 24);
 		Font PrimaryEBFont = FontLoader.getFont("PrimaryEB32", 24);
+		Font SemiB = FontLoader.getFont("SemiB", 24);
 		Font PrimaryEB48Font = FontLoader.getFont("PrimaryEB32", 48); // FONT SIZE 48
 		
 //		The LoginFrame have properties of ABSOLUTE Layout
@@ -135,6 +138,7 @@ public class MTMBLogin extends JFrame {
 		PasswordTxtField.setColumns(10);
 		
 		JToggleButton LoginToggleButton = new JToggleButton("Login");
+
 		LoginToggleButton.setForeground(new Color(255, 255, 255));
 		LoginToggleButton.setBackground(new Color(11, 30, 51));
 		LoginToggleButton.setBorder(new LineBorder(new Color(0, 0, 0), 3, true));

@@ -12,6 +12,7 @@ public class FontLoader {
         fontMap.put("Primary", loadFont("Poppins-ExtraBold.ttf", 64));
         fontMap.put("Secondary", loadFont("Poppins-Medium.ttf", 24));
         fontMap.put("PrimaryEB32", loadFont("Poppins-ExtraBold.ttf", 32));
+        fontMap.put("SemiB", loadFont("Poppins-SemiBold.ttf", 24));
         // Add more font styles as needed
     }
 
