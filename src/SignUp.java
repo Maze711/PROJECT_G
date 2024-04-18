@@ -61,6 +61,8 @@ public class SignUp {
 		frame.setBounds(100, 100, 1117, 705);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		System.out.println("Updating the system check: 1 2 3 ");
+		
 		
 	}
 }
