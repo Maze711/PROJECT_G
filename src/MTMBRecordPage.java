@@ -1,11 +1,28 @@
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JLabel;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
+import javax.swing.JButton;
 
 public class MTMBRecordPage {
 
@@ -151,5 +168,47 @@ public class MTMBRecordPage {
 		Record.setBounds(30, 23, 189, 36);
 		Record.setFont(PrimaryEBFont);
 		InsideRecordPanel.add(Record);
+		
+		JButton btnNewButton = new JButton("New button");
+        btnNewButton.setBounds(562, 81, 164, 35);
+        RecordPanel.add(btnNewButton);
+
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setBounds(10, 125, 716, 632);
+        RecordPanel.add(scrollPane);
+
+        btnNewButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JPanel viewport = (JPanel) scrollPane.getViewport().getView();
+                if (viewport == null || viewport.getComponentCount() == 0) {
+                    viewport = new JPanel();
+                    viewport.setLayout(new GridLayout(0, 2));
+                    scrollPane.setViewportView(viewport);
+                }
+
+                JPanel container = new JPanel();
+                container.setPreferredSize(new Dimension(301, 214));
+                container.setLayout(new BorderLayout());
+
+                // Add a border to the panel
+                Border border = BorderFactory.createEmptyBorder(10, 10, 10, 10);
+                container.setBorder(border);
+
+                JLabel label = new JLabel("Component " + (viewport.getComponentCount() + 1));
+                container.add(label, BorderLayout.CENTER);
+                viewport.add(container);
+
+                viewport.revalidate();
+                viewport.repaint();
+
+                SwingUtilities.invokeLater(() -> {
+                    JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
+                    verticalScrollBar.setValue(verticalScrollBar.getMaximum());
+                });
+
+                scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+            }
+        });
 	}
 }
