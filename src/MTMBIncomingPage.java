@@ -213,7 +213,6 @@ public class MTMBIncomingPage {
 
 		RecordPanel.add(importButton);
 
-		
 		SearchBar = new JTextField();
 		SearchBar.setText("Search");
 		SearchBar.setBounds(10, 81, 292, 38);
