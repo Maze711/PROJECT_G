@@ -6,6 +6,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -13,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import java.awt.Color;
@@ -27,6 +29,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JTextField;
 
 public class MTMBIncomingPage {
@@ -238,18 +241,32 @@ public class MTMBIncomingPage {
 		RecordPanel.add(AddButton);
 
 		JButton importButton = new JButton("Import");
-		importButton.setBounds(609, 81, 117, 38);
-		importButton.setFont(SemiB16);
-		importButton.addActionListener(e -> {
-			SwingUtilities.invokeLater(() -> {
-				MTMBImporter importer = new MTMBImporter();
-				importer.importExcelFile("Importer/gg.xlsx").thenRun(() -> {
-					System.out.println("Import completed successfully!");
-				});
-			});
-		});
+        importButton.setBounds(609, 81, 117, 38);
+        importButton.setFont(SemiB16);
+        importButton.addActionListener(e -> {
+            // Prompt user to enter table name
+            String tableName = JOptionPane.showInputDialog(frame, "Enter table name:");
+            if (tableName != null && !tableName.isEmpty()) {
+                // Browse file
+                JFileChooser fileChooser = new JFileChooser();
+                int result = fileChooser.showOpenDialog(frame);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    String filePath = selectedFile.getAbsolutePath();
 
-		RecordPanel.add(importButton);
+                    SwingUtilities.invokeLater(() -> {
+                        MTMBImporter importer = new MTMBImporter();
+                        importer.importExcelFile(filePath, tableName).thenRun(() -> {
+                            System.out.println("Import completed successfully!");
+                        });
+                    });
+                }
+            }
+        });
+
+        frame.add(importButton);
+        frame.setVisible(true);
+        RecordPanel.add(importButton);
 
 		SearchBar = new JTextField();
 		SearchBar.setText("Search");
