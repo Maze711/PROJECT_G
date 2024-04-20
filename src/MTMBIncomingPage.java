@@ -1,23 +1,33 @@
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import java.awt.Color;
+import java.awt.Component;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.JButton;
+import javax.swing.JTextField;
 
 public class MTMBIncomingPage {
 
 	private JFrame frame;
 	DefaultTableModel model;
 	private JTable table;
+	private JTextField SearchBar;
 	private final MTMBDBCONN conn = new MTMBDBCONN();
 	
 	public static void main(String[] args) {
@@ -71,76 +81,81 @@ public class MTMBIncomingPage {
 		NavigationPanel.setBounds(0, 0, 293, 768);
 		panel.add(NavigationPanel);
 		NavigationPanel.setLayout(null);
+		
+		JLabel lblNewLabel_4 = new JLabel("");
+		lblNewLabel_4.setBounds(269, 386, 24, 42);
+		lblNewLabel_4.setIcon(new ImageIcon("Resources\\Icons\\Slider.png"));
+		NavigationPanel.add(lblNewLabel_4);
 
 		JLabel MTMBLogo = new JLabel("");
-		MTMBLogo.setIcon(new ImageIcon("Resources\\Images\\MTMBLogo.png"));
 		MTMBLogo.setBounds(52, 38, 132, 147);
+		MTMBLogo.setIcon(new ImageIcon("Resources\\Images\\MTMBLogo.png"));
 		NavigationPanel.add(MTMBLogo);
 
 		JLabel Dashboard = new JLabel("Dashboard");
+		Dashboard.setBounds(52, 220, 141, 36);
 		Dashboard.setForeground(new Color(255, 255, 255));
 		Dashboard.setFont(SemiB);
-		Dashboard.setBounds(52, 220, 141, 36);
 		NavigationPanel.add(Dashboard);
 
 		JLabel Home = new JLabel("Home");
+		Home.setBounds(100, 277, 74, 36);
 		Home.setForeground(Color.WHITE);
 		Home.setFont(SemiB);
-		Home.setBounds(100, 277, 74, 36);
 		NavigationPanel.add(Home);
 
 		JLabel lblNewLabel_5 = new JLabel("");
-		lblNewLabel_5.setIcon(new ImageIcon("Resources\\Icons\\IHome.png"));
 		lblNewLabel_5.setBounds(52, 269, 42, 42);
+		lblNewLabel_5.setIcon(new ImageIcon("Resources\\Icons\\IHome.png"));
 		NavigationPanel.add(lblNewLabel_5);
 
 		JLabel lblNewLabel_5_1 = new JLabel("");
-		lblNewLabel_5_1.setIcon(new ImageIcon("Resources\\Icons\\Database.png"));
 		lblNewLabel_5_1.setBounds(52, 327, 42, 42);
+		lblNewLabel_5_1.setIcon(new ImageIcon("Resources\\Icons\\Database.png"));
 		NavigationPanel.add(lblNewLabel_5_1);
 
 		JLabel Records = new JLabel("Records");
+		Records.setBounds(100, 333, 102, 36);
 		Records.setForeground(Color.WHITE);
 		Records.setFont(SemiB);
-		Records.setBounds(100, 333, 102, 36);
 		NavigationPanel.add(Records);
 
 		JLabel lblNewLabel_5_1_1 = new JLabel("");
-		lblNewLabel_5_1_1.setIcon(new ImageIcon("Resources\\Icons\\Download.png"));
 		lblNewLabel_5_1_1.setBounds(52, 386, 42, 42);
+		lblNewLabel_5_1_1.setIcon(new ImageIcon("Resources\\Icons\\Download.png"));
 		NavigationPanel.add(lblNewLabel_5_1_1);
 
 		JLabel Incoming = new JLabel("Incoming");
+		Incoming.setBounds(100, 386, 120, 36);
 		Incoming.setForeground(Color.WHITE);
 		Incoming.setFont(SemiB);
-		Incoming.setBounds(100, 386, 120, 36);
 		NavigationPanel.add(Incoming);
 
 		JLabel lblNewLabel_5_1_1_1 = new JLabel("");
-		lblNewLabel_5_1_1_1.setIcon(new ImageIcon("Resources\\Icons\\Upload.png"));
 		lblNewLabel_5_1_1_1.setBounds(52, 445, 42, 42);
+		lblNewLabel_5_1_1_1.setIcon(new ImageIcon("Resources\\Icons\\Upload.png"));
 		NavigationPanel.add(lblNewLabel_5_1_1_1);
 
 		JLabel Releasing = new JLabel("Releasing");
+		Releasing.setBounds(100, 445, 120, 36);
 		Releasing.setForeground(Color.WHITE);
 		Releasing.setFont(SemiB);
-		Releasing.setBounds(100, 445, 120, 36);
 		NavigationPanel.add(Releasing);
 
 		JLabel lblNewLabel_5_1_1_1_1 = new JLabel("");
-		lblNewLabel_5_1_1_1_1.setIcon(new ImageIcon("Resources\\Icons\\Logout.png"));
 		lblNewLabel_5_1_1_1_1.setBounds(52, 543, 42, 42);
+		lblNewLabel_5_1_1_1_1.setIcon(new ImageIcon("Resources\\Icons\\Logout.png"));
 		NavigationPanel.add(lblNewLabel_5_1_1_1_1);
 
 		JLabel Logout = new JLabel("Logout");
+		Logout.setBounds(100, 543, 120, 36);
 		Logout.setForeground(Color.WHITE);
 		Logout.setFont(SemiB);
-		Logout.setBounds(100, 543, 120, 36);
 		NavigationPanel.add(Logout);
 
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon("Resources\\Images\\BG info.png"));
 		lblNewLabel.setBounds(0, 0, 293, 768);
+		lblNewLabel.setIcon(new ImageIcon("Resources\\Images\\BG info.png"));
 		NavigationPanel.add(lblNewLabel);
 
 		JPanel RecordPanel = new JPanel();
@@ -171,8 +186,14 @@ public class MTMBIncomingPage {
 		table.setModel(model);
 		table.setFont(new Font("Source Code Pro", Font.PLAIN, 14));
 		table.setEnabled(false);
+		table.setFont(SemiB16);
 		table.getTableHeader().setReorderingAllowed(false);
 		scrollPane.setViewportView(table);
+		
+		JTableHeader header = table.getTableHeader();
+		header.setFont(SemiB16);
+
+		table.setTableHeader(header);
 		
 		JButton FilterButton = new JButton("Filter");
 		FilterButton.setBounds(420, 81, 80, 38);
@@ -183,11 +204,26 @@ public class MTMBIncomingPage {
 		AddButton.setBounds(510, 81, 90, 38);
 		AddButton.setFont(SemiB16);
 		RecordPanel.add(AddButton);
+
+		JButton importButton = new JButton("Import");
+		importButton.setBounds(609, 81, 117, 38);
+		importButton.setFont(SemiB16);
+		importButton.addActionListener(e -> {
+		    SwingUtilities.invokeLater(() -> {
+		        MTMBImporter importer = new MTMBImporter();
+		        importer.importExcelFile("Importer/gg.xlsx").thenRun(() -> {
+		            System.out.println("Import completed successfully!");
+		        });
+		    });
+		});
+
+		RecordPanel.add(importButton);
 		
-		JButton ExportButton = new JButton("Export");
-		ExportButton.setBounds(609, 81, 117, 38);
-		ExportButton.setFont(SemiB16);
-		RecordPanel.add(ExportButton);
+		SearchBar = new JTextField();
+		SearchBar.setText("Search");
+		SearchBar.setBounds(10, 81, 292, 38);
+		RecordPanel.add(SearchBar);
+		SearchBar.setColumns(10);
 		
 		fetchData();
 	}
