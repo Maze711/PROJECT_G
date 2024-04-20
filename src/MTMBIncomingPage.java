@@ -27,9 +27,9 @@ public class MTMBIncomingPage {
 	private JFrame frame;
 	DefaultTableModel model;
 	private JTable table;
-	private final MTMBDBCONN conn = new MTMBDBCONN();
 	private JTextField SearchBar;
-
+	private final MTMBDBCONN conn = new MTMBDBCONN();
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -81,76 +81,81 @@ public class MTMBIncomingPage {
 		NavigationPanel.setBounds(0, 0, 293, 768);
 		panel.add(NavigationPanel);
 		NavigationPanel.setLayout(null);
+		
+		JLabel lblNewLabel_4 = new JLabel("");
+		lblNewLabel_4.setBounds(269, 386, 24, 42);
+		lblNewLabel_4.setIcon(new ImageIcon("Resources\\Icons\\Slider.png"));
+		NavigationPanel.add(lblNewLabel_4);
 
 		JLabel MTMBLogo = new JLabel("");
-		MTMBLogo.setIcon(new ImageIcon("Resources\\Images\\MTMBLogo.png"));
 		MTMBLogo.setBounds(52, 38, 132, 147);
+		MTMBLogo.setIcon(new ImageIcon("Resources\\Images\\MTMBLogo.png"));
 		NavigationPanel.add(MTMBLogo);
 
 		JLabel Dashboard = new JLabel("Dashboard");
+		Dashboard.setBounds(52, 220, 141, 36);
 		Dashboard.setForeground(new Color(255, 255, 255));
 		Dashboard.setFont(SemiB);
-		Dashboard.setBounds(52, 220, 141, 36);
 		NavigationPanel.add(Dashboard);
 
 		JLabel Home = new JLabel("Home");
+		Home.setBounds(100, 277, 74, 36);
 		Home.setForeground(Color.WHITE);
 		Home.setFont(SemiB);
-		Home.setBounds(100, 277, 74, 36);
 		NavigationPanel.add(Home);
 
 		JLabel lblNewLabel_5 = new JLabel("");
-		lblNewLabel_5.setIcon(new ImageIcon("Resources\\Icons\\IHome.png"));
 		lblNewLabel_5.setBounds(52, 269, 42, 42);
+		lblNewLabel_5.setIcon(new ImageIcon("Resources\\Icons\\IHome.png"));
 		NavigationPanel.add(lblNewLabel_5);
 
 		JLabel lblNewLabel_5_1 = new JLabel("");
-		lblNewLabel_5_1.setIcon(new ImageIcon("Resources\\Icons\\Database.png"));
 		lblNewLabel_5_1.setBounds(52, 327, 42, 42);
+		lblNewLabel_5_1.setIcon(new ImageIcon("Resources\\Icons\\Database.png"));
 		NavigationPanel.add(lblNewLabel_5_1);
 
 		JLabel Records = new JLabel("Records");
+		Records.setBounds(100, 333, 102, 36);
 		Records.setForeground(Color.WHITE);
 		Records.setFont(SemiB);
-		Records.setBounds(100, 333, 102, 36);
 		NavigationPanel.add(Records);
 
 		JLabel lblNewLabel_5_1_1 = new JLabel("");
-		lblNewLabel_5_1_1.setIcon(new ImageIcon("Resources\\Icons\\Download.png"));
 		lblNewLabel_5_1_1.setBounds(52, 386, 42, 42);
+		lblNewLabel_5_1_1.setIcon(new ImageIcon("Resources\\Icons\\Download.png"));
 		NavigationPanel.add(lblNewLabel_5_1_1);
 
 		JLabel Incoming = new JLabel("Incoming");
+		Incoming.setBounds(100, 386, 120, 36);
 		Incoming.setForeground(Color.WHITE);
 		Incoming.setFont(SemiB);
-		Incoming.setBounds(100, 386, 120, 36);
 		NavigationPanel.add(Incoming);
 
 		JLabel lblNewLabel_5_1_1_1 = new JLabel("");
-		lblNewLabel_5_1_1_1.setIcon(new ImageIcon("Resources\\Icons\\Upload.png"));
 		lblNewLabel_5_1_1_1.setBounds(52, 445, 42, 42);
+		lblNewLabel_5_1_1_1.setIcon(new ImageIcon("Resources\\Icons\\Upload.png"));
 		NavigationPanel.add(lblNewLabel_5_1_1_1);
 
 		JLabel Releasing = new JLabel("Releasing");
+		Releasing.setBounds(100, 445, 120, 36);
 		Releasing.setForeground(Color.WHITE);
 		Releasing.setFont(SemiB);
-		Releasing.setBounds(100, 445, 120, 36);
 		NavigationPanel.add(Releasing);
 
 		JLabel lblNewLabel_5_1_1_1_1 = new JLabel("");
-		lblNewLabel_5_1_1_1_1.setIcon(new ImageIcon("Resources\\Icons\\Logout.png"));
 		lblNewLabel_5_1_1_1_1.setBounds(52, 543, 42, 42);
+		lblNewLabel_5_1_1_1_1.setIcon(new ImageIcon("Resources\\Icons\\Logout.png"));
 		NavigationPanel.add(lblNewLabel_5_1_1_1_1);
 
 		JLabel Logout = new JLabel("Logout");
+		Logout.setBounds(100, 543, 120, 36);
 		Logout.setForeground(Color.WHITE);
 		Logout.setFont(SemiB);
-		Logout.setBounds(100, 543, 120, 36);
 		NavigationPanel.add(Logout);
 
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon("Resources\\Images\\BG info.png"));
 		lblNewLabel.setBounds(0, 0, 293, 768);
+		lblNewLabel.setIcon(new ImageIcon("Resources\\Images\\BG info.png"));
 		NavigationPanel.add(lblNewLabel);
 
 		JPanel RecordPanel = new JPanel();
@@ -168,17 +173,18 @@ public class MTMBIncomingPage {
 		Record.setBounds(30, 23, 189, 36);
 		Record.setFont(PrimaryEBFont);
 		InsideRecordPanel.add(Record);
-
+		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 130, 716, 627);
 		RecordPanel.add(scrollPane);
-
+		
 		table = new JTable();
 		scrollPane.setViewportView(table);
 		model = new DefaultTableModel();
-		Object[] column = { "Ctrl No.", "Type", "Plate No.", "Color", "Date", "Status" };
+		Object[] column = {"Ctrl No.", "Type", "Plate No.", "Color", "Date", "Status"};
 		model.setColumnIdentifiers(column);
 		table.setModel(model);
+		table.setFont(new Font("Source Code Pro", Font.PLAIN, 14));
 		table.setEnabled(false);
 		table.setFont(SemiB16);
 		table.getTableHeader().setReorderingAllowed(false);
@@ -188,12 +194,12 @@ public class MTMBIncomingPage {
 		header.setFont(SemiB16);
 
 		table.setTableHeader(header);
-
+		
 		JButton FilterButton = new JButton("Filter");
 		FilterButton.setBounds(420, 81, 80, 38);
 		FilterButton.setFont(SemiB16);
 		RecordPanel.add(FilterButton);
-
+		
 		JButton AddButton = new JButton("ADD+");
 		AddButton.setBounds(510, 81, 90, 38);
 		AddButton.setFont(SemiB16);
@@ -212,38 +218,38 @@ public class MTMBIncomingPage {
 		});
 
 		RecordPanel.add(importButton);
-
+		
 		SearchBar = new JTextField();
 		SearchBar.setText("Search");
 		SearchBar.setBounds(10, 81, 292, 38);
 		RecordPanel.add(SearchBar);
 		SearchBar.setColumns(10);
-
+		
 		fetchData();
 	}
-
+	
 	private void fetchData() {
-		try {
-			Connection connection = conn.getConnection(); // Assuming you have a method to get the connection
-			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery("SELECT * FROM 2024mtmbrecord");
+        try {
+            Connection connection = conn.getConnection(); // Assuming you have a method to get the connection
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM 2024mtmbrecord");
 
-			while (resultSet.next()) {
-				int id = resultSet.getInt("CTRLNo");
-				String type = resultSet.getString("Type");
-				String plateno = resultSet.getString("PlateNo");
-				String color = resultSet.getString("Color");
-				String date = resultSet.getString("Date");
-				String status = resultSet.getString("Status");
+            while (resultSet.next()) {
+                int id = resultSet.getInt("CTRLNo");
+                String type = resultSet.getString("Type");
+                String plateno = resultSet.getString("PlateNo");
+                String color = resultSet.getString("Color");
+                String date = resultSet.getString("Date");
+                String status = resultSet.getString("Status");
 
-				model.addRow(new Object[] { id, type, plateno, color, date, status });
-			}
+                model.addRow(new Object[]{id, type, plateno, color, date, status});
+            }
 
-			resultSet.close();
-			statement.close();
-			connection.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+            resultSet.close();
+            statement.close();
+            connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 	}
 }
