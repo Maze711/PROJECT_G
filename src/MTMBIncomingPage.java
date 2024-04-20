@@ -1,17 +1,26 @@
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import java.awt.Color;
+import java.awt.Component;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.JButton;
+import javax.swing.JTextField;
 
 public class MTMBIncomingPage {
 
@@ -19,7 +28,8 @@ public class MTMBIncomingPage {
 	DefaultTableModel model;
 	private JTable table;
 	private final MTMBDBCONN conn = new MTMBDBCONN();
-	
+	private JTextField SearchBar;
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -158,62 +168,83 @@ public class MTMBIncomingPage {
 		Record.setBounds(30, 23, 189, 36);
 		Record.setFont(PrimaryEBFont);
 		InsideRecordPanel.add(Record);
-		
+
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 130, 716, 627);
 		RecordPanel.add(scrollPane);
-		
+
 		table = new JTable();
 		scrollPane.setViewportView(table);
 		model = new DefaultTableModel();
-		Object[] column = {"Ctrl No.", "Type", "Plate No.", "Color", "Date", "Status"};
+		Object[] column = { "Ctrl No.", "Type", "Plate No.", "Color", "Date", "Status" };
 		model.setColumnIdentifiers(column);
 		table.setModel(model);
-		table.setFont(new Font("Source Code Pro", Font.PLAIN, 14));
 		table.setEnabled(false);
+		table.setFont(SemiB16);
 		table.getTableHeader().setReorderingAllowed(false);
 		scrollPane.setViewportView(table);
 		
+		JTableHeader header = table.getTableHeader();
+		header.setFont(SemiB16);
+
+		table.setTableHeader(header);
+
 		JButton FilterButton = new JButton("Filter");
 		FilterButton.setBounds(420, 81, 80, 38);
 		FilterButton.setFont(SemiB16);
 		RecordPanel.add(FilterButton);
-		
+
 		JButton AddButton = new JButton("ADD+");
 		AddButton.setBounds(510, 81, 90, 38);
 		AddButton.setFont(SemiB16);
 		RecordPanel.add(AddButton);
+
+		JButton importButton = new JButton("Import");
+		importButton.setBounds(609, 81, 117, 38);
+		importButton.setFont(SemiB16);
+		importButton.addActionListener(e -> {
+		    SwingUtilities.invokeLater(() -> {
+		        MTMBImporter importer = new MTMBImporter();
+		        importer.importExcelFile("Importer/gg.xlsx").thenRun(() -> {
+		            System.out.println("Import completed successfully!");
+		        });
+		    });
+		});
+
+		RecordPanel.add(importButton);
+
 		
-		JButton ExportButton = new JButton("Export");
-		ExportButton.setBounds(609, 81, 117, 38);
-		ExportButton.setFont(SemiB16);
-		RecordPanel.add(ExportButton);
-		
+		SearchBar = new JTextField();
+		SearchBar.setText("Search");
+		SearchBar.setBounds(10, 81, 292, 38);
+		RecordPanel.add(SearchBar);
+		SearchBar.setColumns(10);
+
 		fetchData();
 	}
-	
+
 	private void fetchData() {
-        try {
-            Connection connection = conn.getConnection(); // Assuming you have a method to get the connection
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM 2024mtmbrecord");
+		try {
+			Connection connection = conn.getConnection(); // Assuming you have a method to get the connection
+			Statement statement = connection.createStatement();
+			ResultSet resultSet = statement.executeQuery("SELECT * FROM 2024mtmbrecord");
 
-            while (resultSet.next()) {
-                int id = resultSet.getInt("CTRLNo");
-                String type = resultSet.getString("Type");
-                String plateno = resultSet.getString("PlateNo");
-                String color = resultSet.getString("Color");
-                String date = resultSet.getString("Date");
-                String status = resultSet.getString("Status");
+			while (resultSet.next()) {
+				int id = resultSet.getInt("CTRLNo");
+				String type = resultSet.getString("Type");
+				String plateno = resultSet.getString("PlateNo");
+				String color = resultSet.getString("Color");
+				String date = resultSet.getString("Date");
+				String status = resultSet.getString("Status");
 
-                model.addRow(new Object[]{id, type, plateno, color, date, status});
-            }
+				model.addRow(new Object[] { id, type, plateno, color, date, status });
+			}
 
-            resultSet.close();
-            statement.close();
-            connection.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+			resultSet.close();
+			statement.close();
+			connection.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
