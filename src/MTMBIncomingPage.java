@@ -187,12 +187,14 @@ public class MTMBIncomingPage {
 		RecordPanel.add(scrollPane);
 
 		table = new JTable();
+		table.setShowHorizontalLines(false);
 		model = new DefaultTableModel();
 		Object[] column = { "Ctrl No.", "Type", "Plate No.", "Color", "Date", "Status" };
 		model.setColumnIdentifiers(column);
 		table.setModel(model);
 		table.setEnabled(false);
 		table.setFont(SemiB16);
+		table.setForeground(new Color(101, 95, 95));
 		table.getTableHeader().setReorderingAllowed(false);
 
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -216,6 +218,8 @@ public class MTMBIncomingPage {
 
 		JTableHeader header = table.getTableHeader();
 		header.setFont(SemiB16);
+		header.setBackground(new Color(11, 30, 51));
+		header.setForeground(Color.WHITE);
 		table.setRowHeight(50);
 		table.setFocusable(true);
 		table.setTableHeader(header);
