@@ -93,7 +93,7 @@ public class MTMBLogin extends JFrame {
 		JLabel MTMBTitle3 = new JLabel("System");
 		MTMBTitle3.setHorizontalAlignment(SwingConstants.CENTER);
 		MTMBTitle3.setForeground(new Color(255, 186, 66));
-		MTMBTitle3.setFont(PrimaryEB48Font);
+		MTMBTitle3.setFont 	(PrimaryEB48Font);
 		MTMBTitle3.setBounds(101, 512, 345, 149);
 		InfoFrame.add(MTMBTitle3);
 		
