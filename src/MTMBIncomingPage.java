@@ -2,16 +2,23 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JLabel;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -29,7 +36,7 @@ public class MTMBIncomingPage {
 	private JTable table;
 	private JTextField SearchBar;
 	private final MTMBDBCONN conn = new MTMBDBCONN();
-	
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -81,7 +88,7 @@ public class MTMBIncomingPage {
 		NavigationPanel.setBounds(0, 0, 293, 768);
 		panel.add(NavigationPanel);
 		NavigationPanel.setLayout(null);
-		
+
 		JLabel lblNewLabel_4 = new JLabel("");
 		lblNewLabel_4.setBounds(269, 386, 24, 42);
 		lblNewLabel_4.setIcon(new ImageIcon("Resources\\Icons\\Slider.png"));
@@ -173,33 +180,54 @@ public class MTMBIncomingPage {
 		Record.setBounds(30, 23, 189, 36);
 		Record.setFont(PrimaryEBFont);
 		InsideRecordPanel.add(Record);
-		
+
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 130, 716, 627);
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		RecordPanel.add(scrollPane);
-		
+
 		table = new JTable();
-		scrollPane.setViewportView(table);
 		model = new DefaultTableModel();
-		Object[] column = {"Ctrl No.", "Type", "Plate No.", "Color", "Date", "Status"};
+		Object[] column = { "Ctrl No.", "Type", "Plate No.", "Color", "Date", "Status" };
 		model.setColumnIdentifiers(column);
 		table.setModel(model);
-		table.setFont(new Font("Source Code Pro", Font.PLAIN, 14));
 		table.setEnabled(false);
 		table.setFont(SemiB16);
 		table.getTableHeader().setReorderingAllowed(false);
-		scrollPane.setViewportView(table);
-		
+
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+		for (int i = 0; i < column.length; i++) {
+		    table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+		}
+
+		// Add a MouseWheelListener to both the table and the scroll pane
+		MouseWheelListener mouseWheelListener = new MouseWheelListener() {
+		    @Override
+		    public void mouseWheelMoved(MouseWheelEvent e) {
+		        int notches = e.getWheelRotation();
+		        JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
+		        // Increase scrolling speed by a factor of 10
+		        verticalScrollBar.setValue(verticalScrollBar.getValue() + (verticalScrollBar.getUnitIncrement() * notches * 10));
+		    }
+		};
+		table.addMouseWheelListener(mouseWheelListener);
+		scrollPane.addMouseWheelListener(mouseWheelListener);
+
 		JTableHeader header = table.getTableHeader();
 		header.setFont(SemiB16);
-
+		table.setRowHeight(50);
+		table.setFocusable(true);
 		table.setTableHeader(header);
-		
+
+		// Add the table to the scroll pane
+		scrollPane.setViewportView(table);
+
 		JButton FilterButton = new JButton("Filter");
 		FilterButton.setBounds(420, 81, 80, 38);
 		FilterButton.setFont(SemiB16);
 		RecordPanel.add(FilterButton);
-		
+
 		JButton AddButton = new JButton("ADD+");
 		AddButton.setBounds(510, 81, 90, 38);
 		AddButton.setFont(SemiB16);
@@ -209,47 +237,47 @@ public class MTMBIncomingPage {
 		importButton.setBounds(609, 81, 117, 38);
 		importButton.setFont(SemiB16);
 		importButton.addActionListener(e -> {
-		    SwingUtilities.invokeLater(() -> {
-		        MTMBImporter importer = new MTMBImporter();
-		        importer.importExcelFile("Importer/gg.xlsx").thenRun(() -> {
-		            System.out.println("Import completed successfully!");
-		        });
-		    });
+			SwingUtilities.invokeLater(() -> {
+				MTMBImporter importer = new MTMBImporter();
+				importer.importExcelFile("Importer/gg.xlsx").thenRun(() -> {
+					System.out.println("Import completed successfully!");
+				});
+			});
 		});
 
 		RecordPanel.add(importButton);
-		
+
 		SearchBar = new JTextField();
 		SearchBar.setText("Search");
 		SearchBar.setBounds(10, 81, 292, 38);
 		RecordPanel.add(SearchBar);
 		SearchBar.setColumns(10);
-		
+
 		fetchData();
 	}
-	
+
 	private void fetchData() {
-        try {
-            Connection connection = conn.getConnection(); // Assuming you have a method to get the connection
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM 2024mtmbrecord");
+		try {
+			Connection connection = conn.getConnection(); // Assuming you have a method to get the connection
+			Statement statement = connection.createStatement();
+			ResultSet resultSet = statement.executeQuery("SELECT * FROM 2024mtmbrecord");
 
-            while (resultSet.next()) {
-                int id = resultSet.getInt("CTRLNo");
-                String type = resultSet.getString("Type");
-                String plateno = resultSet.getString("PlateNo");
-                String color = resultSet.getString("Color");
-                String date = resultSet.getString("Date");
-                String status = resultSet.getString("Status");
+			while (resultSet.next()) {
+				int id = resultSet.getInt("CTRLNo");
+				String type = resultSet.getString("Type");
+				String plateno = resultSet.getString("PlateNo");
+				String color = resultSet.getString("Color");
+				String date = resultSet.getString("Date");
+				String status = resultSet.getString("Status");
 
-                model.addRow(new Object[]{id, type, plateno, color, date, status});
-            }
+				model.addRow(new Object[] { id, type, plateno, color, date, status });
+			}
 
-            resultSet.close();
-            statement.close();
-            connection.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+			resultSet.close();
+			statement.close();
+			connection.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
