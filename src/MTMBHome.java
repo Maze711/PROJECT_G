@@ -52,7 +52,7 @@ public class MTMBHome {
 		Font PrimaryFont = FontLoader.getFont("Primary", 64);
 		Font SecondaryFont = FontLoader.getFont("Secondary", 24);
 		Font PrimaryEBFont = FontLoader.getFont("PrimaryEB32", 24);
-		Font SemiB = FontLoader.getFont("SemiB", 24);
+		Font SemiB = FontLoader.getFont("SemiB", 16);
 		Font Bold = FontLoader.getFont("Bold", 42);
 		Font Bold16 = FontLoader.getFont("Bold16", 16);
 		Font PrimaryEB48Font = FontLoader.getFont("PrimaryEB32", 48);
@@ -185,6 +185,34 @@ public class MTMBHome {
 		ITotal.setBounds(270, 110, 135, 40);
 		panel_3.add(ITotal);
 		
+		JLabel txtTotalVehicle = new JLabel("578");
+		txtTotalVehicle.setHorizontalAlignment(SwingConstants.CENTER);
+		txtTotalVehicle.setForeground(Color.WHITE);
+		txtTotalVehicle.setFont(Bold);
+		txtTotalVehicle.setBounds(37, 96, 274, 49);
+		panel_3.add(txtTotalVehicle);
+		
+		JLabel txtTotalDisplay = new JLabel("Total Vehicle Impounded ");
+		txtTotalDisplay.setForeground(new Color(255, 255, 255));
+		txtTotalDisplay.setHorizontalAlignment(SwingConstants.CENTER);
+		txtTotalDisplay.setFont(SemiB);
+		txtTotalDisplay.setBounds(37, 140, 274, 40);
+		panel_3.add(txtTotalDisplay);
+		
+		JLabel txtTotalVehicle_2 = new JLabel("98");
+		txtTotalVehicle_2.setHorizontalAlignment(SwingConstants.CENTER);
+		txtTotalVehicle_2.setForeground(Color.WHITE);
+		txtTotalVehicle_2.setFont(Bold);
+		txtTotalVehicle_2.setBounds(440, 96, 274, 49);
+		panel_3.add(txtTotalVehicle_2);
+		
+		JLabel lblTotalVehicleReleased = new JLabel("Total Vehicle Released ");
+		lblTotalVehicleReleased.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTotalVehicleReleased.setForeground(Color.WHITE);
+		lblTotalVehicleReleased.setFont(SemiB);
+		lblTotalVehicleReleased.setBounds(440, 140, 274, 40);
+		panel_3.add(lblTotalVehicleReleased);
+		
 		JLabel bgTotal_1 = new JLabel("");
 		bgTotal_1.setIcon(new ImageIcon("Resources\\Images\\Total.png"));
 		bgTotal_1.setBounds(30, 67, 393, 125);
@@ -197,7 +225,11 @@ public class MTMBHome {
 		
 		JLabel txtInfo = new JLabel("Daily Impounded Records");
 		txtInfo.setFont(SemiB);
-		txtInfo.setBounds(31, 215, 361, 40);
+		txtInfo.setBounds(31, 205, 361, 40);
 		panel_3.add(txtInfo);
+		
+		
+		
+		
 	}
 }
