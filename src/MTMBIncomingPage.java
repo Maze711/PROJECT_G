@@ -25,6 +25,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -241,28 +242,33 @@ public class MTMBIncomingPage {
 		RecordPanel.add(AddButton);
 
 		JButton importButton = new JButton("Import");
-        importButton.setBounds(609, 81, 117, 38);
-        importButton.setFont(SemiB16);
-        importButton.addActionListener(e -> {
-            // Prompt user to enter table name
-            String tableName = JOptionPane.showInputDialog(frame, "Enter table name:");
-            if (tableName != null && !tableName.isEmpty()) {
-                // Browse file
-                JFileChooser fileChooser = new JFileChooser();
-                int result = fileChooser.showOpenDialog(frame);
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    File selectedFile = fileChooser.getSelectedFile();
-                    String filePath = selectedFile.getAbsolutePath();
+		importButton.setBounds(609, 81, 117, 38);
+		importButton.setFont(SemiB16);
+		importButton.addActionListener(e -> {
+		    // Prompt user to enter table name
+		    String tableName = JOptionPane.showInputDialog(frame, "Enter table name:");
+		    if (tableName != null && !tableName.isEmpty()) {
+		        // Browse file
+		        JFileChooser fileChooser = new JFileChooser();
+		        
+		        // Set file filter to show only Excel files (*.xlsx)
+		        FileNameExtensionFilter filter = new FileNameExtensionFilter("Excel files", "xlsx");
+		        fileChooser.setFileFilter(filter);
+		        
+		        int result = fileChooser.showOpenDialog(frame);
+		        if (result == JFileChooser.APPROVE_OPTION) {
+		            File selectedFile = fileChooser.getSelectedFile();
+		            String filePath = selectedFile.getAbsolutePath();
 
-                    SwingUtilities.invokeLater(() -> {
-                        MTMBImporter importer = new MTMBImporter();
-                        importer.importExcelFile(filePath, tableName).thenRun(() -> {
-                            System.out.println("Import completed successfully!");
-                        });
-                    });
-                }
-            }
-        });
+		            SwingUtilities.invokeLater(() -> {
+		                MTMBImporter importer = new MTMBImporter();
+		                importer.importExcelFile(filePath, tableName).thenRun(() -> {
+		                    System.out.println("Import completed successfully!");
+		                });
+		            });
+		        }
+		    }
+		});
 
         frame.add(importButton);
         frame.setVisible(true);
