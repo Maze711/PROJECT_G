@@ -173,6 +173,11 @@ public class MTMBIncomingPage {
 		RecordPanel.setBounds(292, 0, 736, 768);
 		panel.add(RecordPanel);
 		RecordPanel.setLayout(null);
+		
+				JLabel SearchIcon = new JLabel("");
+				SearchIcon.setBounds(10, 77, 42, 42);
+				RecordPanel.add(SearchIcon);
+				
 
 		// Header
 		JPanel InsideRecordPanel = new JPanel();
@@ -204,18 +209,19 @@ public class MTMBIncomingPage {
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 		for (int i = 0; i < column.length; i++) {
-		    table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+			table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 		}
 
 		// Add a MouseWheelListener to both the table and the scroll pane
 		MouseWheelListener mouseWheelListener = new MouseWheelListener() {
-		    @Override
-		    public void mouseWheelMoved(MouseWheelEvent e) {
-		        int notches = e.getWheelRotation();
-		        JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
-		        // Increase scrolling speed by a factor of 10
-		        verticalScrollBar.setValue(verticalScrollBar.getValue() + (verticalScrollBar.getUnitIncrement() * notches * 10));
-		    }
+			@Override
+			public void mouseWheelMoved(MouseWheelEvent e) {
+				int notches = e.getWheelRotation();
+				JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
+				// Increase scrolling speed by a factor of 10
+				verticalScrollBar
+						.setValue(verticalScrollBar.getValue() + (verticalScrollBar.getUnitIncrement() * notches * 10));
+			}
 		};
 		table.addMouseWheelListener(mouseWheelListener);
 		scrollPane.addMouseWheelListener(mouseWheelListener);
@@ -231,52 +237,55 @@ public class MTMBIncomingPage {
 		// Add the table to the scroll pane
 		scrollPane.setViewportView(table);
 
-		JButton FilterButton = new JButton("Filter");
+		JButton FilterButton = new RoundButton("Filter", 16, Color.decode("#D3D9E0"));
 		FilterButton.setBounds(420, 81, 80, 38);
 		FilterButton.setFont(SemiB16);
+		FilterButton.setForeground(new Color(11, 30, 51));
 		RecordPanel.add(FilterButton);
 
-		JButton AddButton = new JButton("ADD+");
+		JButton AddButton = new RoundButton("ADD+", 16, Color.decode("#FFBA42"));
 		AddButton.setBounds(510, 81, 90, 38);
 		AddButton.setFont(SemiB16);
+		FilterButton.setForeground(new Color(11, 30, 51));
 		RecordPanel.add(AddButton);
 
-		JButton importButton = new JButton("Import");
+		JButton importButton = new RoundButton("Import", 16, Color.decode("#00537A"));
 		importButton.setBounds(609, 81, 117, 38);
 		importButton.setFont(SemiB16);
+		importButton.setForeground(Color.WHITE);
 		importButton.addActionListener(e -> {
-		    // Prompt user to enter table name
-		    String tableName = JOptionPane.showInputDialog(frame, "Enter table name:");
-		    if (tableName != null && !tableName.isEmpty()) {
-		        // Browse file
-		        JFileChooser fileChooser = new JFileChooser();
-		        
-		        // Set file filter to show only Excel files (*.xlsx)
-		        FileNameExtensionFilter filter = new FileNameExtensionFilter("Excel files", "xlsx");
-		        fileChooser.setFileFilter(filter);
-		        
-		        int result = fileChooser.showOpenDialog(frame);
-		        if (result == JFileChooser.APPROVE_OPTION) {
-		            File selectedFile = fileChooser.getSelectedFile();
-		            String filePath = selectedFile.getAbsolutePath();
+			// Prompt user to enter table name
+			String tableName = JOptionPane.showInputDialog(frame, "Enter table name:");
+			if (tableName != null && !tableName.isEmpty()) {
+				// Browse file
+				JFileChooser fileChooser = new JFileChooser();
 
-		            SwingUtilities.invokeLater(() -> {
-		                MTMBImporter importer = new MTMBImporter();
-		                importer.importExcelFile(filePath, tableName).thenRun(() -> {
-		                    System.out.println("Import completed successfully!");
-		                });
-		            });
-		        }
-		    }
+				// Set file filter to show only Excel files (*.xlsx)
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("Excel files", "xlsx");
+				fileChooser.setFileFilter(filter);
+
+				int result = fileChooser.showOpenDialog(frame);
+				if (result == JFileChooser.APPROVE_OPTION) {
+					File selectedFile = fileChooser.getSelectedFile();
+					String filePath = selectedFile.getAbsolutePath();
+
+					SwingUtilities.invokeLater(() -> {
+						MTMBImporter importer = new MTMBImporter();
+						importer.importExcelFile(filePath, tableName).thenRun(() -> {
+							System.out.println("Import completed successfully!");
+						});
+					});
+				}
+			}
 		});
 
-        frame.add(importButton);
-        frame.setVisible(true);
-        RecordPanel.add(importButton);
+		// Only add importButton to RecordPanel, not to the frame
+		RecordPanel.add(importButton);
 
-		SearchBar = new JTextField();
+		SearchBar = new RoundTxtField(18, new Color(132, 132, 132), 1);
 		SearchBar.setText("Search");
 		SearchBar.setBounds(10, 81, 292, 38);
+		SearchBar.setFont(SemiB16);
 		RecordPanel.add(SearchBar);
 		SearchBar.setColumns(10);
 
@@ -285,7 +294,7 @@ public class MTMBIncomingPage {
 
 	private void fetchData() {
 		try {
-			Connection connection = conn.getConnection(); // Assuming you have a method to get the connection
+			Connection connection = conn.getConnection();
 			Statement statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery("SELECT * FROM 2024mtmbrecord");
 
