@@ -3,8 +3,15 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -18,7 +25,12 @@ public class MTMBImporter {
 
     private static final Logger logger = LogManager.getLogger(MTMBImporter.class);
 
-    public CompletableFuture<Void> importExcelFile(String filePath) {
+    // Define the expected column names
+    private static final Set<String> EXPECTED_COLUMN_NAMES = new HashSet<>(Arrays.asList(
+            "CtrlNo", "Type", "PlateNo", "Color", "Date", "Status"
+    ));
+
+    public CompletableFuture<Void> importExcelFile(String filePath, String tableName) {
         return CompletableFuture.runAsync(() -> {
             try {
                 // Check file type
@@ -26,7 +38,7 @@ public class MTMBImporter {
                     // Log Excel file content
                     logExcelFileContent(filePath);
                     // Proceed with reading and importing
-                    readExcelXlsx(filePath);
+                    readExcelXlsx(filePath, tableName);
                 } else {
                     throw new IllegalArgumentException("Unsupported file type");
                 }
@@ -68,7 +80,7 @@ public class MTMBImporter {
         }
     }
 
-    private void readExcelXlsx(String filePath) throws IOException, InvalidFormatException, SQLException {
+    private void readExcelXlsx(String filePath, String tableName) throws IOException, InvalidFormatException, SQLException {
         try (Workbook workbook = new XSSFWorkbook(new File(filePath))) {
             Sheet sheet = workbook.getSheetAt(0);
 
@@ -78,22 +90,16 @@ public class MTMBImporter {
                 throw new IllegalArgumentException("No header row found");
             }
 
+            // Validate column names
+            validateColumnNames(headerRow);
+
             // Get the database connection
             try (Connection connection = getConnection()) {
-                // Prepare SQL insert statement
-                StringBuilder sqlBuilder = new StringBuilder("INSERT INTO `2024mtmbrecord` (");
-                for (Cell cell : headerRow) {
-                    sqlBuilder.append("`").append(cell.getStringCellValue()).append("`").append(",");
-                }
-                sqlBuilder.deleteCharAt(sqlBuilder.length() - 1); // Remove the last comma
-                sqlBuilder.append(") VALUES (");
-                for (int i = 0; i < headerRow.getLastCellNum(); i++) {
-                    sqlBuilder.append("?,");
-                }
-                sqlBuilder.deleteCharAt(sqlBuilder.length() - 1); // Remove the last comma
-                sqlBuilder.append(")");
+                // Check if the table exists, and create it if not
+                createTableIfNotExists(connection, tableName, headerRow);
 
-                String sql = sqlBuilder.toString();
+                // Prepare SQL insert statement
+                String sql = generateInsertSQL(tableName, headerRow);
                 PreparedStatement statement = connection.prepareStatement(sql);
 
                 // Iterate through rows and process data
@@ -132,10 +138,59 @@ public class MTMBImporter {
         }
     }
 
+    private void createTableIfNotExists(Connection connection, String tableName, Row headerRow) throws SQLException {
+        // Check if the table exists
+        try (PreparedStatement checkStatement = connection.prepareStatement("SHOW TABLES LIKE ?")) {
+            checkStatement.setString(1, tableName);
+            try (ResultSet resultSet = checkStatement.executeQuery()) {
+                if (!resultSet.next()) {
+                    // Table does not exist, create it
+                    StringBuilder createTableSQL = new StringBuilder("CREATE TABLE ").append(tableName).append(" (");
+                    for (Cell cell : headerRow) {
+                        createTableSQL.append("`").append(cell.getStringCellValue()).append("` VARCHAR(255),");
+                    }
+                    createTableSQL.deleteCharAt(createTableSQL.length() - 1);
+                    createTableSQL.append(")");
+
+                    try (Statement createStatement = connection.createStatement()) {
+                        createStatement.executeUpdate(createTableSQL.toString());
+                    }
+                }
+            }
+        }
+    }
+
+    private String generateInsertSQL(String tableName, Row headerRow) {
+        StringBuilder sqlBuilder = new StringBuilder("INSERT INTO `").append(tableName).append("` (");
+        for (Cell cell : headerRow) {
+            sqlBuilder.append("`").append(cell.getStringCellValue()).append("`").append(",");
+        }
+        sqlBuilder.deleteCharAt(sqlBuilder.length() - 1);
+        sqlBuilder.append(") VALUES (");
+        for (int i = 0; i < headerRow.getLastCellNum(); i++) {
+            sqlBuilder.append("?,");
+        }
+        sqlBuilder.deleteCharAt(sqlBuilder.length() - 1); // Remove the last comma
+        sqlBuilder.append(")");
+        return sqlBuilder.toString();
+    }
+
+    private void validateColumnNames(Row headerRow) {
+        Set<String> actualColumnNames = new HashSet<>();
+        for (Cell cell : headerRow) {
+            actualColumnNames.add(cell.getStringCellValue().trim());
+        }
+
+        // Check if all expected column names are present
+        for (String expectedColumnName : EXPECTED_COLUMN_NAMES) {
+            if (!actualColumnNames.contains(expectedColumnName)) {
+                JFrame frame = new JFrame("Column Name Validation");
+                JOptionPane.showMessageDialog(frame, expectedColumnName + " column is missing");
+            }
+        }
+    }
 
     private Connection getConnection() throws SQLException {
-        // Replace the connection URL, username, and password with your database credentials
-    	
         String url = "jdbc:mysql://localhost:3306/mtmbrecord";
         String username = "root";
         String password = "";

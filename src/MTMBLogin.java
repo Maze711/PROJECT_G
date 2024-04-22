@@ -117,31 +117,26 @@ public class MTMBLogin extends JFrame {
 		InputPanel.setOpaque(false);
 		InputPanel.setLayout(null);
 	
-		UsernameTxtField = new JTextField();
+		UsernameTxtField = new RoundTxtField(40,new Color(0x0B1E33), 3);
 		UsernameTxtField.setForeground(new Color(11, 30, 51));
 		UsernameTxtField.setBackground(new Color(232, 248, 255));
-		UsernameTxtField.setBorder(new LineBorder(new Color(0, 0, 0), 3, true));
 		UsernameTxtField.setText("Username");
 		UsernameTxtField.setBounds(0, 37, 334, 62);
 		UsernameTxtField.setFont(SecondaryFont);
 		InputPanel.add(UsernameTxtField);
 		UsernameTxtField.setColumns(10);
 		
-		PasswordTxtField = new JTextField();
+		PasswordTxtField = new RoundTxtField(40,new Color(0x0B1E33), 3);
 		PasswordTxtField.setForeground(new Color(11, 30, 51));
 		PasswordTxtField.setBackground(new Color(232, 248, 255));
-		PasswordTxtField.setBorder(new LineBorder(new Color(0, 0, 0), 3, true));
 		PasswordTxtField.setText("Password");
 		PasswordTxtField.setBounds(0, 127, 334, 62);
 		PasswordTxtField.setFont(SecondaryFont);
 		InputPanel.add(PasswordTxtField);
 		PasswordTxtField.setColumns(10);
 		
-		JToggleButton LoginToggleButton = new JToggleButton("Login");
-
+		RoundButton LoginToggleButton = new RoundButton("Login",  60, Color.decode("#0B1E33"));
 		LoginToggleButton.setForeground(new Color(255, 255, 255));
-		LoginToggleButton.setBackground(new Color(11, 30, 51));
-		LoginToggleButton.setBorder(new LineBorder(new Color(0, 0, 0), 3, true));
 		LoginToggleButton.setBounds(0, 214, 334, 62);
 		LoginToggleButton.setFont(PrimaryEBFont);
 		InputPanel.add(LoginToggleButton);
