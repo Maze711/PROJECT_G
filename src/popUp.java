@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -56,7 +57,7 @@ public class popUp  {
 		frmMtmb = new JFrame();
 		frmMtmb.setTitle("MTMB");
 		frmMtmb.setBounds(100, 100, 337, 279);
-		frmMtmb.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmMtmb.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		frmMtmb.getContentPane().setLayout(null);
 		frmMtmb.setResizable(false);
 		frmMtmb.getContentPane().setLayout(null);
@@ -75,8 +76,10 @@ public class popUp  {
 		frmMtmb.getContentPane().add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setBounds(162, 10, 71, 44);
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setBounds(133, 16, 54, 55);
+		lblNewLabel.setIcon(new ImageIcon("Resources/Icons/check.png"));
+		//lblNewLabel.setIcon(new ImageIcon("Resources\\Images\\Upload.png"));
 		panel.add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("SUCCESS");
@@ -91,11 +94,16 @@ public class popUp  {
 		lblNewLabel_2.setBounds(92, 121, 145, 39);
 		panel.add(lblNewLabel_2);
 		
-		JButton btnNewButton = new JButton("CONFIRM");
+		JButton btnNewButton = new RoundButton("CONFIRM",  60, Color.decode("#0B1E33"));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MTMBLogin log = new MTMBLogin();
-				log.showWindow2();
+				//Link of popUp to Login
+				
+				MTMBLogin link = new MTMBLogin();
+				
+				link.setVisible(true);
+				link.setLocationRelativeTo(null);
+				
 			}
 		});
 		btnNewButton.setForeground(new Color(255, 255, 255));
@@ -104,8 +112,6 @@ public class popUp  {
 		btnNewButton.setBounds(10, 170, 302, 44);
 		panel.add(btnNewButton);
 	}
-
-
 }
 
 

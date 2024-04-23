@@ -1,16 +1,14 @@
-import java.awt.Color;
-
-import java.awt.EventQueue;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import java.awt.Font;
-import javax.swing.JTextField;
 import java.awt.BorderLayout;
-import javax.swing.JToggleButton;
-import javax.swing.border.LineBorder;
-import javax.swing.SwingConstants;
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.Font;
+
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -43,13 +41,8 @@ public class MTMBLogin extends JFrame {
 		});
 	}
 	
-	// to connect your class to other class
-		public void showWindow2() {
-			
-			JFrame pop = LoginFrame;
-			pop.show();
-			
-		}
+	
+	
 	
 	/**
 	 * Create the frame.
@@ -148,6 +141,13 @@ public class MTMBLogin extends JFrame {
 		PasswordTxtField.setColumns(10);
 		
 		RoundButton LoginToggleButton = new RoundButton("Login",  60, Color.decode("#0B1E33"));
+		LoginToggleButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MTMBHome home = new MTMBHome();
+				home.showWindowHome();
+				
+}
+		});
 		LoginToggleButton.setForeground(new Color(255, 255, 255));
 		LoginToggleButton.setBounds(0, 214, 334, 62);
 		LoginToggleButton.setFont(PrimaryEBFont);

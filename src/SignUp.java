@@ -34,6 +34,8 @@ public class SignUp extends JFrame{
 				try {
 					SignUp window = new SignUp();
 					window.frame.setVisible(true);
+					window.setResizable(false);
+					window.setLocationRelativeTo(null);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -54,85 +56,94 @@ public class SignUp extends JFrame{
 	 */
 	public void initialize() {
 		frame = new JFrame("SignUp");
+		frame.getContentPane().setBackground(new Color(240, 240, 240));
+		frame.getContentPane().setForeground(new Color(255, 255, 255));
 		frame.setBackground(new Color(255, 255, 255));
-		frame.getContentPane().setBackground(new Color(255, 255, 255));
+		frame.getContentPane();
+		frame.setBounds(100, 100, 1066, 705);
 		frame.getContentPane().setLayout(null);
 		frame.setLocationRelativeTo(null);
-		frame.setResizable(false);
 		frame.setTitle("Muntinlupa Traffic Management Bureau");
+		frame.setResizable(false);
+		frame.setBackground(new Color(238, 246, 255));
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setBounds(100, 100, 1024, 768);
+		frame.setLocationRelativeTo(null);
 		
-		
+
 		
 		
 		//Fonts
-		FontLoader.getFont("Primary", 12);
-		FontLoader.getFont("Secondary", 18);
-		Font AlreadyLog = FontLoader.getFont("Secondary", 13);
-		FontLoader.getFont("PrimaryEB32", 24);
-		Font SemiB = FontLoader.getFont("SemiB", 24);
-		Font SemiLog = FontLoader.getFont("SemiB", 15);
+		Font PrimaryFont = FontLoader.getFont("Primary", 64);
+		Font SecondaryFont = FontLoader.getFont("Secondary", 24);
+		Font PrimaryEBFont = FontLoader.getFont("PrimaryEB32", 24);
+		Font SemiB = FontLoader.getFont("SemiB", 15);
+		Font Bold = FontLoader.getFont("PrimaryEB32", 17);
 		Font PrimaryEB48Font = FontLoader.getFont("PrimaryEB32", 48); // FONT SIZE 48
 		
 		
 		//Panels
 		JPanel panel = new JPanel();
-		panel.setBackground(new Color(255, 255, 255));
-		panel.setBounds(10, 10, 1083, 648);
+		panel.setBackground(new Color(238, 246, 255));
+		panel.setBounds(0, 10, 1010, 721);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(SystemColor.inactiveCaptionBorder);
-		panel_1.setBounds(620, 0, 463, 648);
+		panel_1.setBackground(new Color(244, 247, 252));
+		panel_1.setBounds(568, 0, 432, 720);
 		panel.add(panel_1);
 		panel_1.setLayout(null);
 		
 		InfoRoundedCorner panel_2 = new InfoRoundedCorner(130);
-		panel_2.setBounds(-93, 0, 703, 648);
+		panel_2.setBounds(-93, 10, 662, 701);
 		panel_2.setBackground(Color.decode("#00537A"));
 		panel.add(panel_2);
 		panel_2.setLayout(null);
 		
 		InfoRoundedCorner panel_3 = new InfoRoundedCorner(130);
-		panel_3.setBounds(-439, 10, 571, 648);
-		frame.getContentPane().add(panel_3);
-		frame.setBounds(100, 100, 1117, 705);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+		panel_3.setBounds(-439, 21, 654, 700);
+		frame.getContentPane().add(panel_3);		
 		
 		
 		JLabel lblNewLabel = new JLabel("Add User");
-		lblNewLabel.setFont(PrimaryEB48Font);
-		lblNewLabel.setBounds(131, 89, 236, 40);
+		lblNewLabel.setFont(PrimaryFont);
+		lblNewLabel.setBounds(76, 90, 334, 86);
+		lblNewLabel.setForeground(new Color(11,30,51));
 		panel_1.add(lblNewLabel);
 		
-		txtUsername = new JTextField();
-		txtUsername.setFont(SemiB);
+		txtUsername = new  RoundTxtField(40,new Color(0x0B1E33), 3);
+		txtUsername.setFont(SecondaryFont);
 		txtUsername.setText("Username");
-		txtUsername.setBounds(120, 178, 296, 55);
+		txtUsername.setBounds(60, 222, 334, 62);
+		txtUsername.setBackground(new Color(232, 248, 255));
+		txtUsername.setForeground(new Color(11, 30, 51));
 		panel_1.add(txtUsername);
-		txtUsername.setColumns(10);
+		txtUsername.setColumns(10);		
 		
-		
-		
-		password = new JPasswordField();
-		password.setFont(SemiB);
+		password = new RoundPasswordField(40,new Color(0x0B1E33), 3);
+		password.setForeground(new Color(11, 30, 51));
+		password.setBackground(new Color(232, 248, 255));
+		password.setFont(SecondaryFont);
 		password.setColumns(10);
-		password.setBounds(120, 243, 296, 50);
+		password.setBounds(60, 300, 334, 62);
 		password.setText("Verify Password");
 		panel_1.add(password);
 		
-		verifyPassword = new JPasswordField();
-		verifyPassword.setFont(SemiB);
+		verifyPassword = new RoundPasswordField(40,new Color(0x0B1E33), 3);
+		verifyPassword.setForeground(new Color(11, 30, 51));
+		verifyPassword.setBackground(new Color(232, 248, 255));
+		verifyPassword.setFont(SecondaryFont);
 		verifyPassword.setColumns(10);
-		verifyPassword.setBounds(120, 303, 296, 50);
+		verifyPassword.setBounds(60, 376, 334, 62);
 		verifyPassword.setText("Verify Password");
 		panel_1.add(verifyPassword);
+		
 			
 
 		
 		
-		JButton btnNewButton = new JButton("Add User");
+		JButton btnNewButton = new RoundButton("Add User",  60, Color.decode("#0B1E33"));
 		btnNewButton.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
@@ -156,44 +167,52 @@ public class SignUp extends JFrame{
 		});
 		btnNewButton.setForeground(new Color(255, 255, 255));
 		btnNewButton.setBackground(new Color(11, 30, 51));
-		btnNewButton.setFont(SemiB);
-		btnNewButton.setBounds(120, 366, 296, 40);
+		btnNewButton.setFont(PrimaryEBFont);
+		btnNewButton.setBounds(60, 454, 334, 62);
 		panel_1.add(btnNewButton);
-	
-
 		
 		
 		
 		JLabel lblNewLabel_1 = new JLabel("Already a member?");
-		lblNewLabel_1.setFont(new Font("Times New Roman", Font.BOLD, 25));
-		lblNewLabel_1.setBounds(169, 410, 129, 24);
+		lblNewLabel_1.setFont(SemiB);
+		lblNewLabel_1.setBounds(126, 512, 199, 45);
 		panel_1.add(lblNewLabel_1);
 		
-		JButton btnNewButton_1 = new JButton("Login");
-		btnNewButton_1.setForeground(new Color(0, 0, 64));
+		
+		JButton btnNewButton_1 = new RoundButton("Login",  10, Color.decode("#FFFFFF"));
+		btnNewButton_1.setText("Log In");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MTMBLogin log = new MTMBLogin();
+				log.setLocationRelativeTo(null);
+				log.setVisible(true);
+				
+			}
+		});
+		btnNewButton_1.setForeground(new Color(11, 30, 51));
 		btnNewButton_1.setBackground(new Color(255, 255, 255));
-		btnNewButton_1.setFont(SemiLog);
-		btnNewButton_1.setBounds(310, 414, 86, 17);
+		btnNewButton_1.setFont(Bold);
+		btnNewButton_1.setBounds(269, 526, 100, 21);
 		panel_1.add(btnNewButton_1);
 		
 		
 		JLabel lblNewLabel_2 = new JLabel("Impound");
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_2.setForeground(new Color(255, 186, 66));
-		lblNewLabel_2.setBounds(209, 332, 326, 47);
+		lblNewLabel_2.setBounds(209, 392, 326, 47);
 		lblNewLabel_2.setFont(PrimaryEB48Font);
 		panel_2.add(lblNewLabel_2);
 		
 		
 		JLabel lblNewLabel_2_1 = new JLabel("Inventory");
-		lblNewLabel_2_1.setBounds(209, 386, 326, 47);
+		lblNewLabel_2_1.setBounds(209, 469, 326, 47);
 		lblNewLabel_2_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_2_1.setFont(PrimaryEB48Font);
 		lblNewLabel_2_1.setForeground(new Color(255, 186, 66));
 		panel_2.add(lblNewLabel_2_1);
 		
 		JLabel lblNewLabel_2_2 = new JLabel("System");
-		lblNewLabel_2_2.setBounds(209, 443, 326, 47);
+		lblNewLabel_2_2.setBounds(209, 540, 326, 47);
 		lblNewLabel_2_2.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_2_2.setFont(PrimaryEB48Font);
 		lblNewLabel_2_2.setForeground(new Color(255, 186, 66));
@@ -201,13 +220,14 @@ public class SignUp extends JFrame{
 		
 		JLabel lblNewLabel_3 = new JLabel("");
 		lblNewLabel_3.setIcon(new ImageIcon("Resources\\Images\\logomain.png"));
-		lblNewLabel_3.setBounds(256, 65, 200, 200);
+		lblNewLabel_3.setBounds(259, 108, 200, 200);
 		panel_2.add(lblNewLabel_3);
 		
-		JLabel lblNewLabel_5 = new JLabel("Muntinlupa Traffic Management Bureau");
-		lblNewLabel_5.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNewLabel_5.setForeground(new Color(255, 255, 255));
-		lblNewLabel_1.setFont(AlreadyLog);
+		JLabel lblNewLabel_4 = new JLabel("Muntinlupa Traffic Management Bureau");
+		lblNewLabel_4.setFont(SemiB);
+		lblNewLabel_4.setForeground(new Color(255, 255, 255));
+		lblNewLabel_4.setBounds(220, 318, 336, 34);
+		panel_2.add(lblNewLabel_4);
 		
 				
 			
@@ -218,4 +238,5 @@ public class SignUp extends JFrame{
 		
 		
 	}
+
 }
