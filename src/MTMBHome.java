@@ -30,6 +30,15 @@ public class MTMBHome {
 			}
 		});
 	}
+	
+	
+	
+	public void showWindowHome() {
+		// TODO Auto-generated method stub
+			JFrame home = frame;
+			home.show();
+			home.setLocationRelativeTo(null);
+	}
 
 	/**
 	 * Create the application.
@@ -232,4 +241,6 @@ public class MTMBHome {
 		
 		
 	}
+
+
 }
