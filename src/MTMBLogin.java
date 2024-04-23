@@ -1,4 +1,5 @@
 import java.awt.Color;
+
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -17,6 +18,8 @@ import java.awt.event.ActionEvent;
 public class MTMBLogin extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+	private static final JFrame InfoFrame = null;
+	private static final JFrame LoginFrame = null;
 	private JPanel contentPane;
 	private JTextField UsernameTxtField;
 	private JTextField PasswordTxtField;
@@ -39,7 +42,15 @@ public class MTMBLogin extends JFrame {
 			}
 		});
 	}
-
+	
+	// to connect your class to other class
+		public void showWindow2() {
+			
+			JFrame pop = LoginFrame;
+			pop.show();
+			
+		}
+	
 	/**
 	 * Create the frame.
 	 */
@@ -52,7 +63,8 @@ public class MTMBLogin extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JPanel LoginFrame = new JPanel();
+		JPanel LoginFrame = 
+				new JPanel();
 		LoginFrame.setBounds(95, 190, 334, 417);
 		contentPane.setOpaque(false);
 		LoginFrame.setOpaque(false);
