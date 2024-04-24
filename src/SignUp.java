@@ -195,14 +195,12 @@ public class SignUp extends JFrame{
 		btnNewButton_1.setBounds(269, 526, 100, 21);
 		panel_1.add(btnNewButton_1);
 		
-		
 		JLabel lblNewLabel_2 = new JLabel("Impound");
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_2.setForeground(new Color(255, 186, 66));
 		lblNewLabel_2.setBounds(209, 392, 326, 47);
 		lblNewLabel_2.setFont(PrimaryEB48Font);
 		panel_2.add(lblNewLabel_2);
-		
 		
 		JLabel lblNewLabel_2_1 = new JLabel("Inventory");
 		lblNewLabel_2_1.setBounds(209, 469, 326, 47);
@@ -228,11 +226,6 @@ public class SignUp extends JFrame{
 		lblNewLabel_4.setForeground(new Color(255, 255, 255));
 		lblNewLabel_4.setBounds(220, 318, 336, 34);
 		panel_2.add(lblNewLabel_4);
-		
-				
-			
-		
-	
 		
 		System.out.println();
 		
