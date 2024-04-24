@@ -10,21 +10,20 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class popUp  {
+public class MTMBPopUp  {
 
 	/**
 	 * 
 	 */
-	private JFrame frmMtmb;
+	private static JFrame frmMtmb;
+	private JFrame signUpFrame;
 
-	/**
-	 * Launch the application.
-	 */
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					popUp window = new popUp();
+					MTMBPopUp window = new MTMBPopUp(frmMtmb);
 					window.frmMtmb.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -39,7 +38,8 @@ public class popUp  {
 			JFrame frmMtmb2 = frmMtmb;
 			frmMtmb2.show();
 	}
-	public popUp() {
+	public MTMBPopUp(JFrame signUpFrame) {
+		  this.signUpFrame = signUpFrame;
 		initialize();
 		
 	}
@@ -92,6 +92,8 @@ public class popUp  {
 				
 				link.setVisible(true);
 				link.setLocationRelativeTo(null);
+		        frmMtmb.dispose();
+		        signUpFrame.dispose();
 				
 			}
 		});

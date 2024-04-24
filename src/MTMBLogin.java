@@ -145,7 +145,7 @@ public class MTMBLogin extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				MTMBHome home = new MTMBHome();
 				home.showWindowHome();
-				
+				dispose();
 }
 		});
 		LoginToggleButton.setForeground(new Color(255, 255, 255));
