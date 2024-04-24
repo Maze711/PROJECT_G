@@ -39,31 +39,20 @@ public class popUp  {
 			JFrame frmMtmb2 = frmMtmb;
 			frmMtmb2.show();
 	}
-
-	
-
-	/**
-	 * Create the application.
-	 */
 	public popUp() {
 		initialize();
 		
 	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	 void initialize() {
+	void initialize() {
 		frmMtmb = new JFrame();
 		frmMtmb.setTitle("MTMB");
-		frmMtmb.setBounds(100, 100, 337, 279);
+		frmMtmb.setBounds(100, 100, 320, 230);
 		frmMtmb.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		frmMtmb.getContentPane().setLayout(null);
 		frmMtmb.setResizable(false);
 		frmMtmb.getContentPane().setLayout(null);
 		frmMtmb.setLocationRelativeTo(null);
-		
-		
+		frmMtmb.setUndecorated(true); 
 		
 		Font PrimaryFont = FontLoader.getFont("Primary", 30);
 		Font SecondaryFont = FontLoader.getFont("Secondary", 15);
@@ -77,8 +66,8 @@ public class popUp  {
 		panel.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setBounds(133, 16, 54, 55);
-		lblNewLabel.setIcon(new ImageIcon("Resources/Icons/check.png"));
+		lblNewLabel.setBounds(133, 16, 54, 30);
+		lblNewLabel.setIcon(new ImageIcon("Resources/Icons/Check.png"));
 		//lblNewLabel.setIcon(new ImageIcon("Resources\\Images\\Upload.png"));
 		panel.add(lblNewLabel);
 		
@@ -94,7 +83,7 @@ public class popUp  {
 		lblNewLabel_2.setBounds(92, 121, 145, 39);
 		panel.add(lblNewLabel_2);
 		
-		JButton btnNewButton = new RoundButton("CONFIRM",  60, Color.decode("#0B1E33"));
+		JButton btnNewButton = new RoundButton("CONFIRM",  40, Color.decode("#0B1E33"));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Link of popUp to Login
