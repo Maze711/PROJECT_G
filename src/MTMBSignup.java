@@ -47,9 +47,13 @@ public class MTMBSignup extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the application.
-	 */
+	public void showSignUp() {
+		// TODO Auto-generated method stub
+			JFrame SignUp = frame;
+			SignUp.show();
+			SignUp.setLocationRelativeTo(null);
+	}
+	
 	public MTMBSignup() {
 		initialize();
 	}
@@ -198,7 +202,7 @@ public class MTMBSignup extends JFrame {
 		btnNewButton_1.setForeground(new Color(11, 30, 51));
 		btnNewButton_1.setBackground(new Color(255, 255, 255));
 		btnNewButton_1.setFont(Bold);
-		btnNewButton_1.setBounds(269, 526, 100, 21);
+		btnNewButton_1.setBounds(260, 524, 100, 21);
 		panel_1.add(btnNewButton_1);
 
 		JLabel lblNewLabel_2 = new JLabel("Impound");
@@ -228,5 +232,4 @@ public class MTMBSignup extends JFrame {
 		panel_2.add(lblNewLabel_3);
 
 	}
-
 }
