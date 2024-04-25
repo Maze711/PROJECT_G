@@ -62,6 +62,13 @@ public class MTMBReleasingPage {
 			}
 		});
 	}
+	
+	public void showReleasing() {
+		// TODO Auto-generated method stub
+			JFrame Release = frame;
+			Release.show();
+			Release.setLocationRelativeTo(null);
+	}
 
 	/**
 	 * Create the application.
@@ -289,4 +296,6 @@ public class MTMBReleasingPage {
 			e.printStackTrace();
 		}
 	}
+
+	
 }
