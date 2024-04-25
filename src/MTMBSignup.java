@@ -116,7 +116,7 @@ public class MTMBSignup extends JFrame {
 
 		txtUsername = new RoundTxtField(40, new Color(0x0B1E33), 3);
 		txtUsername.setFont(SecondaryFont);
-		txtUsername.setText("Username");
+		txtUsername.setText("   Username");
 		txtUsername.setBounds(60, 222, 334, 62);
 		txtUsername.setBackground(new Color(232, 248, 255));
 		txtUsername.setForeground(new Color(11, 30, 51));
