@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 public class MTMBPopUp  {
 
@@ -46,7 +47,7 @@ public class MTMBPopUp  {
 	void initialize() {
 		frmMtmb = new JFrame();
 		frmMtmb.setTitle("MTMB");
-		frmMtmb.setBounds(100, 100, 320, 230);
+		frmMtmb.setBounds(100, 100, 326, 279);
 		frmMtmb.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		frmMtmb.getContentPane().setLayout(null);
 		frmMtmb.setResizable(false);
@@ -61,26 +62,28 @@ public class MTMBPopUp  {
 		Font PrimaryEB48Font = FontLoader.getFont("PrimaryEB32", 24); // FONT SIZE 48
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(0, 10, 323, 232);
+		panel.setBounds(0, 10, 326, 279);
 		frmMtmb.getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setBounds(133, 16, 54, 30);
+		lblNewLabel.setBounds(115, 20, 94, 89);
 		lblNewLabel.setIcon(new ImageIcon("Resources/Icons/Check.png"));
 		//lblNewLabel.setIcon(new ImageIcon("Resources\\Images\\Upload.png"));
 		panel.add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("SUCCESS");
-		lblNewLabel_1.setBounds(92, 81, 210, 47);
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_1.setBounds(57, 120, 210, 47);
 		lblNewLabel_1.setBackground(new Color(11, 30, 51));
 		lblNewLabel_1.setFont(PrimaryFont);
 		panel.add(lblNewLabel_1);
 		
 		JLabel lblNewLabel_2 = new JLabel("Added a new user!");
+		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_2.setFont(SecondaryFont);
 		lblNewLabel_2.setBackground(new Color(11, 30, 51));
-		lblNewLabel_2.setBounds(92, 121, 145, 39);
+		lblNewLabel_2.setBounds(74, 160, 177, 39);
 		panel.add(lblNewLabel_2);
 		
 		JButton btnNewButton = new RoundButton("CONFIRM",  40, Color.decode("#0B1E33"));
@@ -100,7 +103,7 @@ public class MTMBPopUp  {
 		btnNewButton.setForeground(new Color(255, 255, 255));
 		btnNewButton.setBackground(new Color(11, 30, 51));
 		btnNewButton.setFont(PrimaryEB48Font);
-		btnNewButton.setBounds(10, 170, 302, 44);
+		btnNewButton.setBounds(42, 200, 240, 44);
 		panel.add(btnNewButton);
 	}
 }

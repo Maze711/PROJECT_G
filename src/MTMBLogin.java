@@ -127,7 +127,7 @@ public class MTMBLogin extends JFrame {
 		UsernameTxtField = new RoundTxtField(40, new Color(0x0B1E33), 3);
 		UsernameTxtField.setForeground(new Color(11, 30, 51));
 		UsernameTxtField.setBackground(new Color(232, 248, 255));
-		UsernameTxtField.setText("Username");
+		UsernameTxtField.setText("     Username");
 		UsernameTxtField.setBounds(0, 37, 334, 62);
 		UsernameTxtField.setFont(SecondaryFont);
 		InputPanel.add(UsernameTxtField);
@@ -136,7 +136,6 @@ public class MTMBLogin extends JFrame {
 		PasswordTxtField = new RoundPasswordField(40, new Color(0x0B1E33), 3);
 		PasswordTxtField.setForeground(new Color(11, 30, 51));
 		PasswordTxtField.setBackground(new Color(232, 248, 255));
-		PasswordTxtField.setText("Password");
 		PasswordTxtField.setBounds(0, 127, 334, 62);
 		PasswordTxtField.setFont(SecondaryFont);
 		InputPanel.add(PasswordTxtField);
@@ -207,7 +206,7 @@ public class MTMBLogin extends JFrame {
 		btnNewButton_1.setForeground(new Color(11, 30, 51));
 		btnNewButton_1.setBackground(new Color(255, 255, 255));
 		btnNewButton_1.setFont(Bold);
-		btnNewButton_1.setBounds(167, 284, 131, 21);
+		btnNewButton_1.setBounds(180, 284, 131, 21);
 		InputPanel.add(btnNewButton_1);
 
 	}
