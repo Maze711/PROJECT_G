@@ -32,8 +32,6 @@ public class MTMBPopUp  {
 			}
 		});
 	}
-	
-	
 
 	// to connect your class to other class
 	public void showWindow() {

@@ -8,6 +8,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class CreateNew {
 
@@ -81,11 +83,24 @@ public class CreateNew {
 		txtInputYear.setColumns(10);
 		
 		RoundButton btnCancel = new RoundButton("Cancel",8,Color.decode("#FFBA42"));
+		btnCancel.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		    	MTMBRecordPage window = new MTMBRecordPage();
+		    	window.showRecords();
+		        frame.dispose();
+		    }
+		});
+
 		btnCancel.setBounds(174, 175, 112, 40);
 		btnCancel.setFont(ExtraBold2);
 		panel.add(btnCancel);
 		
 		RoundButton btnCreate = new RoundButton("Create",8,Color.decode("#0B1E33"));
+		btnCreate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 		btnCreate.setForeground(new Color(255, 255, 255));
 		btnCreate.setBackground(new Color(255, 255, 255));
 		btnCreate.setBounds(296, 175, 112, 40);
