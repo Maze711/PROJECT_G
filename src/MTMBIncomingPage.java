@@ -9,6 +9,7 @@ import java.awt.event.MouseWheelListener;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -57,9 +58,10 @@ public class MTMBIncomingPage {
 		});
 	}
 
-	/**
-	 * Create the application.
-	 */
+	public void refresh() {
+	    fetchData(); // Update table data from the database
+	}
+
 	public MTMBIncomingPage() {
 		initialize();
 	}
@@ -173,11 +175,10 @@ public class MTMBIncomingPage {
 		RecordPanel.setBounds(292, 0, 736, 768);
 		panel.add(RecordPanel);
 		RecordPanel.setLayout(null);
-		
-				JLabel SearchIcon = new JLabel("");
-				SearchIcon.setBounds(10, 77, 42, 42);
-				RecordPanel.add(SearchIcon);
-				
+
+		JLabel SearchIcon = new JLabel("");
+		SearchIcon.setBounds(10, 77, 42, 42);
+		RecordPanel.add(SearchIcon);
 
 		// Header
 		JPanel InsideRecordPanel = new JPanel();
@@ -254,30 +255,38 @@ public class MTMBIncomingPage {
 		importButton.setFont(SemiB16);
 		importButton.setForeground(Color.WHITE);
 		importButton.addActionListener(e -> {
-			// Prompt user to enter table name
-			String tableName = JOptionPane.showInputDialog(frame, "Enter table name:");
-			if (tableName != null && !tableName.isEmpty()) {
-				// Browse file
-				JFileChooser fileChooser = new JFileChooser();
+		    // Prompt user to enter table name
+		    String tableName = JOptionPane.showInputDialog(frame, "Enter table name:");
+		    if (tableName != null && !tableName.isEmpty()) {
+		        // Browse file
+		        JFileChooser fileChooser = new JFileChooser();
 
-				// Set file filter to show only Excel files (*.xlsx)
-				FileNameExtensionFilter filter = new FileNameExtensionFilter("Excel files", "xlsx");
-				fileChooser.setFileFilter(filter);
+		        // Set file filter to show only Excel files (*.xlsx)
+		        FileNameExtensionFilter filter = new FileNameExtensionFilter("Excel files", "xlsx");
+		        fileChooser.setFileFilter(filter);
 
-				int result = fileChooser.showOpenDialog(frame);
-				if (result == JFileChooser.APPROVE_OPTION) {
-					File selectedFile = fileChooser.getSelectedFile();
-					String filePath = selectedFile.getAbsolutePath();
+		        int result = fileChooser.showOpenDialog(frame);
+		        if (result == JFileChooser.APPROVE_OPTION) {
+		            File selectedFile = fileChooser.getSelectedFile();
+		            String filePath = selectedFile.getAbsolutePath();
 
-					SwingUtilities.invokeLater(() -> {
-						MTMBImporter importer = new MTMBImporter();
-						importer.importExcelFile(filePath, tableName).thenRun(() -> {
-							System.out.println("Import completed successfully!");
-						});
-					});
-				}
-			}
+		            SwingUtilities.invokeLater(() -> {
+		                MTMBImporter importer = new MTMBImporter();
+		                // Call importExcelFile with additional parameters including the current frame
+		                // and this instance
+		                importer.importExcelFile(filePath, tableName, frame, this).thenRun(() -> {
+		                    System.out.println("Import completed successfully!");
+		                    // Call the refresh method after successful import
+		                    refresh(); 
+		                }).exceptionally(ex -> {
+		                    ex.printStackTrace();
+		                    return null;
+		                });
+		            });
+		        }
+		    }
 		});
+
 
 		// Only add importButton to RecordPanel, not to the frame
 		RecordPanel.add(importButton);
@@ -293,11 +302,14 @@ public class MTMBIncomingPage {
 	}
 
 	private void fetchData() {
-		try {
-			Connection connection = conn.getConnection();
-			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery("SELECT * FROM 2024mtmbrecord");
+		try (Connection connection = conn.getConnection();
+				Statement statement = connection.createStatement();
+				ResultSet resultSet = statement.executeQuery("SELECT * FROM 2024mtmbrecord")) {
 
+			// Clear existing table data
+			model.setRowCount(0);
+
+			// Populate table with data from the database
 			while (resultSet.next()) {
 				int id = resultSet.getInt("CTRLNo");
 				String type = resultSet.getString("Type");
@@ -308,11 +320,7 @@ public class MTMBIncomingPage {
 
 				model.addRow(new Object[] { id, type, plateno, color, date, status });
 			}
-
-			resultSet.close();
-			statement.close();
-			connection.close();
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
