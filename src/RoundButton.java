@@ -14,10 +14,14 @@ public class RoundButton extends JButton {
     private int cornerRadius;
     private Color backgroundColor;
 
+
     public RoundButton(String text, int cornerRadius, Color backgroundColor) {
         super(text);
         this.cornerRadius = cornerRadius;
-        this.backgroundColor = backgroundColor;
+        this.backgroundColor = backgroundColor; 
+ 
+        
+        
         setContentAreaFilled(false); // Make the button transparent
         setFocusPainted(false); // Remove the focus border
 
