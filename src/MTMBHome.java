@@ -101,7 +101,7 @@ public class MTMBHome {
 		NavigationPanel.add(Home);
 
 		JLabel lblNewLabel_5 = new JLabel("");
-		lblNewLabel_5.setBounds(52, 269, 42, 42);
+		lblNewLabel_5.setBounds(52, 269, 42, 42); 
 		lblNewLabel_5.setIcon(new ImageIcon("Resources\\Icons\\IHome.png"));
 		NavigationPanel.add(lblNewLabel_5);
 
