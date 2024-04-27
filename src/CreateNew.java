@@ -51,10 +51,13 @@ public class CreateNew {
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle("Muntinlupa Traffic Management Buereau Impounding System");
+		frame.setLocationRelativeTo(null);
 		frame.setBounds(100, 100, 454, 250);
 		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.getContentPane().setLayout(null);
+		frame.setLocationRelativeTo(null);
+		frame.setUndecorated(true); 
 		
 		//Fonts
 		Font PrimaryFont = FontLoader.getFont("Primary", 30);
@@ -106,7 +109,5 @@ public class CreateNew {
 		btnCreate.setBounds(296, 175, 112, 40);
 		btnCreate.setFont(ExtraBold2);
 		panel.add(btnCreate);
-		frame.setLocationRelativeTo(null);
-		frame.setUndecorated(true); 
 	}
 }

@@ -38,7 +38,7 @@ public class MTMBLogin extends JFrame {
 					frame.setVisible(true);
 					frame.setLocationRelativeTo(null);
 					frame.setResizable(false);
-					frame.setTitle("MTMB"); // sets a title of frame
+					frame.setTitle("Muntinlupa Traffic Management Buereau Impounding System");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -127,8 +127,7 @@ public class MTMBLogin extends JFrame {
 		UsernameTxtField = new RoundTxtField(40, new Color(0x0B1E33), 3);
 		UsernameTxtField.setForeground(new Color(11, 30, 51));
 		UsernameTxtField.setBackground(new Color(232, 248, 255));
-		UsernameTxtField.setText("     Username");
-		UsernameTxtField.setBounds(0, 37, 334, 62);
+		UsernameTxtField.setBounds(0, 36, 334, 62);
 		UsernameTxtField.setFont(SecondaryFont);
 		InputPanel.add(UsernameTxtField);
 		UsernameTxtField.setColumns(10);
@@ -136,7 +135,7 @@ public class MTMBLogin extends JFrame {
 		PasswordTxtField = new RoundPasswordField(40, new Color(0x0B1E33), 3);
 		PasswordTxtField.setForeground(new Color(11, 30, 51));
 		PasswordTxtField.setBackground(new Color(232, 248, 255));
-		PasswordTxtField.setBounds(0, 127, 334, 62);
+		PasswordTxtField.setBounds(0, 134, 334, 62);
 		PasswordTxtField.setFont(SecondaryFont);
 		InputPanel.add(PasswordTxtField);
 		PasswordTxtField.setColumns(10);
@@ -185,13 +184,13 @@ public class MTMBLogin extends JFrame {
 		});
 
 		LoginToggleButton.setForeground(new Color(255, 255, 255));
-		LoginToggleButton.setBounds(0, 214, 334, 62);
+		LoginToggleButton.setBounds(0, 207, 334, 62);
 		LoginToggleButton.setFont(PrimaryEBFont);
 		InputPanel.add(LoginToggleButton);
 
 		JLabel lblNewLabel_1_1 = new JLabel("Are you a member?");
 		lblNewLabel_1_1.setFont(SemiB15);
-		lblNewLabel_1_1.setBounds(44, 287, 179, 14);
+		lblNewLabel_1_1.setBounds(42, 295, 179, 14);
 		InputPanel.add(lblNewLabel_1_1);
 
 		JButton btnNewButton_1 = new RoundButton("Sign Up", 10, Color.decode("#FFFFFF"));
@@ -206,8 +205,18 @@ public class MTMBLogin extends JFrame {
 		btnNewButton_1.setForeground(new Color(11, 30, 51));
 		btnNewButton_1.setBackground(new Color(255, 255, 255));
 		btnNewButton_1.setFont(Bold);
-		btnNewButton_1.setBounds(180, 284, 131, 21);
+		btnNewButton_1.setBounds(180, 292, 131, 21);
 		InputPanel.add(btnNewButton_1);
+		
+		JLabel txtEnterPassword = new JLabel("Enter Password");
+		txtEnterPassword.setFont(Bold);
+		txtEnterPassword.setBounds(0, 109, 252, 14);
+		InputPanel.add(txtEnterPassword);
+		
+		JLabel txtEnterUsername = new JLabel("Enter Username");
+		txtEnterUsername.setFont(Bold);
+		txtEnterUsername.setBounds(0, 11, 252, 14);
+		InputPanel.add(txtEnterUsername);
 
 	}
 }

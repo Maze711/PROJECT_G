@@ -26,7 +26,7 @@ public class MTMBHome {
 					window.frame.setVisible(true);
 					window.frame.setLocationRelativeTo(null);
 					window.frame.setResizable(false);
-					window.frame.setTitle("MTMB");
+					window.frame.setTitle("Muntinlupa Traffic Management Buereau Impounding System");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

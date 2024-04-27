@@ -41,7 +41,7 @@ public class MTMBRecordPage {
 					window.frame.setVisible(true);
 					window.frame.setLocationRelativeTo(null);
 					window.frame.setResizable(false);
-                    window.frame.setTitle("Muntinlupa Traffic Management Buereau Impounding System");
+                    window.frame.setTitle("Muntinlupa Traffic Management Bureau Impounding System");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
