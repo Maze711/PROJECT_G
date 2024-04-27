@@ -164,7 +164,7 @@ public class MTMBLogin extends JFrame {
 								String storedPassword = resultSet.getString("password");
 								if (enteredPassword.equals(storedPassword)) {
 									System.out.println("Login successful.");
-									MTMBHome home = new MTMBHome();
+									MTMBMainFrame home = new MTMBMainFrame();
 									home.showWindowHome();
 									dispose();
 								} else {

@@ -30,7 +30,7 @@ public class MTMBImporter {
 	private static final Set<String> EXPECTED_COLUMN_NAMES = new HashSet<>(
 			Arrays.asList("CtrlNo", "Type", "PlateNo", "Color", "Date", "Status"));
 
-	public CompletableFuture<Void> importExcelFile(String filePath, String tableName, JFrame parentFrame,
+	public CompletableFuture<Void> importExcelFile(String filePath, String tableName, MTMBIncomingPage mtmbIncomingPage,
 			MTMBIncomingPage incomingPage) {
 		return CompletableFuture.runAsync(() -> {
 			try {
@@ -39,7 +39,7 @@ public class MTMBImporter {
 					// Log Excel file content
 					logExcelFileContent(filePath);
 					// Proceed with reading and importing
-					readExcelXlsx(filePath, tableName, parentFrame, incomingPage);
+					readExcelXlsx(filePath, tableName, mtmbIncomingPage, incomingPage);
 				} else {
 					throw new IllegalArgumentException("Unsupported file type");
 				}
@@ -81,9 +81,9 @@ public class MTMBImporter {
 		}
 	}
 
-	private void showImportSuccessMessage(JFrame parentFrame, MTMBIncomingPage incomingPage) {
+	private void showImportSuccessMessage(MTMBIncomingPage mtmbIncomingPage, MTMBIncomingPage incomingPage) {
 		try {
-			JOptionPane.showMessageDialog(parentFrame, "Import Successful", "Success", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(mtmbIncomingPage, "Import Successful", "Success", JOptionPane.INFORMATION_MESSAGE);
 			// Refresh the MTMBIncomingPage
 			incomingPage.refresh();
 		} catch (Exception e) {
@@ -92,7 +92,7 @@ public class MTMBImporter {
 		}
 	}
 
-	private void readExcelXlsx(String filePath, String tableName, JFrame parentFrame, MTMBIncomingPage incomingPage)
+	private void readExcelXlsx(String filePath, String tableName, MTMBIncomingPage mtmbIncomingPage, MTMBIncomingPage incomingPage)
 			throws IOException, InvalidFormatException {
 		Connection connection = null;
 		PreparedStatement statement = null;
@@ -165,7 +165,7 @@ public class MTMBImporter {
 			}
 
 			// Import completed successfully, show message and refresh page
-			showImportSuccessMessage(parentFrame, incomingPage);
+			showImportSuccessMessage(mtmbIncomingPage, incomingPage);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			// Handle SQL exception
