@@ -133,17 +133,28 @@ public class MTMBReleasingPage extends JPanel {
 		// Add the table to the scroll pane
 		scrollPane.setViewportView(table);
 
-		JButton filterButton = new RoundButton("Release", 16, Color.decode("#FFBA42"));
-		filterButton.setBounds(395, 81, 105, 38);
+		JButton releaseButton = new RoundButton("Release", 16, Color.decode("#FFBA42"));
+		releaseButton.setBounds(395, 81, 105, 38);
+		releaseButton.setFont(Bold2);
+		releaseButton.setForeground(new Color(11, 30, 51));
+		recordPanel.add(releaseButton);
+		
+		releaseButton.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		    	MTMBReleasePop releasePop = new MTMBReleasePop();
+		    	releasePop.showFrame();
+
+		    }
+		});
+		
+		JButton filterButton = new RoundButton("Filter", 16, Color.decode("#D3D9E0"));
+		filterButton.setBounds(510, 81, 90, 38);
 		filterButton.setFont(Bold2);
 		filterButton.setForeground(new Color(11, 30, 51));
 		recordPanel.add(filterButton);
 		
-		JButton addButton = new RoundButton("Filter", 16, Color.decode("#D3D9E0"));
-		addButton.setBounds(510, 81, 90, 38);
-		addButton.setFont(Bold2);
-		addButton.setForeground(new Color(11, 30, 51));
-		recordPanel.add(addButton);
+		
 
 		JButton importButton = new RoundButton("Export", 16, Color.decode("#00537A"));
 		importButton.setBounds(609, 81, 117, 38);

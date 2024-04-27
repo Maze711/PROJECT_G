@@ -19,7 +19,7 @@ public class MTMBMainFrame {
 					window.frame.setVisible(true);
 					window.frame.setLocationRelativeTo(null);
 					window.frame.setResizable(false);
-					window.frame.setTitle("MTMB");
+					window.frame.setTitle("Muntinlupa Traffice Management Bureau Impound Inventory System");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -32,10 +32,19 @@ public class MTMBMainFrame {
 		JFrame home = frame;
 		home.show();
 		home.setLocationRelativeTo(null);
+		home.setTitle("Muntinlupa Traffice Management Bureau");
 	}
 
 	public MTMBMainFrame() {
 		initialize();
+
+		// Add a window listener to the frame
+		frame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowOpened(WindowEvent e) {
+				cardLayout.show(cards, "MTMBHome"); // Show MTMBHome when the frame is opened
+			}
+		});
 	}
 
 	private void initialize() {
@@ -83,6 +92,16 @@ public class MTMBMainFrame {
 		navigationPanel.add(homeLabel);
 		homeLabel.addMouseListener(new MouseAdapter() {
 			@Override
+			public void mouseEntered(MouseEvent e) {
+				homeLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				homeLabel.setCursor(Cursor.getDefaultCursor());
+			}
+
+			@Override
 			public void mouseClicked(MouseEvent e) {
 				cardLayout.show(cards, "MTMBHome");
 			}
@@ -105,6 +124,16 @@ public class MTMBMainFrame {
 		navigationPanel.add(recordsLabel);
 		recordsLabel.addMouseListener(new MouseAdapter() {
 			@Override
+			public void mouseEntered(MouseEvent e) {
+				recordsLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				recordsLabel.setCursor(Cursor.getDefaultCursor());
+			}
+
+			@Override
 			public void mouseClicked(MouseEvent e) {
 				cardLayout.show(cards, "MTMBRecordPage");
 			}
@@ -122,6 +151,16 @@ public class MTMBMainFrame {
 		navigationPanel.add(incomingLabel);
 		incomingLabel.addMouseListener(new MouseAdapter() {
 			@Override
+			public void mouseEntered(MouseEvent e) {
+				incomingLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				incomingLabel.setCursor(Cursor.getDefaultCursor());
+			}
+
+			@Override
 			public void mouseClicked(MouseEvent e) {
 				cardLayout.show(cards, "MTMBIncomingPage");
 			}
@@ -138,6 +177,16 @@ public class MTMBMainFrame {
 		releasingLabel.setFont(SemiB);
 		navigationPanel.add(releasingLabel);
 		releasingLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				releasingLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				releasingLabel.setCursor(Cursor.getDefaultCursor());
+			}
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				cardLayout.show(cards, "MTMBReleasingPage");
@@ -166,18 +215,9 @@ public class MTMBMainFrame {
 		cards.setBounds(292, 0, 736, 768);
 		frame.getContentPane().add(cards);
 
-		// Add mouse listeners to labels
-		homeLabel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				cardLayout.show(cards, "MTMBHome"); // Show MTMBHome when homeLabel is clicked
-			}
-		});
-
 		MTMBHome homePanel = new MTMBHome();
+		homePanel.setVisible(true); // Ensure the panel is visible
 		cards.add(homePanel, "MTMBHome");
-
-		cardLayout.show(cards, "MTMBHome"); // Show MTMBHome by default
 
 		MTMBRecordPage recordPanel = new MTMBRecordPage();
 		cards.add(recordPanel, "MTMBRecordPage");
@@ -187,6 +227,17 @@ public class MTMBMainFrame {
 
 		releasePanel = new MTMBReleasingPage();
 		cards.add(releasePanel, "MTMBReleasingPage");
+
+		// Set MTMBHome as default panel after adding all panels
+		cardLayout.show(cards, "MTMBHome");
+
+		// Add mouse listeners to labels
+		homeLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				cardLayout.show(cards, "MTMBHome"); // Show MTMBHome when homeLabel is clicked
+			}
+		});
 
 		recordsLabel.addMouseListener(new MouseAdapter() {
 			@Override

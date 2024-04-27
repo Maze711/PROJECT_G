@@ -112,11 +112,20 @@ public class MTMBIncomingPage extends JPanel {
 		filterButton.setForeground(new Color(11, 30, 51));
 		recordPanel.add(filterButton);
 
-		JButton addButton = new RoundButton("ADD +", 16, Color.decode("#FFBA42"));;
+		JButton addButton = new RoundButton("ADD +", 16, Color.decode("#FFBA42"));
 		addButton.setBounds(510, 81, 90, 38);
 		addButton.setFont(Bold2);
 		addButton.setForeground(new Color(11, 30, 51));
 		recordPanel.add(addButton);
+
+		AddVehicle addVehicleWindow = new AddVehicle();
+		addButton.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        // Show the AddVehicle window
+		        addVehicleWindow.showFrame();
+		    }
+		});
 
 		JButton importButton = new RoundButton("Import", 16, Color.decode("#00537A"));;
 		importButton.setBounds(609, 81, 117, 38);

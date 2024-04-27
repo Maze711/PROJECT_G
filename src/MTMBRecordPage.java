@@ -2,82 +2,74 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.BorderFactory;
-import javax.swing.border.Border;
 
 public class MTMBRecordPage extends JPanel {
 
-	public MTMBRecordPage() {
-		initialize();
-	}
+    public MTMBRecordPage() {
+        initialize();
+    }
 
-	private void initialize() {
-		setBounds(292, 0, 736, 768);
-		setLayout(null);
+    private void initialize() {
+        // Define your custom font styles
+        Font PrimaryFont = FontLoader.getFont("Primary", 64);
+        Font SecondaryFont = FontLoader.getFont("Secondary", 24);
+        Font PrimaryEBFont = FontLoader.getFont("PrimaryEB32", 24);
+        Font SemiB = FontLoader.getFont("SemiB", 24);
+        Font PrimaryEB48Font = FontLoader.getFont("PrimaryEB32", 48);
+        Font Bold = FontLoader.getFont("Bold", 28);
+        Font Bold2 = FontLoader.getFont("Bold", 16);
 
-		JPanel RecordPanel = new JPanel();
-		RecordPanel.setBounds(0, 0, 736, 768);
-		setLayout(null);
+        setBounds(292, 0, 736, 768);
+        setLayout(null);
 
-		// Header
-		JPanel InsideRecordPanel = new JPanel();
-		InsideRecordPanel.setBounds(0, 0, 736, 70);
-		InsideRecordPanel.setLayout(null);
+        JPanel RecordPanel = new JPanel();
+        RecordPanel.setBounds(0, 0, 736, 768);
+        setLayout(null);
 
-		JLabel Record = new JLabel("Records");
-		Record.setBounds(30, 23, 189, 36);
-		Record.setFont(new Font("Arial", Font.BOLD, 24));
-		InsideRecordPanel.add(Record);
-		RecordPanel.setLayout(null);
+        // Header
+        JPanel InsideRecordPanel = new JPanel();
+        InsideRecordPanel.setBounds(0, 0, 736, 70);
+        InsideRecordPanel.setLayout(null);
 
-		JLabel lblYear = new JLabel("Year");
-		lblYear.setFont(new Font("Arial", Font.BOLD, 28));
-		lblYear.setBounds(55, 50, 61, 33);
-		RecordPanel.add(lblYear);
+        JLabel Record = new JLabel("Records");
+        Record.setBounds(30, 23, 189, 36);
+        Record.setFont(SecondaryFont);
+        InsideRecordPanel.add(Record);
+        RecordPanel.setLayout(null);
 
+        JLabel lblYear = new JLabel("Year");
+        lblYear.setFont(SemiB);
+        lblYear.setBounds(56, 65, 61, 33);
+        RecordPanel.add(lblYear);
+
+        add(RecordPanel);
+
+        // Create New Button
+        RoundButton btnNewButton = new RoundButton("Create New +", 8, Color.decode("#FFBA42"));
+        btnNewButton.setFont(Bold2);
+        btnNewButton.setBounds(530, 11, 171, 38);
+        RecordPanel.add(btnNewButton);
+
+        // Action listener for the Create New button
+        btnNewButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Create and display the CreateNew window
+                CreateNew createNewWindow = new CreateNew();
+                createNewWindow.frame.setVisible(true);
+            }
+        });
+        
+		
+		RoundTxtField SearchBar = new RoundTxtField(18, new Color(132, 132, 132), 1);
+		SearchBar.setText("Search");
+		SearchBar.setBounds(10, 11, 292, 38);
+		SearchBar.setFont(Bold2);
+		RecordPanel.add(SearchBar);
+		SearchBar.setColumns(10);
+		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 82, 716, 675);
+		scrollPane.setBounds(10, 100, 716, 657);
 		RecordPanel.add(scrollPane);
-
-		add(RecordPanel);
-
-		RoundButton btnNewButton = new RoundButton("Create New +", 8, Color.decode("#FFBA42"));
-		btnNewButton.setFont(new Font("Arial", Font.BOLD, 16));
-		btnNewButton.setBounds(555, 11, 140, 27);
-		RecordPanel.add(btnNewButton);
-
-		btnNewButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JPanel viewport = (JPanel) scrollPane.getViewport().getView();
-				if (viewport == null || viewport.getComponentCount() == 0) {
-					viewport = new JPanel();
-					viewport.setLayout(new GridLayout(0, 2));
-					scrollPane.setViewportView(viewport);
-				}
-
-				JPanel container = new JPanel();
-				container.setPreferredSize(new Dimension(301, 214));
-				container.setLayout(new BorderLayout());
-
-				// Add a border to the panel
-				Border border = BorderFactory.createEmptyBorder(10, 10, 10, 10);
-				container.setBorder(border);
-
-				JLabel label = new JLabel("Component " + (viewport.getComponentCount() + 1));
-				container.add(label, BorderLayout.CENTER);
-				viewport.add(container);
-
-				viewport.revalidate();
-				viewport.repaint();
-
-				SwingUtilities.invokeLater(() -> {
-					JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
-					verticalScrollBar.setValue(verticalScrollBar.getMaximum());
-				});
-
-				scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-			}
-		});
-	}
+    }
 }
