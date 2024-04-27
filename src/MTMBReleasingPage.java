@@ -39,169 +39,57 @@ import javax.swing.table.JTableHeader;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 
-public class MTMBReleasingPage {
+public class MTMBReleasingPage extends JPanel {
 
 	private JFrame frame;
 	DefaultTableModel model;
 	private JTable table;
 	private JTextField SearchBar;
 	private final MTMBDBCONN conn = new MTMBDBCONN();
-	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MTMBReleasingPage window = new MTMBReleasingPage();
-					window.frame.setVisible(true);
-					window.frame.setLocationRelativeTo(null);
-					window.frame.setResizable(false);
-                    window.frame.setTitle("MTMB");
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-	
-	public void showReleasing() {
-		// TODO Auto-generated method stub
-			JFrame Release = frame;
-			Release.show();
-			Release.setLocationRelativeTo(null);
-	}
 
-	/**
-	 * Create the application.
-	 */
+
 	public MTMBReleasingPage() {
 		initialize();
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
+	
 	private void initialize() {
-		
-		frame = new JFrame();
-		frame.setBounds(100, 100, 1044, 808);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		
+
 //		CUSTOM FONT FAMILY STYLE
 		Font PrimaryFont = FontLoader.getFont("Primary", 64);
 		Font SecondaryFont = FontLoader.getFont("Secondary", 24);
 		Font PrimaryEBFont = FontLoader.getFont("PrimaryEB32", 24);
 		Font SemiB = FontLoader.getFont("SemiB", 24);
-		Font SemiB16 = FontLoader.getFont("SemiB", 16);
 		Font PrimaryEB48Font = FontLoader.getFont("PrimaryEB32", 48);
-		
+		Font Bold = FontLoader.getFont("Bold", 28);
+		Font Bold2 = FontLoader.getFont("Bold", 16);
+		setLayout(null);
+
 		JPanel panel = new JPanel();
-		panel.setBounds(0, 0, 1028, 768);
-		frame.getContentPane().add(panel);
+		panel.setBounds(-41, 0, 1069, 768);
 		panel.setLayout(null);
-		
-		// Navigation Panel
-		JPanel NavigationPanel = new JPanel();
-		NavigationPanel.setBounds(0, 0, 293, 768);
-		panel.add(NavigationPanel);
-		NavigationPanel.setLayout(null);
-		
-		JLabel lblNewLabel_4 = new JLabel("");
-		lblNewLabel_4.setBounds(269, 327, 24, 42);
-		lblNewLabel_4.setIcon(new ImageIcon("Resources\\Icons\\Slider.png"));
-		NavigationPanel.add(lblNewLabel_4);
+		add(panel);
 
-		JLabel MTMBLogo = new JLabel("");
-		MTMBLogo.setBounds(52, 38, 132, 147);
-		MTMBLogo.setIcon(new ImageIcon("Resources\\Images\\MTMBLogo.png"));
-		NavigationPanel.add(MTMBLogo);
+		JPanel recordPanel = new JPanel();
+		recordPanel.setBounds(42, 11, 736, 768);
+		panel.add(recordPanel);
+		recordPanel.setLayout(null);
 
-		JLabel Dashboard = new JLabel("Dashboard");
-		Dashboard.setBounds(52, 220, 141, 36);
-		Dashboard.setForeground(new Color(255, 255, 255));
-		Dashboard.setFont(SemiB);
-		NavigationPanel.add(Dashboard);
-
-		JLabel Home = new JLabel("Home");
-		Home.setBounds(100, 277, 74, 36);
-		Home.setForeground(Color.WHITE);
-		Home.setFont(SemiB);
-		NavigationPanel.add(Home);
-
-		JLabel lblNewLabel_5 = new JLabel("");
-		lblNewLabel_5.setBounds(52, 269, 42, 42);
-		lblNewLabel_5.setIcon(new ImageIcon("Resources\\Icons\\IHome.png"));
-		NavigationPanel.add(lblNewLabel_5);
-
-		JLabel lblNewLabel_5_1 = new JLabel("");
-		lblNewLabel_5_1.setBounds(52, 327, 42, 42);
-		lblNewLabel_5_1.setIcon(new ImageIcon("Resources\\Icons\\Database.png"));
-		NavigationPanel.add(lblNewLabel_5_1);
-
-		JLabel Records = new JLabel("Records");
-		Records.setBounds(100, 333, 102, 36);
-		Records.setForeground(Color.WHITE);
-		Records.setFont(SemiB);
-		NavigationPanel.add(Records);
-
-		JLabel lblNewLabel_5_1_1 = new JLabel("");
-		lblNewLabel_5_1_1.setBounds(52, 386, 42, 42);
-		lblNewLabel_5_1_1.setIcon(new ImageIcon("Resources\\Icons\\Download.png"));
-		NavigationPanel.add(lblNewLabel_5_1_1);
-
-		JLabel Incoming = new JLabel("Incoming");
-		Incoming.setBounds(100, 386, 120, 36);
-		Incoming.setForeground(Color.WHITE);
-		Incoming.setFont(SemiB);
-		NavigationPanel.add(Incoming);
-
-		JLabel lblNewLabel_5_1_1_1 = new JLabel("");
-		lblNewLabel_5_1_1_1.setBounds(52, 445, 42, 42);
-		lblNewLabel_5_1_1_1.setIcon(new ImageIcon("Resources\\Icons\\Upload.png"));
-		NavigationPanel.add(lblNewLabel_5_1_1_1);
-
-		JLabel Releasing = new JLabel("Releasing");
-		Releasing.setBounds(100, 445, 120, 36);
-		Releasing.setForeground(Color.WHITE);
-		Releasing.setFont(SemiB);
-		NavigationPanel.add(Releasing);
-
-		JLabel lblNewLabel_5_1_1_1_1 = new JLabel("");
-		lblNewLabel_5_1_1_1_1.setBounds(52, 543, 42, 42);
-		lblNewLabel_5_1_1_1_1.setIcon(new ImageIcon("Resources\\Icons\\Logout.png"));
-		NavigationPanel.add(lblNewLabel_5_1_1_1_1);
-
-		JLabel Logout = new JLabel("Logout");
-		Logout.setBounds(100, 543, 120, 36);
-		Logout.setForeground(Color.WHITE);
-		Logout.setFont(SemiB);
-		NavigationPanel.add(Logout);
-
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setBounds(0, 0, 293, 768);
-		lblNewLabel.setIcon(new ImageIcon("Resources\\Images\\BG info.png"));
-		NavigationPanel.add(lblNewLabel);
-		
-		JPanel RecordPanel = new JPanel();
-		RecordPanel.setBounds(292, 0, 736, 768);
-		panel.add(RecordPanel);
-		RecordPanel.setLayout(null);
-		
 		// Header
-		JPanel InsideRecordPanel = new JPanel();
-		InsideRecordPanel.setBounds(0, 0, 736, 70);
-		RecordPanel.add(InsideRecordPanel);
-		InsideRecordPanel.setLayout(null);
-		
-		JLabel Record = new JLabel("Releasing");
-		Record.setBounds(30, 23, 189, 36);
-		Record.setFont(PrimaryEBFont);
-		InsideRecordPanel.add(Record);
-		
+		JPanel insideRecordPanel = new JPanel();
+		insideRecordPanel.setBounds(0, 0, 736, 70);
+		recordPanel.add(insideRecordPanel);
+		insideRecordPanel.setLayout(null);
+
+		JLabel recordLabel = new JLabel("Release");
+		recordLabel.setBounds(30, 23, 189, 36);
+		recordLabel.setFont(PrimaryEBFont);
+		insideRecordPanel.add(recordLabel);
+
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 130, 716, 627);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		RecordPanel.add(scrollPane);
+		recordPanel.add(scrollPane);
 
 		table = new JTable();
 		table.setShowHorizontalLines(false);
@@ -210,7 +98,7 @@ public class MTMBReleasingPage {
 		model.setColumnIdentifiers(column);
 		table.setModel(model);
 		table.setEnabled(false);
-		table.setFont(SemiB16);
+		table.setFont(Bold2);
 		table.setForeground(new Color(101, 95, 95));
 		table.getTableHeader().setReorderingAllowed(false);
 
@@ -235,7 +123,7 @@ public class MTMBReleasingPage {
 		scrollPane.addMouseWheelListener(mouseWheelListener);
 
 		JTableHeader header = table.getTableHeader();
-		header.setFont(SemiB16);
+		header.setFont(Bold2);
 		header.setBackground(new Color(11, 30, 51));
 		header.setForeground(Color.WHITE);
 		table.setRowHeight(50);
@@ -245,33 +133,34 @@ public class MTMBReleasingPage {
 		// Add the table to the scroll pane
 		scrollPane.setViewportView(table);
 
-		JButton FilterButton = new RoundButton("Filter", 16, Color.decode("#D3D9E0"));
-		FilterButton.setBounds(519, 81, 80, 38);
-		FilterButton.setFont(SemiB16);
-		FilterButton.setForeground(new Color(11, 30, 51));
-		RecordPanel.add(FilterButton);
-
-		JButton AddButton = new RoundButton("Release", 16, Color.decode("#FFBA42"));
-		AddButton.setBounds(404, 81, 105, 38);
-		AddButton.setFont(SemiB16);
-		RecordPanel.add(AddButton);
+		JButton filterButton = new RoundButton("Release", 16, Color.decode("#FFBA42"));
+		filterButton.setBounds(395, 81, 105, 38);
+		filterButton.setFont(Bold2);
+		filterButton.setForeground(new Color(11, 30, 51));
+		recordPanel.add(filterButton);
+		
+		JButton addButton = new RoundButton("Filter", 16, Color.decode("#D3D9E0"));
+		addButton.setBounds(510, 81, 90, 38);
+		addButton.setFont(Bold2);
+		addButton.setForeground(new Color(11, 30, 51));
+		recordPanel.add(addButton);
 
 		JButton importButton = new RoundButton("Export", 16, Color.decode("#00537A"));
 		importButton.setBounds(609, 81, 117, 38);
-		importButton.setFont(SemiB16);
+		importButton.setFont(Bold2);
 		importButton.setForeground(Color.WHITE);
-		RecordPanel.add(importButton);
-		
+		recordPanel.add(importButton);
+
 		SearchBar = new RoundTxtField(18, new Color(132, 132, 132), 1);
 		SearchBar.setText("Search");
 		SearchBar.setBounds(10, 81, 292, 38);
-		SearchBar.setFont(SemiB16);
-		RecordPanel.add(SearchBar);
+		SearchBar.setFont(Bold2);
+		recordPanel.add(SearchBar);
 		SearchBar.setColumns(10);
-		
+
 		fetchData();
 	}
-	
+
 	private void fetchData() {
 		try {
 			Connection connection = conn.getConnection();
@@ -297,5 +186,4 @@ public class MTMBReleasingPage {
 		}
 	}
 
-	
 }
