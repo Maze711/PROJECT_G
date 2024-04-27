@@ -1,4 +1,4 @@
-import java.awt.Color;
+ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -31,10 +31,14 @@ public class MTMBReleasePop {
 			}
 		});
 	}
+		
 
-	/**
-	 * Create the application.
-	 */
+
+	public void showFrame() {
+		frame.setVisible(true);
+		
+	}
+	
 	public MTMBReleasePop() {
 		initialize();
 	}
@@ -77,7 +81,6 @@ public class MTMBReleasePop {
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				MTMBReleasingPage release = new MTMBReleasingPage();
-				release.showReleasing();
 				dispose();
 			}
 		});
