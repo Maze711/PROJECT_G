@@ -40,6 +40,7 @@ public class MTMBSignup extends JFrame {
 					window.frame.setVisible(true);
 					window.setResizable(false);
 					window.setLocationRelativeTo(null);
+					window.frame.setTitle("Muntinlupa Traffice Management Bureau Impound Inventory System");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -70,7 +71,7 @@ public class MTMBSignup extends JFrame {
 		frame.setBounds(100, 100, 1066, 705);
 		frame.getContentPane().setLayout(null);
 		frame.setLocationRelativeTo(null);
-		frame.setTitle("Muntinlupa Traffic Management Bureau");
+		frame.setTitle("Muntinlupa Traffic Management Bureau Impounding System");
 		frame.setResizable(false);
 		frame.setBackground(new Color(238, 246, 255));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -107,6 +108,27 @@ public class MTMBSignup extends JFrame {
 		InfoRoundedCorner panel_3 = new InfoRoundedCorner(130);
 		panel_3.setBounds(-439, 21, 654, 700);
 		frame.getContentPane().add(panel_3);
+		
+		ImageIcon closedEyeIcon = new ImageIcon("Resources\\Icons\\Closed Eyes.png");
+		ImageIcon eyeIcon = new ImageIcon("Resources\\Icons\\Eye.png");
+		JButton btnNewButton_2 = new JButton(closedEyeIcon);
+		btnNewButton_2.setBounds(350, 324, closedEyeIcon.getIconWidth(), closedEyeIcon.getIconHeight());
+		btnNewButton_2.setBorderPainted(false);
+		btnNewButton_2.setContentAreaFilled(false); 
+		panel_1.add(btnNewButton_2);
+		
+		btnNewButton_2.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        if (btnNewButton_2.getIcon().equals(closedEyeIcon)) {
+		            btnNewButton_2.setIcon(eyeIcon);
+		            ((JPasswordField) password).setEchoChar((char) 0);
+		            ((JPasswordField) verifyPassword).setEchoChar((char) 0);
+		        } else {
+		            btnNewButton_2.setIcon(closedEyeIcon);
+		            ((JPasswordField) password).setEchoChar('•');
+		            ((JPasswordField) verifyPassword).setEchoChar('•');
+		        }
+  }});
 
 		JLabel lblNewLabel = new JLabel("Add User");
 		lblNewLabel.setFont(PrimaryFont);
@@ -116,7 +138,6 @@ public class MTMBSignup extends JFrame {
 
 		txtUsername = new RoundTxtField(40, new Color(0x0B1E33), 3);
 		txtUsername.setFont(SecondaryFont);
-		txtUsername.setText("   Username");
 		txtUsername.setBounds(60, 222, 334, 62);
 		txtUsername.setBackground(new Color(232, 248, 255));
 		txtUsername.setForeground(new Color(11, 30, 51));
@@ -128,8 +149,7 @@ public class MTMBSignup extends JFrame {
 		password.setBackground(new Color(232, 248, 255));
 		password.setFont(SecondaryFont);
 		password.setColumns(10);
-		password.setBounds(60, 300, 334, 62);
-		password.setText("Verify Password");
+		password.setBounds(60, 315, 334, 62);
 		panel_1.add(password);
 
 		verifyPassword = new RoundPasswordField(40, new Color(0x0B1E33), 3);
@@ -137,8 +157,7 @@ public class MTMBSignup extends JFrame {
 		verifyPassword.setBackground(new Color(232, 248, 255));
 		verifyPassword.setFont(SecondaryFont);
 		verifyPassword.setColumns(10);
-		verifyPassword.setBounds(60, 376, 334, 62);
-		verifyPassword.setText("Verify Password");
+		verifyPassword.setBounds(60, 413, 334, 62);
 		panel_1.add(verifyPassword);
 
 		JButton btnNewButton = new RoundButton("Add User", 60, Color.decode("#0B1E33"));
@@ -181,12 +200,12 @@ public class MTMBSignup extends JFrame {
 		btnNewButton.setForeground(new Color(255, 255, 255));
 		btnNewButton.setBackground(new Color(11, 30, 51));
 		btnNewButton.setFont(PrimaryEBFont);
-		btnNewButton.setBounds(60, 454, 334, 62);
+		btnNewButton.setBounds(60, 486, 334, 62);
 		panel_1.add(btnNewButton);
 
 		JLabel lblNewLabel_1 = new JLabel("Already a member?");
 		lblNewLabel_1.setFont(SemiB);
-		lblNewLabel_1.setBounds(126, 512, 199, 45);
+		lblNewLabel_1.setBounds(128, 559, 199, 45);
 		panel_1.add(lblNewLabel_1);
 
 		JButton btnNewButton_1 = new RoundButton("Login", 10, Color.decode("#FFFFFF"));
@@ -196,14 +215,29 @@ public class MTMBSignup extends JFrame {
 				MTMBLogin log = new MTMBLogin();
 				log.setLocationRelativeTo(null);
 				log.setVisible(true);
-
+				frame.dispose();
 			}
 		});
 		btnNewButton_1.setForeground(new Color(11, 30, 51));
 		btnNewButton_1.setBackground(new Color(255, 255, 255));
 		btnNewButton_1.setFont(Bold);
-		btnNewButton_1.setBounds(260, 524, 100, 21);
+		btnNewButton_1.setBounds(265, 571, 100, 21);
 		panel_1.add(btnNewButton_1);
+		
+		JLabel txtVerifyPass = new JLabel("Verify Password");
+		txtVerifyPass.setBounds(60, 385, 226, 14);
+		txtVerifyPass.setFont(Bold);
+		panel_1.add(txtVerifyPass);
+		
+		JLabel txtEnterPassword = new JLabel("Enter Password");
+		txtEnterPassword.setBounds(60, 295, 237, 14);
+		txtEnterPassword.setFont(Bold);
+		panel_1.add(txtEnterPassword);
+		
+		JLabel txtEnterUsername = new JLabel("Enter Username");
+		txtEnterUsername.setFont(Bold);
+		txtEnterUsername.setBounds(60, 197, 199, 14);
+		panel_1.add(txtEnterUsername);
 
 		JLabel lblNewLabel_2 = new JLabel("Impound");
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);

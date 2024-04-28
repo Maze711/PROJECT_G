@@ -13,48 +13,51 @@ import java.awt.event.ActionEvent;
 
 public class CreateNew {
 
-	private JFrame frame;
-	private JTextField txtInputYear;
+    public JFrame frame; // Change visibility to public
+    private JTextField txtInputYear;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					CreateNew window = new CreateNew();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-	
-	public void CreateNew(){
-		JFrame create = frame;
-		create.show();
-	}
-	/**
-	 * Create the application.
-	 */
-	public CreateNew() {
-		initialize();
-	}
+    /**
+     * Launch the application.
+     */
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    CreateNew window = new CreateNew();
+                    window.frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frame = new JFrame();
+    public void showFrame() { // Add a method to show the frame
+        frame.setVisible(true);
+    }
+
+    /**
+     * Create the application.
+     */
+    public CreateNew() {
+        initialize();
+    }
+
+    /**
+     * Initialize the contents of the frame.
+     */
+    private void initialize() {
+    	frame = new JFrame();
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle("Muntinlupa Traffic Management Buereau Impounding System");
+		frame.setLocationRelativeTo(null);
 		frame.setBounds(100, 100, 454, 250);
 		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.getContentPane().setLayout(null);
+		frame.setLocationRelativeTo(null);
+		frame.setUndecorated(true); 
 		
 		//Fonts
 		Font PrimaryFont = FontLoader.getFont("Primary", 30);
@@ -86,7 +89,6 @@ public class CreateNew {
 		btnCancel.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 		    	MTMBRecordPage window = new MTMBRecordPage();
-		    	window.showRecords();
 		        frame.dispose();
 		    }
 		});
@@ -106,7 +108,5 @@ public class CreateNew {
 		btnCreate.setBounds(296, 175, 112, 40);
 		btnCreate.setFont(ExtraBold2);
 		panel.add(btnCreate);
-		frame.setLocationRelativeTo(null);
-		frame.setUndecorated(true); 
-	}
+    }
 }
