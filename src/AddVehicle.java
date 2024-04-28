@@ -20,6 +20,7 @@ public class AddVehicle {
 	private JTextField colorField; // Changed variable name to avoid conflict
 	private JTextField Plate;
 	private JTextField Status;
+	private final MTMBDBCONN conn = new MTMBDBCONN();
 
 	/**
 	 * Launch the application.
@@ -121,6 +122,26 @@ public class AddVehicle {
 		RoundButton btnCreate = new RoundButton("Create",8,Color.decode("#0B1E33"));
 		btnCreate.setForeground(new Color(255, 255, 255));
 		btnCreate.setFont(ExtraBold2);
+		btnCreate.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e) {
+	            String controlNo = CtrlNo.getText();
+	            String date = Date.getText(); // Assuming Date is the name of your date field
+	            String vehicleType = Type.getText(); // Assuming Type is the name of your vehicle type field
+	            String color = colorField.getText();
+	            String plateNo = Plate.getText();
+	            String status = Status.getText();
+	            
+	            AddVehicleBE backend = new AddVehicleBE(); // Create an instance of AddVehicleBE
+	            boolean success = backend.saveData(controlNo, date, vehicleType, color, plateNo, status);
+	            if (success) {
+	                // Optionally, show success message or perform other actions
+	                System.out.println("Data saved successfully.");
+	            } else {
+	                // Optionally, show error message or perform other actions
+	                System.out.println("Failed to save data.");
+	            }
+	        }
+	    });
 		btnCreate.setBounds(328, 372, 112, 40);
 		panel.add(btnCreate);
 		

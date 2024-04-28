@@ -47,12 +47,14 @@ public class MTMBReleasingPage extends JPanel {
 	private JTextField SearchBar;
 	private final MTMBDBCONN conn = new MTMBDBCONN();
 
+	public void refresh() {
+		fetchData(); // Update table data from the database
+	}
 
 	public MTMBReleasingPage() {
 		initialize();
 	}
 
-	
 	private void initialize() {
 
 //		CUSTOM FONT FAMILY STYLE
@@ -138,23 +140,21 @@ public class MTMBReleasingPage extends JPanel {
 		releaseButton.setFont(Bold2);
 		releaseButton.setForeground(new Color(11, 30, 51));
 		recordPanel.add(releaseButton);
-		
-		releaseButton.addActionListener(new ActionListener() {
-		    @Override
-		    public void actionPerformed(ActionEvent e) {
-		    	MTMBReleasePop releasePop = new MTMBReleasePop();
-		    	releasePop.showFrame();
 
-		    }
+		releaseButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MTMBReleasePop releasePop = new MTMBReleasePop();
+				releasePop.showFrame();
+
+			}
 		});
-		
+
 		JButton filterButton = new RoundButton("Filter", 16, Color.decode("#D3D9E0"));
 		filterButton.setBounds(510, 81, 90, 38);
 		filterButton.setFont(Bold2);
 		filterButton.setForeground(new Color(11, 30, 51));
 		recordPanel.add(filterButton);
-		
-		
 
 		JButton importButton = new RoundButton("Export", 16, Color.decode("#00537A"));
 		importButton.setBounds(609, 81, 117, 38);
@@ -177,7 +177,8 @@ public class MTMBReleasingPage extends JPanel {
 			Connection connection = conn.getConnection();
 			Statement statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery("SELECT * FROM 2024mtmbrecord");
-
+			// Clear existing table data
+			model.setRowCount(0);
 			while (resultSet.next()) {
 				int id = resultSet.getInt("CTRLNo");
 				String type = resultSet.getString("Type");
