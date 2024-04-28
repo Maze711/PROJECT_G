@@ -1,6 +1,8 @@
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -101,11 +103,15 @@ public class ViewRecords {
 		table.setBounds(18, 131, 651, 340);
 		panel.add(table);
 		
-		RoundButton btnCancel = new RoundButton("Export", 8, Color.decode("#F14A54"));
-		btnCancel.setText("Cancel");
+		RoundButton btnCancel = new RoundButton("Cancel", 8, Color.decode("#F14A54"));
 		btnCancel.setForeground(Color.WHITE);
 		btnCancel.setFont(Bold);
 		btnCancel.setBounds(425, 490, 117, 38);
 		panel.add(btnCancel);
+		btnCancel.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        frame.dispose();
+		    }
+		});
 	}
 }
