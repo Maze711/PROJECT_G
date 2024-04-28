@@ -1,21 +1,23 @@
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
 public class FontLoader {
-    private static final String FONTS_DIRECTORY = "Resources/Fonts/";
     private static final Map<String, Font> fontMap = new HashMap<>();
 
     static {
         // Define your font styles here
-        fontMap.put("Primary", loadFont("Poppins-ExtraBold.ttf", 64));
-        fontMap.put("Secondary", loadFont("Poppins-Medium.ttf", 24));
-        fontMap.put("PrimaryEB32", loadFont("Poppins-ExtraBold.ttf", 32));
-        fontMap.put("SemiB", loadFont("Poppins-SemiBold.ttf", 24));
-        fontMap.put("Bold", loadFont("Poppins-Bold.ttf", 42));
-        fontMap.put("Bold16", loadFont("Poppins-Bold.ttf", 16));
-        fontMap.put("ExtraBold", loadFont("Poppins-ExtraBold.ttf", 24));
+        fontMap.put("Primary", loadFont("/Font/Poppins-ExtraBold.ttf", 64));
+        fontMap.put("Secondary", loadFont("/Font/Poppins-Medium.ttf", 24));
+        fontMap.put("PrimaryEB32", loadFont("/Font/Poppins-ExtraBold.ttf", 32));
+        fontMap.put("SemiB", loadFont("/Font/Poppins-SemiBold.ttf", 24));
+        fontMap.put("Bold", loadFont("/Font/Poppins-Bold.ttf", 42));
+        fontMap.put("Bold16", loadFont("/Font/Poppins-Bold.ttf", 16));
+        fontMap.put("ExtraBold", loadFont("/Font/Poppins-ExtraBold.ttf", 24));
         // Add more font styles as needed
     }
 
@@ -29,11 +31,13 @@ public class FontLoader {
         }
     }
 
-    private static Font loadFont(String fontFileName, float fontSize) {
-        try {
-            File fontFile = new File(FONTS_DIRECTORY + fontFileName);
-            return Font.createFont(Font.TRUETYPE_FONT, fontFile);
-        } catch (Exception e) {
+    private static Font loadFont(String fontFilePath, float Fontize) {
+        try (InputStream is = FontLoader.class.getResourceAsStream(fontFilePath)) {
+            if (is == null) {
+                throw new IOException("Font file not found: " + fontFilePath);
+            }
+            return Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(Fontize);
+        } catch (IOException | FontFormatException e) {
             e.printStackTrace();
             return null;
         }

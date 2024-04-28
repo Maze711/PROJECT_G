@@ -53,6 +53,7 @@ public class MTMBMainFrame {
 		frame.setBounds(100, 100, 1044, 808);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setResizable(false);
 
 		// CUSTOM FONT FAMILY STYLE
 		Font PrimaryFont = FontLoader.getFont("Primary", 64);
@@ -74,9 +75,10 @@ public class MTMBMainFrame {
 		panel.add(navigationPanel);
 		navigationPanel.setLayout(null);
 
+		ImageIcon logo = new ImageIcon(MTMBLogin.class.getResource("/Images/MTMBLogo.png"));
 		JLabel MTMBLogo = new JLabel("");
 		MTMBLogo.setBounds(52, 38, 132, 147);
-		MTMBLogo.setIcon(new ImageIcon("Resources\\Images\\MTMBLogo.png"));
+		MTMBLogo.setIcon(logo);
 		navigationPanel.add(MTMBLogo);
 
 		JLabel Dashboard = new JLabel("Dashboard");
@@ -107,14 +109,16 @@ public class MTMBMainFrame {
 			}
 		});
 
+		ImageIcon home = new ImageIcon(MTMBLogin.class.getResource("/Icons/IHome.png"));
 		JLabel lblNewLabel_5 = new JLabel("");
 		lblNewLabel_5.setBounds(52, 269, 42, 42);
-		lblNewLabel_5.setIcon(new ImageIcon("Resources\\Icons\\IHome.png"));
+		lblNewLabel_5.setIcon(home);
 		navigationPanel.add(lblNewLabel_5);
 
+		ImageIcon db = new ImageIcon(MTMBLogin.class.getResource("/Icons/Database.png"));
 		JLabel lblNewLabel_5_1 = new JLabel("");
 		lblNewLabel_5_1.setBounds(52, 327, 42, 42);
-		lblNewLabel_5_1.setIcon(new ImageIcon("Resources\\Icons\\Database.png"));
+		lblNewLabel_5_1.setIcon(db);
 		navigationPanel.add(lblNewLabel_5_1);
 
 		JLabel recordsLabel = new JLabel("Records");
@@ -139,9 +143,10 @@ public class MTMBMainFrame {
 			}
 		});
 
+		ImageIcon download = new ImageIcon(MTMBLogin.class.getResource("/Icons/Download.png"));
 		JLabel lblNewLabel_5_1_1 = new JLabel("");
 		lblNewLabel_5_1_1.setBounds(52, 386, 42, 42);
-		lblNewLabel_5_1_1.setIcon(new ImageIcon("Resources\\Icons\\Download.png"));
+		lblNewLabel_5_1_1.setIcon(download);
 		navigationPanel.add(lblNewLabel_5_1_1);
 
 		JLabel incomingLabel = new JLabel("Incoming");
@@ -166,9 +171,10 @@ public class MTMBMainFrame {
 			}
 		});
 
+		ImageIcon upload = new ImageIcon(MTMBLogin.class.getResource("/Icons/Upload.png"));
 		JLabel lblNewLabel_5_1_1_1 = new JLabel("");
 		lblNewLabel_5_1_1_1.setBounds(52, 445, 42, 42);
-		lblNewLabel_5_1_1_1.setIcon(new ImageIcon("Resources\\Icons\\Upload.png"));
+		lblNewLabel_5_1_1_1.setIcon(upload);
 		navigationPanel.add(lblNewLabel_5_1_1_1);
 
 		JLabel releasingLabel = new JLabel("Releasing");
@@ -193,9 +199,10 @@ public class MTMBMainFrame {
 			}
 		});
 
+		ImageIcon logout = new ImageIcon(MTMBLogin.class.getResource("/Icons/Logout.png"));
 		JLabel lblNewLabel_5_1_1_1_1 = new JLabel("");
 		lblNewLabel_5_1_1_1_1.setBounds(52, 543, 42, 42);
-		lblNewLabel_5_1_1_1_1.setIcon(new ImageIcon("Resources\\Icons\\Logout.png"));
+		lblNewLabel_5_1_1_1_1.setIcon(logout);
 		navigationPanel.add(lblNewLabel_5_1_1_1_1);
 
 		JLabel Logout = new JLabel("Logout");
@@ -204,9 +211,10 @@ public class MTMBMainFrame {
 		Logout.setFont(SemiB);
 		navigationPanel.add(Logout);
 
+		ImageIcon bgInfo = new ImageIcon(MTMBLogin.class.getResource("/Images/BG info.png"));
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setBounds(0, 0, 293, 768);
-		lblNewLabel.setIcon(new ImageIcon("Resources\\Images\\BG info.png"));
+		lblNewLabel.setIcon(bgInfo);
 		navigationPanel.add(lblNewLabel);
 
 		// Cards Panel

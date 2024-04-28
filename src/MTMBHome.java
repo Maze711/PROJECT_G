@@ -40,8 +40,9 @@ public class MTMBHome extends JPanel {
         txtWelcome.setFont(PrimaryEBFont);
         panel_2.add(txtWelcome);
 
+        ImageIcon wave = new ImageIcon(MTMBLogin.class.getResource("/Icons/Waving Hand Emoji.png"));
         JLabel IWelcome = new JLabel("");
-        IWelcome.setIcon(new ImageIcon("Resources\\Icons\\Waving Hand Emoji.png"));
+        IWelcome.setIcon(wave);
         IWelcome.setBounds(228, 25, 32, 32);
         panel_2.add(IWelcome);
 
@@ -60,8 +61,9 @@ public class MTMBHome extends JPanel {
         txtCurrentMnt.setBounds(30, 16, 286, 40);
         panel_3.add(txtCurrentMnt);
 
+        ImageIcon car = new ImageIcon(MTMBLogin.class.getResource("/Icons/Car.png"));
         JLabel ITotal = new JLabel("");
-        ITotal.setIcon(new ImageIcon("Resources\\Icons\\Car.png"));
+        ITotal.setIcon(car);
         ITotal.setBounds(270, 110, 135, 40);
         panel_3.add(ITotal);
 
@@ -97,13 +99,15 @@ public class MTMBHome extends JPanel {
         lblTotalVehicleReleased.setBounds(440, 140, 274, 40);
         panel_3.add(lblTotalVehicleReleased);
 
+        ImageIcon total = new ImageIcon(MTMBLogin.class.getResource("/Images/Total.png"));
         JLabel bgTotal_1 = new JLabel("");
-        bgTotal_1.setIcon(new ImageIcon("Resources\\Images\\Total.png"));
+        bgTotal_1.setIcon(total);
         bgTotal_1.setBounds(30, 67, 393, 125);
         panel_3.add(bgTotal_1);
 
+        ImageIcon total1 = new ImageIcon(MTMBLogin.class.getResource("/Images/Total-1.png"));
         JLabel bgTotal_2 = new JLabel("");
-        bgTotal_2.setIcon(new ImageIcon("Resources\\Images\\Total-1.png"));
+        bgTotal_2.setIcon(total1);
         bgTotal_2.setBounds(436, 67, 270, 125);
         panel_3.add(bgTotal_2);
 

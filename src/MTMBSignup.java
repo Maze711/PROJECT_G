@@ -109,8 +109,8 @@ public class MTMBSignup extends JFrame {
 		panel_3.setBounds(-439, 21, 654, 700);
 		frame.getContentPane().add(panel_3);
 		
-		ImageIcon closedEyeIcon = new ImageIcon("Resources\\Icons\\Closed Eyes.png");
-		ImageIcon eyeIcon = new ImageIcon("Resources\\Icons\\Eye.png");
+		ImageIcon closedEyeIcon = new ImageIcon(MTMBLogin.class.getResource("/Icons/Closed Eyes.png"));
+		ImageIcon eyeIcon = new ImageIcon(MTMBLogin.class.getResource("/Icons/Eye.png"));
 		JButton btnNewButton_2 = new JButton(closedEyeIcon);
 		btnNewButton_2.setBounds(350, 324, closedEyeIcon.getIconWidth(), closedEyeIcon.getIconHeight());
 		btnNewButton_2.setBorderPainted(false);
@@ -261,7 +261,8 @@ public class MTMBSignup extends JFrame {
 		panel_2.add(lblNewLabel_2_2);
 
 		JLabel lblNewLabel_3 = new JLabel("");
-		lblNewLabel_3.setIcon(new ImageIcon("Resources\\Images\\logomain.png"));
+		ImageIcon logoMain = new ImageIcon(MTMBLogin.class.getResource("/Images/logomain.png"));
+		lblNewLabel_3.setIcon(logoMain);
 		lblNewLabel_3.setBounds(259, 108, 200, 200);
 		panel_2.add(lblNewLabel_3);
 
