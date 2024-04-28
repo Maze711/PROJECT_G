@@ -66,10 +66,11 @@ public class MTMBPopUp  {
 		frmMtmb.getContentPane().add(panel);
 		panel.setLayout(null);
 		
+		ImageIcon check = new ImageIcon(MTMBLogin.class.getResource("/Icon/Check.png"));
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setBounds(115, 20, 94, 89);
-		lblNewLabel.setIcon(new ImageIcon("Resources/Icons/Check.png"));
-		//lblNewLabel.setIcon(new ImageIcon("Resources\\Images\\Upload.png"));
+		lblNewLabel.setIcon(check);
+		//lblNewLabel.setIcon(new ImageIcon("Resources/Images/Upload.png"));
 		panel.add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("SUCCESS");

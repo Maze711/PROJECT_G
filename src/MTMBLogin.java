@@ -108,7 +108,8 @@ public class MTMBLogin extends JFrame {
 		InfoFrame.add(MTMBTitle3);
 
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon("Resources\\Images\\logomain.png"));
+		ImageIcon logoMain = new ImageIcon(MTMBLogin.class.getResource("/Images/logomain.png"));
+		lblNewLabel.setIcon(logoMain);
 		lblNewLabel.setBounds(163, 160, 208, 216);
 		InfoFrame.add(lblNewLabel);
 
@@ -127,8 +128,9 @@ public class MTMBLogin extends JFrame {
 		InputPanel.setOpaque(false);
 		InputPanel.setLayout(null);
 		
-		ImageIcon closedEyeIcon = new ImageIcon("Resources\\Icons\\Closed Eyes.png");
-		ImageIcon eyeIcon = new ImageIcon("Resources\\Icons\\Eye.png");
+		ImageIcon closedEyeIcon = new ImageIcon(MTMBLogin.class.getResource("/Icons/Closed Eyes.png"));
+		ImageIcon eyeIcon = new ImageIcon(MTMBLogin.class.getResource("/Icons/Eye.png"));
+
 		JButton btnNewButton = new JButton(closedEyeIcon);
 		btnNewButton.setBounds(285, 143, closedEyeIcon.getIconWidth(), closedEyeIcon.getIconHeight());
 		btnNewButton.setBorderPainted(false);
