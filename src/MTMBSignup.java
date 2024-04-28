@@ -108,6 +108,27 @@ public class MTMBSignup extends JFrame {
 		InfoRoundedCorner panel_3 = new InfoRoundedCorner(130);
 		panel_3.setBounds(-439, 21, 654, 700);
 		frame.getContentPane().add(panel_3);
+		
+		ImageIcon closedEyeIcon = new ImageIcon("Resources\\Icons\\Closed Eyes.png");
+		ImageIcon eyeIcon = new ImageIcon("Resources\\Icons\\Eye.png");
+		JButton btnNewButton_2 = new JButton(closedEyeIcon);
+		btnNewButton_2.setBounds(350, 324, closedEyeIcon.getIconWidth(), closedEyeIcon.getIconHeight());
+		btnNewButton_2.setBorderPainted(false);
+		btnNewButton_2.setContentAreaFilled(false); 
+		panel_1.add(btnNewButton_2);
+		
+		btnNewButton_2.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        if (btnNewButton_2.getIcon().equals(closedEyeIcon)) {
+		            btnNewButton_2.setIcon(eyeIcon);
+		            ((JPasswordField) password).setEchoChar((char) 0);
+		            ((JPasswordField) verifyPassword).setEchoChar((char) 0);
+		        } else {
+		            btnNewButton_2.setIcon(closedEyeIcon);
+		            ((JPasswordField) password).setEchoChar('•');
+		            ((JPasswordField) verifyPassword).setEchoChar('•');
+		        }
+  }});
 
 		JLabel lblNewLabel = new JLabel("Add User");
 		lblNewLabel.setFont(PrimaryFont);

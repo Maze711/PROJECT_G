@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
@@ -125,6 +126,25 @@ public class MTMBLogin extends JFrame {
 		LoginFrame.add(InputPanel, BorderLayout.CENTER);
 		InputPanel.setOpaque(false);
 		InputPanel.setLayout(null);
+		
+		ImageIcon closedEyeIcon = new ImageIcon("Resources\\Icons\\Closed Eyes.png");
+		ImageIcon eyeIcon = new ImageIcon("Resources\\Icons\\Eye.png");
+		JButton btnNewButton = new JButton(closedEyeIcon);
+		btnNewButton.setBounds(285, 143, closedEyeIcon.getIconWidth(), closedEyeIcon.getIconHeight());
+		btnNewButton.setBorderPainted(false);
+		btnNewButton.setContentAreaFilled(false); 
+		InputPanel.add(btnNewButton);
+		
+		btnNewButton.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        if (btnNewButton.getIcon().equals(closedEyeIcon)) {
+		            btnNewButton.setIcon(eyeIcon);
+		            ((JPasswordField) PasswordTxtField).setEchoChar((char) 0);
+		        } else {
+		            btnNewButton.setIcon(closedEyeIcon);
+		            ((JPasswordField) PasswordTxtField).setEchoChar('•');
+		        }
+  }});
 
 		UsernameTxtField = new RoundTxtField(40, new Color(0x0B1E33), 3);
 		UsernameTxtField.setForeground(new Color(11, 30, 51));
@@ -141,7 +161,7 @@ public class MTMBLogin extends JFrame {
 		PasswordTxtField.setFont(SecondaryFont);
 		InputPanel.add(PasswordTxtField);
 		PasswordTxtField.setColumns(10);
-
+		
 		RoundButton LoginToggleButton = new RoundButton("Login", 60, Color.decode("#0B1E33"));
 		LoginToggleButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
