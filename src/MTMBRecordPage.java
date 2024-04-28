@@ -24,6 +24,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.JButton;
+import javax.swing.JTextField;
 
 public class MTMBRecordPage {
 
@@ -40,7 +41,7 @@ public class MTMBRecordPage {
 					window.frame.setVisible(true);
 					window.frame.setLocationRelativeTo(null);
 					window.frame.setResizable(false);
-                    window.frame.setTitle("MTMB");
+                    window.frame.setTitle("Muntinlupa Traffic Management Buereau Impounding System");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -55,6 +56,12 @@ public class MTMBRecordPage {
 		initialize();
 	}
 
+	public void showRecords() {
+			JFrame Records = frame;
+			Records.show();
+			Records.setLocationRelativeTo(null);
+		
+	}
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -71,6 +78,9 @@ public class MTMBRecordPage {
 		Font PrimaryEBFont = FontLoader.getFont("PrimaryEB32", 24);
 		Font SemiB = FontLoader.getFont("SemiB", 24);
 		Font PrimaryEB48Font = FontLoader.getFont("PrimaryEB32", 48);
+		Font Bold = FontLoader.getFont("Bold", 28);
+		Font Bold2 = FontLoader.getFont("Bold", 16);
+		
 		
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 0, 1028, 768);
@@ -170,18 +180,24 @@ public class MTMBRecordPage {
 		RecordPanel.add(InsideRecordPanel);
 		InsideRecordPanel.setLayout(null);
 		
-		JLabel Record = new JLabel("RECORD");
+		JLabel Record = new JLabel("Records");
 		Record.setBounds(30, 23, 189, 36);
 		Record.setFont(PrimaryEBFont);
 		InsideRecordPanel.add(Record);
 		
-		JButton btnNewButton = new JButton("New button");
-        btnNewButton.setBounds(562, 81, 164, 35);
+		RoundButton btnNewButton = new RoundButton("Create New",8,Color.decode("#FFBA42"));
+		btnNewButton.setFont(Bold2);
+        btnNewButton.setBounds(587, 81, 139, 35);
         RecordPanel.add(btnNewButton);
 
         JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setBounds(10, 125, 716, 632);
+        scrollPane.setBounds(10, 127, 716, 630);
         RecordPanel.add(scrollPane);
+        
+        JLabel lblYear = new JLabel("Year");
+        lblYear.setFont(Bold);
+        lblYear.setBounds(30, 81, 189, 36);
+        RecordPanel.add(lblYear);
 
         btnNewButton.addActionListener(new ActionListener() {
             @Override
