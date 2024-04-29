@@ -82,6 +82,8 @@ public class CreateNew {
 		txtInputYear.setHorizontalAlignment(SwingConstants.LEFT);
 		txtInputYear.setText("     Input Year");
 		txtInputYear.setBounds(46, 110, 362, 46);
+		txtInputYear.setFont(ExtraBold2);
+
 		panel.add(txtInputYear);
 		txtInputYear.setColumns(10);
 		

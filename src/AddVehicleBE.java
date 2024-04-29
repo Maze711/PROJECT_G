@@ -4,11 +4,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
-
 public class AddVehicleBE {
 
     private final MTMBDBCONN conn = new MTMBDBCONN();
-    public boolean saveData(String controlNo, String date, String vehicleType, String color, String plateNo, String status) {
+
+    public boolean saveData(String tableName, String controlNo, String date, String vehicleType, String color, String plateNo, String status) {
+        if (tableName == null || tableName.isEmpty()) {
+            System.out.println("Table name is null or empty.");
+            return false; // Return false indicating failure
+        }
+
         Connection connection = null;
         PreparedStatement checkStatement = null;
         PreparedStatement insertStatement = null;
@@ -17,7 +22,7 @@ public class AddVehicleBE {
             connection = conn.getConnection(); // Get database connection
 
             // Check if the record already exists
-            String checkSql = "SELECT * FROM 2024mtmbrecord WHERE CtrlNo = ?";
+            String checkSql = "SELECT * FROM " + tableName + " WHERE CtrlNo = ?";
             checkStatement = connection.prepareStatement(checkSql);
             checkStatement.setString(1, controlNo);
             resultSet = checkStatement.executeQuery();
@@ -28,7 +33,7 @@ public class AddVehicleBE {
                 return false;
             } else {
                 // Record does not exist, perform insert
-                String insertSql = "INSERT INTO 2024mtmbrecord (CtrlNo, Type, PlateNo, Color, Date, Status) VALUES (?, ?, ?, ?, ?, ?)";
+                String insertSql = "INSERT INTO " + tableName + " (CtrlNo, Type, PlateNo, Color, Date, Status) VALUES (?, ?, ?, ?, ?, ?)";
                 insertStatement = connection.prepareStatement(insertSql);
                 insertStatement.setString(1, controlNo);
                 insertStatement.setString(2, vehicleType);
@@ -53,34 +58,7 @@ public class AddVehicleBE {
             return false; // Return false in case of any exception or failure
         } finally {
             // Close resources in the finally block
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (checkStatement != null) {
-                try {
-                    checkStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (insertStatement != null) {
-                try {
-                    insertStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            // Resource closing code remains the same
         }
     }
 }

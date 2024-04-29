@@ -121,7 +121,7 @@ public class MTMBHome extends JPanel {
         int count = 0;
         try (Connection connection = conn.getConnection();
              Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) AS count FROM 2024mtmbrecord WHERE Status = 'Impounded'")) {
+             ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) AS count FROM april WHERE Status = 'Impounded'")) {
             if (resultSet.next()) {
                 count = resultSet.getInt("count");
             }
@@ -135,7 +135,7 @@ public class MTMBHome extends JPanel {
         int count = 0;
         try (Connection connection = conn.getConnection();
              Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) AS count FROM 2024mtmbrecord WHERE Status = 'Released'")) {
+             ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) AS count FROM april WHERE Status = 'Released'")) {
             if (resultSet.next()) {
                 count = resultSet.getInt("count");
             }

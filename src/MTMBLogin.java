@@ -127,26 +127,27 @@ public class MTMBLogin extends JFrame {
 		LoginFrame.add(InputPanel, BorderLayout.CENTER);
 		InputPanel.setOpaque(false);
 		InputPanel.setLayout(null);
-		
+
 		ImageIcon closedEyeIcon = new ImageIcon(MTMBLogin.class.getResource("/Icons/Closed Eyes.png"));
 		ImageIcon eyeIcon = new ImageIcon(MTMBLogin.class.getResource("/Icons/Eye.png"));
 
 		JButton btnNewButton = new JButton(closedEyeIcon);
 		btnNewButton.setBounds(285, 143, closedEyeIcon.getIconWidth(), closedEyeIcon.getIconHeight());
 		btnNewButton.setBorderPainted(false);
-		btnNewButton.setContentAreaFilled(false); 
+		btnNewButton.setContentAreaFilled(false);
 		InputPanel.add(btnNewButton);
-		
+
 		btnNewButton.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		        if (btnNewButton.getIcon().equals(closedEyeIcon)) {
-		            btnNewButton.setIcon(eyeIcon);
-		            ((JPasswordField) PasswordTxtField).setEchoChar((char) 0);
-		        } else {
-		            btnNewButton.setIcon(closedEyeIcon);
-		            ((JPasswordField) PasswordTxtField).setEchoChar('•');
-		        }
-  }});
+			public void actionPerformed(ActionEvent e) {
+				if (btnNewButton.getIcon().equals(closedEyeIcon)) {
+					btnNewButton.setIcon(eyeIcon);
+					((JPasswordField) PasswordTxtField).setEchoChar((char) 0);
+				} else {
+					btnNewButton.setIcon(closedEyeIcon);
+					((JPasswordField) PasswordTxtField).setEchoChar('•');
+				}
+			}
+		});
 
 		UsernameTxtField = new RoundTxtField(40, new Color(0x0B1E33), 3);
 		UsernameTxtField.setForeground(new Color(11, 30, 51));
@@ -163,7 +164,7 @@ public class MTMBLogin extends JFrame {
 		PasswordTxtField.setFont(SecondaryFont);
 		InputPanel.add(PasswordTxtField);
 		PasswordTxtField.setColumns(10);
-		
+
 		RoundButton LoginToggleButton = new RoundButton("Login", 60, Color.decode("#0B1E33"));
 		LoginToggleButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -231,12 +232,12 @@ public class MTMBLogin extends JFrame {
 		btnNewButton_1.setFont(Bold);
 		btnNewButton_1.setBounds(180, 292, 131, 21);
 		InputPanel.add(btnNewButton_1);
-		
+
 		JLabel txtEnterPassword = new JLabel("Enter Password");
 		txtEnterPassword.setFont(Bold);
 		txtEnterPassword.setBounds(0, 109, 252, 14);
 		InputPanel.add(txtEnterPassword);
-		
+
 		JLabel txtEnterUsername = new JLabel("Enter Username");
 		txtEnterUsername.setFont(Bold);
 		txtEnterUsername.setBounds(0, 11, 252, 14);

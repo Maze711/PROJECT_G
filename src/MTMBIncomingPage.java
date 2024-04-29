@@ -10,6 +10,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.Cursor;
 
 public class MTMBIncomingPage extends JPanel {
 
@@ -17,6 +18,8 @@ public class MTMBIncomingPage extends JPanel {
 	private JTable table;
 	private JTextField searchBar;
 	private final MTMBDBCONN conn = new MTMBDBCONN();
+	private JButton searchTableButton;
+	private String tableName;
 
 	public void refresh() {
 		fetchData(); // Update table data from the database
@@ -59,6 +62,48 @@ public class MTMBIncomingPage extends JPanel {
 		recordLabel.setFont(PrimaryEBFont);
 		insideRecordPanel.add(recordLabel);
 
+		// Create search table text field
+		RoundTxtField searchTable = new RoundTxtField(18, new Color(132, 132, 132), 1);
+		searchTable.setText("Search Table");
+		searchTable.setFont(Bold2);
+		searchTable.setColumns(10);
+		searchTable.setBounds(220, 370, 292, 38);
+		recordPanel.add(searchTable);
+		searchTable.setColumns(10);
+		
+		JLabel errorMessage = new JLabel("Table doesn't exist, try again");
+		errorMessage.setForeground(Color.RED); // Set color to red
+		errorMessage.setFont(Bold2); // Set font
+		errorMessage.setBounds(220, 410, 292, 20); // Set bounds
+		errorMessage.setVisible(false); // Initially hide the error message
+		recordPanel.add(errorMessage); // Add the error message label to the panel
+
+		searchTable.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        tableName = searchTable.getText().trim(); // Update the class field
+		        if (!tableName.isEmpty()) {
+		            errorMessage.setVisible(false); // Hide error message initially
+		            if (tableExists(tableName)) {
+		                fetchData(tableName);
+		                // You can remove or comment out the line below to keep the searchTable visible
+		                 searchTable.setVisible(false); // Hide the search field after searching for a table name
+		            } else {
+		                errorMessage.setVisible(true); // Show error message if table doesn't exist
+		            }
+		        }
+		    }
+		});
+
+		
+		searchTable.addMouseListener(new MouseAdapter() {
+		    @Override
+		    public void mouseClicked(MouseEvent e) {
+		        searchTable.setText(""); // Clear the search field text when clicked
+		        errorMessage.setVisible(false); // Hide error message when clicked
+		    }
+		});
+		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 130, 716, 627);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -106,7 +151,8 @@ public class MTMBIncomingPage extends JPanel {
 		// Add the table to the scroll pane
 		scrollPane.setViewportView(table);
 
-		JButton filterButton = new RoundButton("Filter", 16, Color.decode("#D3D9E0"));;
+		JButton filterButton = new RoundButton("Filter", 16, Color.decode("#D3D9E0"));
+		;
 		filterButton.setBounds(420, 81, 80, 38);
 		filterButton.setFont(Bold2);
 		filterButton.setForeground(new Color(11, 30, 51));
@@ -117,17 +163,24 @@ public class MTMBIncomingPage extends JPanel {
 		addButton.setFont(Bold2);
 		addButton.setForeground(new Color(11, 30, 51));
 		recordPanel.add(addButton);
-
-		AddVehicle addVehicleWindow = new AddVehicle();
+		
 		addButton.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
-		        // Show the AddVehicle window
-		        addVehicleWindow.showFrame();
+		        String searchedTableName = searchTable.getText().trim();
+		        if (!searchedTableName.isEmpty()) {
+		            // No need to hide the search field here
+		            fetchData(searchedTableName);
+		            // Pass the searched table name to the AddVehicle constructor
+		            AddVehicle addVehicleWindow = new AddVehicle(searchedTableName);
+		            addVehicleWindow.showFrame();
+		        }
 		    }
 		});
 
-		JButton importButton = new RoundButton("Import", 16, Color.decode("#00537A"));;
+
+		JButton importButton = new RoundButton("Import", 16, Color.decode("#00537A"));
+		;
 		importButton.setBounds(609, 81, 117, 38);
 		importButton.setFont(Bold2);
 		importButton.setForeground(Color.WHITE);
@@ -177,6 +230,7 @@ public class MTMBIncomingPage extends JPanel {
 		searchBar.setColumns(10);
 
 		fetchData();
+
 	}
 
 	private void setLayout(Object object) {
@@ -184,10 +238,11 @@ public class MTMBIncomingPage extends JPanel {
 
 	}
 
-	private void fetchData() {
+	// Fetch data from the specified table name
+	private void fetchData(String tableName) {
 		try (Connection connection = conn.getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT * FROM 2024mtmbrecord")) {
+				ResultSet resultSet = statement.executeQuery("SELECT * FROM " + tableName)) {
 
 			// Clear existing table data
 			model.setRowCount(0);
@@ -206,5 +261,25 @@ public class MTMBIncomingPage extends JPanel {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	// Fetch data from the default table
+	private void fetchData() {
+		// For the initial fetch, you might want to fetch data from a default table or
+		// display an empty table.
+		// Since the behavior isn't explicitly specified, you can adjust this method as
+		// needed.
+	}
+	
+	private boolean tableExists(String tableName) {
+	    try (Connection connection = conn.getConnection();
+	         Statement statement = connection.createStatement();
+	         ResultSet resultSet = statement.executeQuery("SHOW TABLES LIKE '" + tableName + "'")) {
+
+	        return resultSet.next(); // If resultSet.next() returns true, it means the table exists
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false; // In case of any exception, return false
+	    }
 	}
 }
