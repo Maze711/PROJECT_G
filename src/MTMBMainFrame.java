@@ -10,7 +10,9 @@ public class MTMBMainFrame {
 	private CardLayout cardLayout;
 	private MTMBIncomingPage incomingPanel;
 	private MTMBReleasingPage releasePanel;
-
+	private JLabel sliderLabel;
+	private JPanel panel;
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -60,9 +62,12 @@ public class MTMBMainFrame {
 		Font SecondaryFont = FontLoader.getFont("Secondary", 24);
 		Font PrimaryEBFont = FontLoader.getFont("PrimaryEB32", 24);
 		Font SemiB = FontLoader.getFont("SemiB", 16);
+		Font SemiB22 = FontLoader.getFont("SemiB", 22);
 		Font Bold = FontLoader.getFont("Bold", 42);
 		Font Bold16 = FontLoader.getFont("Bold16", 16);
 		Font PrimaryEB48Font = FontLoader.getFont("PrimaryEB32", 48);
+		
+		ImageIcon sliderImg = new ImageIcon(MTMBLogin.class.getResource("/Icons/Slider.png"));
 
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 0, 1028, 768);
@@ -76,21 +81,27 @@ public class MTMBMainFrame {
 		navigationPanel.setLayout(null);
 
 		ImageIcon logo = new ImageIcon(MTMBLogin.class.getResource("/Images/MTMBLogo.png"));
+		
+		sliderLabel = new JLabel("");
+		sliderLabel.setBounds(264, 267, 79, 58);
+		navigationPanel.add(sliderLabel);
+		sliderLabel.setIcon(sliderImg);
+		
 		JLabel MTMBLogo = new JLabel("");
 		MTMBLogo.setBounds(52, 38, 132, 147);
 		MTMBLogo.setIcon(logo);
 		navigationPanel.add(MTMBLogo);
-
+		
 		JLabel Dashboard = new JLabel("Dashboard");
 		Dashboard.setBounds(52, 220, 141, 36);
 		Dashboard.setForeground(new Color(255, 255, 255));
-		Dashboard.setFont(SemiB);
+		Dashboard.setFont(SemiB22);
 		navigationPanel.add(Dashboard);
 
 		JLabel homeLabel = new JLabel("Home");
 		homeLabel.setBounds(100, 277, 74, 36);
 		homeLabel.setForeground(Color.WHITE);
-		homeLabel.setFont(SemiB);
+		homeLabel.setFont(SemiB22);
 		navigationPanel.add(homeLabel);
 		homeLabel.addMouseListener(new MouseAdapter() {
 			@Override
@@ -117,14 +128,14 @@ public class MTMBMainFrame {
 
 		ImageIcon db = new ImageIcon(MTMBLogin.class.getResource("/Icons/Database.png"));
 		JLabel lblNewLabel_5_1 = new JLabel("");
-		lblNewLabel_5_1.setBounds(52, 327, 42, 42);
+		lblNewLabel_5_1.setBounds(52, 335, 42, 42);
 		lblNewLabel_5_1.setIcon(db);
 		navigationPanel.add(lblNewLabel_5_1);
 
 		JLabel recordsLabel = new JLabel("Records");
-		recordsLabel.setBounds(100, 333, 102, 36);
+		recordsLabel.setBounds(100, 341, 102, 36);
 		recordsLabel.setForeground(Color.WHITE);
-		recordsLabel.setFont(SemiB);
+		recordsLabel.setFont(SemiB22);
 		navigationPanel.add(recordsLabel);
 		recordsLabel.addMouseListener(new MouseAdapter() {
 			@Override
@@ -145,14 +156,14 @@ public class MTMBMainFrame {
 
 		ImageIcon download = new ImageIcon(MTMBLogin.class.getResource("/Icons/Download.png"));
 		JLabel lblNewLabel_5_1_1 = new JLabel("");
-		lblNewLabel_5_1_1.setBounds(52, 386, 42, 42);
+		lblNewLabel_5_1_1.setBounds(52, 395, 42, 42);
 		lblNewLabel_5_1_1.setIcon(download);
 		navigationPanel.add(lblNewLabel_5_1_1);
 
 		JLabel incomingLabel = new JLabel("Incoming");
-		incomingLabel.setBounds(100, 386, 120, 36);
+		incomingLabel.setBounds(100, 401, 120, 36);
 		incomingLabel.setForeground(Color.WHITE);
-		incomingLabel.setFont(SemiB);
+		incomingLabel.setFont(SemiB22);
 		navigationPanel.add(incomingLabel);
 		incomingLabel.addMouseListener(new MouseAdapter() {
 			@Override
@@ -173,14 +184,14 @@ public class MTMBMainFrame {
 
 		ImageIcon upload = new ImageIcon(MTMBLogin.class.getResource("/Icons/Upload.png"));
 		JLabel lblNewLabel_5_1_1_1 = new JLabel("");
-		lblNewLabel_5_1_1_1.setBounds(52, 445, 42, 42);
+		lblNewLabel_5_1_1_1.setBounds(52, 458, 42, 42);
 		lblNewLabel_5_1_1_1.setIcon(upload);
 		navigationPanel.add(lblNewLabel_5_1_1_1);
 
 		JLabel releasingLabel = new JLabel("Releasing");
-		releasingLabel.setBounds(100, 445, 120, 36);
+		releasingLabel.setBounds(100, 464, 120, 36);
 		releasingLabel.setForeground(Color.WHITE);
-		releasingLabel.setFont(SemiB);
+		releasingLabel.setFont(SemiB22);
 		navigationPanel.add(releasingLabel);
 		releasingLabel.addMouseListener(new MouseAdapter() {
 			@Override
@@ -201,14 +212,14 @@ public class MTMBMainFrame {
 
 		ImageIcon logout = new ImageIcon(MTMBLogin.class.getResource("/Icons/Logout.png"));
 		JLabel lblNewLabel_5_1_1_1_1 = new JLabel("");
-		lblNewLabel_5_1_1_1_1.setBounds(52, 543, 42, 42);
+		lblNewLabel_5_1_1_1_1.setBounds(52, 560, 42, 42);
 		lblNewLabel_5_1_1_1_1.setIcon(logout);
 		navigationPanel.add(lblNewLabel_5_1_1_1_1);
 
 		JLabel Logout = new JLabel("Logout");
-		Logout.setBounds(100, 543, 120, 36);
+		Logout.setBounds(100, 566, 120, 36);
 		Logout.setForeground(Color.WHITE);
-		Logout.setFont(SemiB);
+		Logout.setFont(SemiB22);
 		navigationPanel.add(Logout);
 
 		ImageIcon bgInfo = new ImageIcon(MTMBLogin.class.getResource("/Images/BG info.png"));
@@ -216,6 +227,7 @@ public class MTMBMainFrame {
 		lblNewLabel.setBounds(0, 0, 293, 768);
 		lblNewLabel.setIcon(bgInfo);
 		navigationPanel.add(lblNewLabel);
+
 
 		// Cards Panel
 		cardLayout = new CardLayout();
@@ -244,6 +256,8 @@ public class MTMBMainFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				cardLayout.show(cards, "MTMBHome"); // Show MTMBHome when homeLabel is clicked
+	            animateSlider(homeLabel.getY());
+
 			}
 		});
 
@@ -252,6 +266,8 @@ public class MTMBMainFrame {
 			public void mouseClicked(MouseEvent e) {
 				cardLayout.show(cards, "MTMBRecordPage");
 				recordPanel.setVisible(true); // Show the MTMBRecordPage panel
+	            animateSlider(recordsLabel.getY());
+
 			}
 		});
 
@@ -259,6 +275,8 @@ public class MTMBMainFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				cardLayout.show(cards, "MTMBIncomingPage");
+	            animateSlider(incomingLabel.getY());
+
 			}
 		});
 
@@ -266,7 +284,34 @@ public class MTMBMainFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				cardLayout.show(cards, "MTMBReleasingPage");
+	            animateSlider(releasingLabel.getY());
+
 			}
 		});
+	}
+	private void animateSlider(final int yPos) {
+	    final int targetY = yPos;
+	    final int startX = sliderLabel.getY();
+
+	    Thread animationThread = new Thread(() -> {
+	        int sliderY = startX;
+	        int step = (targetY < startX) ? -1 : 1; // Determine the direction of movement
+
+	        // Slide until very close to the target position
+	        while (Math.abs(sliderY - targetY) > 1) { // Adjust threshold as needed
+	            sliderY += step;
+	            sliderLabel.setBounds(264, sliderY, 79, 58);
+	            try {
+	                Thread.sleep(5);
+	            } catch (InterruptedException e) {
+	                e.printStackTrace();
+	            }
+	        }
+
+	        // Set the slider to the exact position of the label
+	        sliderLabel.setBounds(264, targetY, 79, 58);
+	    });
+
+	    animationThread.start();
 	}
 }
