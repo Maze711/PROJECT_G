@@ -1,14 +1,12 @@
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class MTMBDBCONN {
-    // Declaring SQL classes
     private Connection conn = null;
-
-    // DB Credentials
     private final String jdbcDriver = "com.mysql.cj.jdbc.Driver";
     private final String DBname = "mtmbrecord";
     private final String DBurl = "jdbc:mysql://localhost:3306/" + DBname;
@@ -16,7 +14,7 @@ public class MTMBDBCONN {
     private final String dbPassword = "";
 
     public MTMBDBCONN() {
-        connect(); // Automatically establish the connection upon instantiation
+        connect();
     }
 
     private void connect() {
@@ -43,4 +41,22 @@ public class MTMBDBCONN {
         }
         return conn;
     }
+    
+    public String[] getTableNames() {
+        ArrayList<String> tableNames = new ArrayList<>();
+        try {
+            DatabaseMetaData metaData = conn.getMetaData();
+            String[] tableTypes = {"TABLE"}; // Specify the table type
+            String catalog = conn.getCatalog(); // Get the current database name
+            ResultSet resultSet = metaData.getTables(catalog, null, "%", tableTypes);
+            while (resultSet.next()) {
+                String tableName = resultSet.getString("TABLE_NAME");
+                tableNames.add(tableName);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tableNames.toArray(new String[0]);
+    }
+
 }
