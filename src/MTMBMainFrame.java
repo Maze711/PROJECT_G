@@ -220,6 +220,24 @@ public class MTMBMainFrame {
 		Logout.setBounds(100, 566, 120, 36);
 		Logout.setForeground(Color.WHITE);
 		Logout.setFont(SemiB22);
+		Logout.addMouseListener(new MouseAdapter() {
+		    @Override
+		    public void mouseClicked(MouseEvent e) {
+		        // Clear all data and close the window
+		        clearDataAndCloseWindow();
+		    }
+
+		    @Override
+		    public void mouseEntered(MouseEvent e) {
+		        Logout.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		    }
+
+		    @Override
+		    public void mouseExited(MouseEvent e) {
+		        Logout.setCursor(Cursor.getDefaultCursor());
+		    }
+		});
+
 		navigationPanel.add(Logout);
 
 		ImageIcon bgInfo = new ImageIcon(MTMBLogin.class.getResource("/Images/BG info.png"));
@@ -313,5 +331,13 @@ public class MTMBMainFrame {
 	    });
 
 	    animationThread.start();
+	}
+	
+	private void clearDataAndCloseWindow() {
+	    // Clear any data or session information
+	    // For example, you can reset any session variables or clear user data
+
+	    // Close the window
+	    frame.dispose();
 	}
 }
