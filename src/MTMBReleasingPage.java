@@ -6,11 +6,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.swing.JFrame;
@@ -41,11 +44,15 @@ import javax.swing.JFileChooser;
 
 public class MTMBReleasingPage extends JPanel {
 
-	private JFrame frame;
+	private JTextField SearchBar;
 	DefaultTableModel model;
 	private JTable table;
-	private JTextField SearchBar;
+	private JTextField searchBar;
 	private final MTMBDBCONN conn = new MTMBDBCONN();
+	private JButton searchTableButton;
+	private String tableName;
+	private JButton importButton;
+
 
 	public void refresh() {
 		fetchData(); // Update table data from the database
@@ -87,6 +94,51 @@ public class MTMBReleasingPage extends JPanel {
 		recordLabel.setBounds(30, 23, 189, 36);
 		recordLabel.setFont(PrimaryEBFont);
 		insideRecordPanel.add(recordLabel);
+
+		// Create search table text field
+		RoundTxtField searchTable = new RoundTxtField(18, new Color(132, 132, 132), 1);
+		searchTable.setText("Search Table");
+		searchTable.setFont(Bold2);
+		searchTable.setColumns(10);
+		searchTable.setBounds(220, 370, 292, 38);
+		recordPanel.add(searchTable);
+		searchTable.setColumns(10);
+
+		JLabel errorMessage = new JLabel("Table doesn't exist, try again");
+		errorMessage.setForeground(Color.RED); // Set color to red
+		errorMessage.setFont(Bold2); // Set font
+		errorMessage.setBounds(220, 410, 292, 20); // Set bounds
+		errorMessage.setVisible(false); // Initially hide the error message
+		recordPanel.add(errorMessage); // Add the error message label to the panel
+
+		searchTable.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        tableName = searchTable.getText().trim(); // Update the class field
+		        if (!tableName.isEmpty()) {
+		            errorMessage.setVisible(false); // Hide error message initially
+		            if (tableExists(tableName)) {
+		                fetchData(tableName);
+		                // You can remove or comment out the line below to keep the searchTable visible
+		                searchTable.setVisible(false); // Hide the search field after searching for a table name
+		            } else {
+		                errorMessage.setVisible(true); // Show error message if table doesn't exist
+		            }
+		        }
+		        
+		        // Update the export button validation based on whether a table has been searched
+		        importButton.setEnabled(!tableName.isEmpty());
+		    }
+		});
+
+
+		searchTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				searchTable.setText(""); // Clear the search field text when clicked
+				errorMessage.setVisible(false); // Hide error message when clicked
+			}
+		});
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 130, 716, 627);
@@ -160,6 +212,29 @@ public class MTMBReleasingPage extends JPanel {
 		importButton.setBounds(609, 81, 117, 38);
 		importButton.setFont(Bold2);
 		importButton.setForeground(Color.WHITE);
+		importButton.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        // Check if a table has been searched
+		        if (tableName == null || tableName.isEmpty()) {
+		            JOptionPane.showMessageDialog(null, "Please search for a table before exporting.");
+		            return; // Exit the method if no table has been searched
+		        }
+		        
+		        // Get the file path to save the Excel file
+		        JFileChooser fileChooser = new JFileChooser();
+		        fileChooser.setDialogTitle("Export Table as Excel");
+		        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		        int userSelection = fileChooser.showSaveDialog(null);
+		        if (userSelection == JFileChooser.APPROVE_OPTION) {
+		            File fileToSave = fileChooser.getSelectedFile();
+		            String filePath = fileToSave.getAbsolutePath() + ".xlsx"; // Add file extension if not provided
+		            // Export the table to Excel
+		            TableExporter.exportToExcel(table, filePath);
+		            JOptionPane.showMessageDialog(null, "Table exported successfully to: " + filePath);
+		        }
+		    }
+		});
 		recordPanel.add(importButton);
 
 		SearchBar = new RoundTxtField(18, new Color(132, 132, 132), 1);
@@ -172,13 +247,16 @@ public class MTMBReleasingPage extends JPanel {
 		fetchData();
 	}
 
-	private void fetchData() {
-		try {
-			Connection connection = conn.getConnection();
-			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery("SELECT * FROM 2024mtmbrecord");
+	// Fetch data from the specified table name
+	private void fetchData(String tableName) {
+		try (Connection connection = conn.getConnection();
+				Statement statement = connection.createStatement();
+				ResultSet resultSet = statement.executeQuery("SELECT * FROM " + tableName)) {
+
 			// Clear existing table data
 			model.setRowCount(0);
+
+			// Populate table with data from the database
 			while (resultSet.next()) {
 				int id = resultSet.getInt("CTRLNo");
 				String type = resultSet.getString("Type");
@@ -189,12 +267,28 @@ public class MTMBReleasingPage extends JPanel {
 
 				model.addRow(new Object[] { id, type, plateno, color, date, status });
 			}
-
-			resultSet.close();
-			statement.close();
-			connection.close();
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+	}
+
+	// Fetch data from the default table
+	private void fetchData() {
+		// For the initial fetch, you might want to fetch data from a default table or
+		// display an empty table.
+		// Since the behavior isn't explicitly specified, you can adjust this method as
+		// needed.
+	}
+
+	private boolean tableExists(String tableName) {
+		try (Connection connection = conn.getConnection();
+				Statement statement = connection.createStatement();
+				ResultSet resultSet = statement.executeQuery("SHOW TABLES LIKE '" + tableName + "'")) {
+
+			return resultSet.next(); // If resultSet.next() returns true, it means the table exists
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false; // In case of any exception, return false
 		}
 	}
 
