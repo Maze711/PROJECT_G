@@ -10,9 +10,11 @@ import java.awt.event.MouseEvent;
 
 public class MTMBRecordPage extends JPanel {
 
-	// Define a class-level variable to store the table name
-	private String tableName;
-	
+    // Define a class-level variable to store the table name
+    private String tableName;
+    private JPanel TableArchive;
+    private JScrollPane scrollPane;
+
     public MTMBRecordPage() {
         initialize();
     }
@@ -63,26 +65,47 @@ public class MTMBRecordPage extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Create and display the CreateNew window
-                CreateNew createNewWindow = new CreateNew();
+                CreateNew createNewWindow = new CreateNew(MTMBRecordPage.this); // Pass instance of MTMBRecordPage
                 createNewWindow.frame.setVisible(true);
             }
         });
+
 
         // Create a JScrollPane for TableArchive
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setBounds(0, 92, 736, 665);
         RecordPanel.add(scrollPane);
 
-        JPanel TableArchive = new JPanel();
+        TableArchive = new JPanel();
         TableArchive.setLayout(new GridLayout(0, 2, 10, 10)); // 2 columns, with horizontal and vertical gaps
         scrollPane.setViewportView(TableArchive);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
+        // Refresh tables initially
+        refreshTables();
+    }
+
+    // Method to format table name (remove white spaces and convert to lowercase)
+    private String formatTableName(String tableName) {
+        return tableName.replaceAll("\\s", "_").toLowerCase();
+    }
+
+    public void refreshTables() {
+        // Clear the existing panels in TableArchive
+        TableArchive.removeAll();
+
         // Get table names from the database
         MTMBDBArchive dbArchive = new MTMBDBArchive();
         String[] tableNames = dbArchive.getTableNames();
-
-
+        Font PrimaryFont = FontLoader.getFont("Primary", 64);
+        Font PrimaryFont32 = FontLoader.getFont("Primary", 32);
+        Font SecondaryFont = FontLoader.getFont("Secondary", 24);
+        Font PrimaryEBFont = FontLoader.getFont("PrimaryEB32", 24);
+        Font SemiB = FontLoader.getFont("SemiB", 24);
+        Font PrimaryEB48Font = FontLoader.getFont("PrimaryEB32", 48);
+        Font Bold = FontLoader.getFont("Bold", 28);
+        Font Bold2 = FontLoader.getFont("Bold", 16);
+        
         // Iterate over the table names and create panels
         for (String tableName : tableNames) {
             JPanel panel = new JPanel();
@@ -94,7 +117,6 @@ public class MTMBRecordPage extends JPanel {
             Color lighterColor = new Color(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 63); // 63 corresponds to 25% alpha (0.25 * 255 = 63.75, rounded to nearest integer)
             panel.setBackground(lighterColor);
             TableArchive.add(panel);
-            TableArchive.setPreferredSize(new Dimension(716, (int) (Math.ceil(tableNames.length / 2.0) * (214 + 10)))); // Set the preferred size of TableArchive
 
             JLabel ArchiveTitle = new JLabel(tableName);
             ArchiveTitle.setFont(PrimaryFont32);
@@ -110,7 +132,7 @@ public class MTMBRecordPage extends JPanel {
             panel.add(buttoned, BorderLayout.SOUTH);
             buttoned.setHorizontalAlignment(SwingConstants.RIGHT);
             buttoned.setVerticalAlignment(SwingConstants.BOTTOM);
-            
+
             buttoned.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -122,20 +144,20 @@ public class MTMBRecordPage extends JPanel {
                     ViewRecords viewRecords = new ViewRecords(tableName);
                     viewRecords.getFrame().setVisible(true);
                 }
+
                 public void mouseEntered(MouseEvent e) {
                     buttoned.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 }
-                
+
                 @Override
                 public void mouseExited(MouseEvent e) {
                     buttoned.setCursor(Cursor.getDefaultCursor());
                 }
             });
         }
-    }
 
-    // Method to format table name (remove white spaces and convert to lowercase)
-    private String formatTableName(String tableName) {
-        return tableName.replaceAll("\\s", "_").toLowerCase();
+        // Update the layout and repaint the panel
+        TableArchive.revalidate();
+        TableArchive.repaint();
     }
 }
