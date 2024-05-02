@@ -24,26 +24,19 @@ public class CreateNew {
 	private final MTMBDBCONN conn = new MTMBDBCONN();
 	private final MTMBDBArchive archiveCon = new MTMBDBArchive();
 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					CreateNew window = new CreateNew();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private MTMBRecordPage recordPage;
+
 
 	public void showFrame() {
 		frame.setVisible(true);
 	}
 
-	public CreateNew() {
-		initialize();
-	}
+	// Constructor that accepts an instance of MTMBRecordPage
+    public CreateNew(MTMBRecordPage recordPage) {
+        this.recordPage = recordPage;
+        initialize();
+    }
+
 
 	private void initialize() {
 		frame = new JFrame();
@@ -116,22 +109,25 @@ public class CreateNew {
 		panel.add(btnCancel);
 
 		RoundButton btnCreate = new RoundButton("Create", 8, Color.decode("#0B1E33"));
-		btnCreate.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String inputYear = txtInputYear.getText();
-				if (!inputYear.isEmpty()) {
-					System.out.println("Input Year: " + inputYear);
-					// Store the input year in the archive
-					archiveCon.copyTable(inputYear); // Assuming copyTable method copies the table structure and data
-					// Clear the text field after storing
-					txtInputYear.setText("");
-					// Hide the text field
-					txtInputYear.setVisible(false);
-					// Show the combo box again after storing
-					tableDropdown.setVisible(true);
-				}
-			}
-		});
+		// Inside btnCreate ActionListener
+		 btnCreate.addActionListener(new ActionListener() {
+	            public void actionPerformed(ActionEvent e) {
+	                String inputYear = txtInputYear.getText();
+	                if (!inputYear.isEmpty()) {
+	                    System.out.println("Input Year: " + inputYear);
+	                    // Store the input year in the archive
+	                    archiveCon.copyTable(inputYear); // Assuming copyTable method copies the table structure and data
+	                    // Clear the text field after storing
+	                    txtInputYear.setText("");
+	                    // Hide the text field
+	                    txtInputYear.setVisible(false);
+	                    // Show the combo box again after storing
+	                    tableDropdown.setVisible(true);
+	                    // Refresh or refetch the tables in MTMBRecordPage
+	                    recordPage.refreshTables();
+	                }
+	            }
+	        });
 		btnCreate.setForeground(new Color(255, 255, 255));
 		btnCreate.setBackground(new Color(255, 255, 255));
 		btnCreate.setBounds(296, 175, 112, 40);
