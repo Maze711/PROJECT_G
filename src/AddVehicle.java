@@ -13,41 +13,21 @@ import java.awt.event.ActionEvent;
 
 public class AddVehicle {
 
-    private JFrame frame;
+	private JFrame frame;
     private JTextField CtrlNo;
     private JTextField Date;
     private JTextField Type;
     private JTextField colorField; // Changed variable name to avoid conflict
     private JTextField Plate;
     private JTextField Status;
-    private final MTMBDBCONN conn = new MTMBDBCONN();
     private String tableName; // Add a field to store the table name
-    
+    private MTMBIncomingPage incomingPage; // Add a field to store the instance of MTMBIncomingPage
 
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    AddVehicle window = new AddVehicle("");
-                    window.showFrame();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    public void showFrame() { // Add a method to show the frame
-        frame.setVisible(true);
-        System.out.println(tableName);
-    }
-
-    // Constructor with tableName parameter
-    public AddVehicle(String tableName) {
+    public AddVehicle(String tableName, MTMBIncomingPage incomingPage) {
         this.tableName = tableName; // Store the table name
+        this.incomingPage = incomingPage; // Store the instance of MTMBIncomingPage
         initialize();
     }
-
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -123,9 +103,10 @@ public class AddVehicle {
 		RoundButton btnCreate = new RoundButton("Create", 8, Color.decode("#0B1E33"));
 		btnCreate.setForeground(new Color(255, 255, 255));
 		btnCreate.setFont(ExtraBold2);
+		// ActionListener for the "Create" button
 		btnCreate.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-		        // Extract data from text fields
+		        // Extract data from text fields and save to database
 		        String controlNo = CtrlNo.getText();
 		        String date = Date.getText();
 		        String vehicleType = Type.getText();
@@ -138,8 +119,7 @@ public class AddVehicle {
 		        boolean success = backend.saveData(tableName, controlNo, date, vehicleType, color, plateNo, status);
 		        if (success) {
 		            System.out.println("Data saved successfully.");
-		            // Close current window
-		            frame.dispose();
+
 		            // Refresh MTMBIncomingPage
 		            refreshMTMBIncomingPage();
 		        } else {
@@ -147,6 +127,7 @@ public class AddVehicle {
 		        }
 		    }
 		});
+
 		btnCreate.setBounds(328, 372, 112, 40);
 		panel.add(btnCreate);
 
@@ -181,10 +162,14 @@ public class AddVehicle {
 		panel.add(Status);
 
 	}
+	
+	public void showFrame() {
+        frame.setVisible(true);
+    }
+
 	private void refreshMTMBIncomingPage() {
-	    // Get the instance of MTMBIncomingPage and call the refresh method
-	    MTMBIncomingPage incomingPage = new MTMBIncomingPage();
-	    incomingPage.refresh();
+		// Call the refresh method on the existing instance of MTMBIncomingPage
+        incomingPage.refresh();
 	}
 
 }
