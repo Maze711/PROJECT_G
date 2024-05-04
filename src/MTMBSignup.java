@@ -50,11 +50,11 @@ public class MTMBSignup extends JFrame {
 
 	public void showSignUp() {
 		// TODO Auto-generated method stub
-			JFrame SignUp = frame;
-			SignUp.show();
-			SignUp.setLocationRelativeTo(null);
+		JFrame SignUp = frame;
+		SignUp.show();
+		SignUp.setLocationRelativeTo(null);
 	}
-	
+
 	public MTMBSignup() {
 		initialize();
 	}
@@ -108,29 +108,30 @@ public class MTMBSignup extends JFrame {
 		InfoRoundedCorner panel_3 = new InfoRoundedCorner(130);
 		panel_3.setBounds(-439, 21, 654, 700);
 		frame.getContentPane().add(panel_3);
-		
+
 		ImageIcon closedEyeIcon = new ImageIcon(MTMBLogin.class.getResource("/Icons/Closed Eyes.png"));
 		ImageIcon eyeIcon = new ImageIcon(MTMBLogin.class.getResource("/Icons/Eye.png"));
 		JButton btnNewButton_2 = new JButton(closedEyeIcon);
 		btnNewButton_2.setBounds(350, 324, closedEyeIcon.getIconWidth(), closedEyeIcon.getIconHeight());
 		btnNewButton_2.setBorderPainted(false);
-		btnNewButton_2.setContentAreaFilled(false); 
+		btnNewButton_2.setContentAreaFilled(false);
 		panel_1.add(btnNewButton_2);
-		
-		btnNewButton_2.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		        if (btnNewButton_2.getIcon().equals(closedEyeIcon)) {
-		            btnNewButton_2.setIcon(eyeIcon);
-		            ((JPasswordField) password).setEchoChar((char) 0);
-		            ((JPasswordField) verifyPassword).setEchoChar((char) 0);
-		        } else {
-		            btnNewButton_2.setIcon(closedEyeIcon);
-		            ((JPasswordField) password).setEchoChar('•');
-		            ((JPasswordField) verifyPassword).setEchoChar('•');
-		        }
-  }});
 
-		JLabel lblNewLabel = new JLabel("Add User");
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (btnNewButton_2.getIcon().equals(closedEyeIcon)) {
+					btnNewButton_2.setIcon(eyeIcon);
+					((JPasswordField) password).setEchoChar((char) 0);
+					((JPasswordField) verifyPassword).setEchoChar((char) 0);
+				} else {
+					btnNewButton_2.setIcon(closedEyeIcon);
+					((JPasswordField) password).setEchoChar('•');
+					((JPasswordField) verifyPassword).setEchoChar('•');
+				}
+			}
+		});
+
+		JLabel lblNewLabel = new JLabel("New User");
 		lblNewLabel.setFont(PrimaryFont);
 		lblNewLabel.setBounds(76, 90, 334, 86);
 		lblNewLabel.setForeground(new Color(11, 30, 51));
@@ -160,7 +161,7 @@ public class MTMBSignup extends JFrame {
 		verifyPassword.setBounds(60, 413, 334, 62);
 		panel_1.add(verifyPassword);
 
-		JButton btnNewButton = new RoundButton("Add User", 60, Color.decode("#0B1E33"));
+		JButton btnNewButton = new RoundButton("Create", 60, Color.decode("#0B1E33"));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (txtUsername.getText().equals("")) {
@@ -223,17 +224,17 @@ public class MTMBSignup extends JFrame {
 		btnNewButton_1.setFont(Bold);
 		btnNewButton_1.setBounds(265, 571, 100, 21);
 		panel_1.add(btnNewButton_1);
-		
+
 		JLabel txtVerifyPass = new JLabel("Verify Password");
 		txtVerifyPass.setBounds(60, 385, 226, 14);
 		txtVerifyPass.setFont(Bold);
 		panel_1.add(txtVerifyPass);
-		
+
 		JLabel txtEnterPassword = new JLabel("Enter Password");
 		txtEnterPassword.setBounds(60, 295, 237, 14);
 		txtEnterPassword.setFont(Bold);
 		panel_1.add(txtEnterPassword);
-		
+
 		JLabel txtEnterUsername = new JLabel("Enter Username");
 		txtEnterUsername.setFont(Bold);
 		txtEnterUsername.setBounds(60, 197, 199, 14);
