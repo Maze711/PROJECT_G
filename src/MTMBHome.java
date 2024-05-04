@@ -6,11 +6,11 @@ public class MTMBHome extends JPanel {
 
     private final MTMBDBCONN conn = new MTMBDBCONN();
 
-    public MTMBHome() {
-        initialize();
+    public MTMBHome(String username) { // Modified constructor to accept username
+        initialize(username);
     }
 
-    private void initialize() {
+    private void initialize(String username) {
     	
 //		CUSTOM FONT FAMILY STYLE
 		Font PrimaryFont = FontLoader.getFont("Primary", 64);
@@ -35,20 +35,16 @@ public class MTMBHome extends JPanel {
         panel_1.add(panel_2);
         panel_2.setLayout(null);
 
-        JLabel txtWelcome = new JLabel("Welcome Back");
+        JLabel txtWelcome = new JLabel("Home");
         txtWelcome.setBounds(30, 23, 189, 36);
         txtWelcome.setFont(PrimaryEBFont);
         panel_2.add(txtWelcome);
 
         ImageIcon wave = new ImageIcon(MTMBLogin.class.getResource("/Icons/Waving Hand Emoji.png"));
-        JLabel IWelcome = new JLabel("");
-        IWelcome.setIcon(wave);
-        IWelcome.setBounds(228, 25, 32, 32);
-        panel_2.add(IWelcome);
 
-        JLabel txtUsertype = new JLabel("User");
+        JLabel txtUsertype = new JLabel("User: " + username);
         txtUsertype.setFont(Bold2);
-        txtUsertype.setBounds(600, 23, 95, 36);
+        txtUsertype.setBounds(525, 26, 201, 36);
         panel_2.add(txtUsertype);
 
         JPanel panel_3 = new JPanel();

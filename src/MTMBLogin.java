@@ -188,7 +188,7 @@ public class MTMBLogin extends JFrame {
 								String storedPassword = resultSet.getString("password");
 								if (enteredPassword.equals(storedPassword)) {
 									System.out.println("Login successful.");
-									MTMBMainFrame home = new MTMBMainFrame();
+									MTMBMainFrame home = new MTMBMainFrame(username);
 									home.showWindowHome();
 									dispose();
 								} else {
@@ -215,7 +215,7 @@ public class MTMBLogin extends JFrame {
 
 		JLabel lblNewLabel_1_1 = new JLabel("Are you a member?");
 		lblNewLabel_1_1.setFont(SemiB15);
-		lblNewLabel_1_1.setBounds(42, 295, 179, 14);
+		lblNewLabel_1_1.setBounds(50, 295, 179, 14);
 		InputPanel.add(lblNewLabel_1_1);
 
 		JButton btnNewButton_1 = new RoundButton("Sign Up", 10, Color.decode("#FFFFFF"));
@@ -230,7 +230,7 @@ public class MTMBLogin extends JFrame {
 		btnNewButton_1.setForeground(new Color(11, 30, 51));
 		btnNewButton_1.setBackground(new Color(255, 255, 255));
 		btnNewButton_1.setFont(Bold);
-		btnNewButton_1.setBounds(180, 292, 131, 21);
+		btnNewButton_1.setBounds(174, 288, 131, 28);
 		InputPanel.add(btnNewButton_1);
 
 		JLabel txtEnterPassword = new JLabel("Enter Password");

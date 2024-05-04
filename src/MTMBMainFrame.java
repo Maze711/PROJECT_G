@@ -1,9 +1,12 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class MTMBMainFrame {
-
 	private JFrame frame;
 	private final MTMBDBCONN conn = new MTMBDBCONN();
 	private JPanel cards;
@@ -12,16 +15,15 @@ public class MTMBMainFrame {
 	private MTMBReleasingPage releasePanel;
 	private JLabel sliderLabel;
 	private JPanel panel;
-	
+	private MTMBHome homePanel;
+	private String username;
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MTMBMainFrame window = new MTMBMainFrame();
+					MTMBMainFrame window = new MTMBMainFrame("username");
 					window.frame.setVisible(true);
-					window.frame.setLocationRelativeTo(null);
-					window.frame.setResizable(false);
-					window.frame.setTitle("Muntinlupa Traffice Management Bureau Impound Inventory System");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -30,21 +32,21 @@ public class MTMBMainFrame {
 	}
 
 	public void showWindowHome() {
-		// TODO Auto-generated method stub
-		JFrame home = frame;
-		home.show();
-		home.setLocationRelativeTo(null);
-		home.setTitle("Muntinlupa Traffice Management Bureau");
+		frame.setVisible(true);
+		frame.setLocationRelativeTo(null);
+		frame.setTitle("Muntinlupa Traffic Management Bureau");
 	}
 
-	public MTMBMainFrame() {
+	public MTMBMainFrame(String username) {
+		this.username = username;
 		initialize();
 
 		// Add a window listener to the frame
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowOpened(WindowEvent e) {
-				cardLayout.show(cards, "MTMBHome"); // Show MTMBHome when the frame is opened
+				// Show MTMBHome when the frame is opened
+				cardLayout.show(cards, "MTMBHome");
 			}
 		});
 	}
@@ -64,9 +66,10 @@ public class MTMBMainFrame {
 		Font SemiB = FontLoader.getFont("SemiB", 16);
 		Font SemiB22 = FontLoader.getFont("SemiB", 22);
 		Font Bold = FontLoader.getFont("Bold", 42);
-		Font Bold16 = FontLoader.getFont("Bold16", 16);
+		Font Bold28 = FontLoader.getFont("Bold16", 28);
+		Font Bold2 = FontLoader.getFont("Bold", 16);
 		Font PrimaryEB48Font = FontLoader.getFont("PrimaryEB32", 48);
-		
+
 		ImageIcon sliderImg = new ImageIcon(MTMBLogin.class.getResource("/Icons/Slider.png"));
 
 		JPanel panel = new JPanel();
@@ -81,17 +84,17 @@ public class MTMBMainFrame {
 		navigationPanel.setLayout(null);
 
 		ImageIcon logo = new ImageIcon(MTMBLogin.class.getResource("/Images/MTMBLogo.png"));
-		
+
 		sliderLabel = new JLabel("");
 		sliderLabel.setBounds(264, 267, 79, 58);
 		navigationPanel.add(sliderLabel);
 		sliderLabel.setIcon(sliderImg);
-		
+
 		JLabel MTMBLogo = new JLabel("");
 		MTMBLogo.setBounds(52, 38, 132, 147);
 		MTMBLogo.setIcon(logo);
 		navigationPanel.add(MTMBLogo);
-		
+
 		JLabel Dashboard = new JLabel("Dashboard");
 		Dashboard.setBounds(52, 220, 141, 36);
 		Dashboard.setForeground(new Color(255, 255, 255));
@@ -221,21 +224,21 @@ public class MTMBMainFrame {
 		Logout.setForeground(Color.WHITE);
 		Logout.setFont(SemiB22);
 		Logout.addMouseListener(new MouseAdapter() {
-		    @Override
-		    public void mouseClicked(MouseEvent e) {
-		        // Clear all data and close the window
-		        clearDataAndCloseWindow();
-		    }
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// Clear all data and close the window
+				clearDataAndCloseWindow();
+			}
 
-		    @Override
-		    public void mouseEntered(MouseEvent e) {
-		        Logout.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		    }
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				Logout.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			}
 
-		    @Override
-		    public void mouseExited(MouseEvent e) {
-		        Logout.setCursor(Cursor.getDefaultCursor());
-		    }
+			@Override
+			public void mouseExited(MouseEvent e) {
+				Logout.setCursor(Cursor.getDefaultCursor());
+			}
 		});
 
 		navigationPanel.add(Logout);
@@ -246,17 +249,99 @@ public class MTMBMainFrame {
 		lblNewLabel.setIcon(bgInfo);
 		navigationPanel.add(lblNewLabel);
 
+		JPanel panel_2 = new JPanel();
+		panel_2.setLayout(null);
+		panel_2.setBounds(292, -1, 736, 70);
+		panel.add(panel_2);
 
-		// Cards Panel
+		JLabel txtWelcome = new JLabel("Home");
+		txtWelcome.setFont(PrimaryEBFont);
+		txtWelcome.setBounds(30, 23, 189, 36);
+		panel_2.add(txtWelcome);
+
+		JLabel txtUsertype = new JLabel("User: " + username);
+		txtUsertype.setFont(Bold2);
+		txtUsertype.setBounds(525, 26, 201, 36);
+		panel_2.add(txtUsertype);
+
+		JPanel panel_3 = new JPanel();
+		panel_3.setLayout(null);
+		panel_3.setBounds(292, 70, 735, 698);
+		panel.add(panel_3);
+		int impoundCount = getImpoundCount();
+
+		int releaseCount = getReleaseCount();
+
+		ImageIcon car = new ImageIcon(MTMBLogin.class.getResource("/Icons/Car.png"));
+		JLabel ITotal = new JLabel("");
+		ITotal.setIcon(car);
+		ITotal.setBounds(270, 110, 135, 40);
+		panel_3.add(ITotal);
+
+		JLabel txtTotalVehicle = new JLabel(String.valueOf(impoundCount));
+		txtTotalVehicle.setHorizontalAlignment(SwingConstants.CENTER);
+		txtTotalVehicle.setForeground(Color.WHITE);
+		txtTotalVehicle.setFont(Bold);
+		txtTotalVehicle.setBounds(37, 96, 274, 49);
+		panel_3.add(txtTotalVehicle);
+
+		JLabel txtTotalDisplay = new JLabel("Total Vehicle Impounded ");
+		txtTotalDisplay.setHorizontalAlignment(SwingConstants.CENTER);
+		txtTotalDisplay.setForeground(Color.WHITE);
+		txtTotalDisplay.setFont(Bold2);
+		txtTotalDisplay.setBounds(37, 140, 274, 40);
+		panel_3.add(txtTotalDisplay);
+
+		JLabel txtTotalVehicle_2 = new JLabel(String.valueOf(releaseCount));
+		txtTotalVehicle_2.setHorizontalAlignment(SwingConstants.CENTER);
+		txtTotalVehicle_2.setForeground(Color.WHITE);
+		txtTotalVehicle_2.setFont(Bold);
+		txtTotalVehicle_2.setBounds(440, 96, 274, 49);
+		panel_3.add(txtTotalVehicle_2);
+
+		JLabel lblTotalVehicleReleased = new JLabel("Total Vehicle Released ");
+		lblTotalVehicleReleased.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTotalVehicleReleased.setForeground(Color.WHITE);
+		lblTotalVehicleReleased.setFont(Bold2);
+		lblTotalVehicleReleased.setBounds(440, 140, 274, 40);
+		panel_3.add(lblTotalVehicleReleased);
+
+		JLabel txtCurrentMnt = new JLabel("April 2024");
+		txtCurrentMnt.setFont(Bold28);
+		txtCurrentMnt.setBounds(30, 16, 286, 40);
+		panel_3.add(txtCurrentMnt);
+
+		ImageIcon total = new ImageIcon(MTMBLogin.class.getResource("/Images/Total.png"));
+		JLabel bgTotal_1 = new JLabel("");
+		bgTotal_1.setIcon(total);
+		bgTotal_1.setBounds(30, 67, 393, 125);
+		panel_3.add(bgTotal_1);
+
+		ImageIcon total1 = new ImageIcon(MTMBLogin.class.getResource("/Images/Total-1.png"));
+		JLabel bgTotal_2 = new JLabel("");
+		bgTotal_2.setIcon(total1);
+		bgTotal_2.setBounds(436, 67, 270, 125);
+		panel_3.add(bgTotal_2);
+
+		JLabel txtInfo = new JLabel("Daily Impounded Records");
+		txtInfo.setFont(SemiB);
+		txtInfo.setBounds(31, 205, 361, 40);
+		panel_3.add(txtInfo);
+
+		// Create CardLayout and JPanel for cards
 		cardLayout = new CardLayout();
 		cards = new JPanel(cardLayout);
 		cards.setBounds(292, 0, 736, 768);
 		frame.getContentPane().add(cards);
 
-		MTMBHome homePanel = new MTMBHome();
-		homePanel.setVisible(true); // Ensure the panel is visible
+		// Create and add MTMBHome panel
+		MTMBHome homePanel = new MTMBHome(username);
 		cards.add(homePanel, "MTMBHome");
 
+		// Show MTMBHome panel by default
+		cardLayout.show(cards, "MTMBHome");
+
+		// Create and add other panels
 		MTMBRecordPage recordPanel = new MTMBRecordPage();
 		cards.add(recordPanel, "MTMBRecordPage");
 
@@ -266,15 +351,17 @@ public class MTMBMainFrame {
 		releasePanel = new MTMBReleasingPage();
 		cards.add(releasePanel, "MTMBReleasingPage");
 
-		// Set MTMBHome as default panel after adding all panels
-		cardLayout.show(cards, "MTMBHome");
+		// Add mouse listeners to labels...
+
+		// Show the window
+		showWindowHome();
 
 		// Add mouse listeners to labels
 		homeLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				cardLayout.show(cards, "MTMBHome"); // Show MTMBHome when homeLabel is clicked
-	            animateSlider(homeLabel.getY());
+				animateSlider(homeLabel.getY());
 
 			}
 		});
@@ -284,7 +371,7 @@ public class MTMBMainFrame {
 			public void mouseClicked(MouseEvent e) {
 				cardLayout.show(cards, "MTMBRecordPage");
 				recordPanel.setVisible(true); // Show the MTMBRecordPage panel
-	            animateSlider(recordsLabel.getY());
+				animateSlider(recordsLabel.getY());
 
 			}
 		});
@@ -293,7 +380,7 @@ public class MTMBMainFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				cardLayout.show(cards, "MTMBIncomingPage");
-	            animateSlider(incomingLabel.getY());
+				animateSlider(incomingLabel.getY());
 
 			}
 		});
@@ -302,42 +389,73 @@ public class MTMBMainFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				cardLayout.show(cards, "MTMBReleasingPage");
-	            animateSlider(releasingLabel.getY());
+				animateSlider(releasingLabel.getY());
 
 			}
 		});
 	}
+
 	private void animateSlider(final int yPos) {
-	    final int targetY = yPos;
-	    final int startX = sliderLabel.getY();
+		final int targetY = yPos;
+		final int startX = sliderLabel.getY();
 
-	    Thread animationThread = new Thread(() -> {
-	        int sliderY = startX;
-	        int step = (targetY < startX) ? -1 : 1; // Determine the direction of movement
+		Thread animationThread = new Thread(() -> {
+			int sliderY = startX;
+			int step = (targetY < startX) ? -1 : 1; // Determine the direction of movement
 
-	        // Slide until very close to the target position
-	        while (Math.abs(sliderY - targetY) > 1) { // Adjust threshold as needed
-	            sliderY += step;
-	            sliderLabel.setBounds(264, sliderY, 79, 58);
-	            try {
-	                Thread.sleep(5);
-	            } catch (InterruptedException e) {
-	                e.printStackTrace();
-	            }
-	        }
+			// Slide until very close to the target position
+			while (Math.abs(sliderY - targetY) > 1) { // Adjust threshold as needed
+				sliderY += step;
+				sliderLabel.setBounds(264, sliderY, 79, 58);
+				try {
+					Thread.sleep(5);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
 
-	        // Set the slider to the exact position of the label
-	        sliderLabel.setBounds(264, targetY, 79, 58);
-	    });
+			// Set the slider to the exact position of the label
+			sliderLabel.setBounds(264, targetY, 79, 58);
+		});
 
-	    animationThread.start();
+		animationThread.start();
 	}
-	
-	private void clearDataAndCloseWindow() {
-	    // Clear any data or session information
-	    // For example, you can reset any session variables or clear user data
 
-	    // Close the window
-	    frame.dispose();
+	private void clearDataAndCloseWindow() {
+		// Clear any data or session information
+		// For example, you can reset any session variables or clear user data
+
+		// Close the window
+		frame.dispose();
+	}
+
+	private int getImpoundCount() {
+		int count = 0;
+		try (Connection connection = conn.getConnection();
+				Statement statement = connection.createStatement();
+				ResultSet resultSet = statement
+						.executeQuery("SELECT COUNT(*) AS count FROM april WHERE Status = 'Impounded'")) {
+			if (resultSet.next()) {
+				count = resultSet.getInt("count");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return count;
+	}
+
+	private int getReleaseCount() {
+		int count = 0;
+		try (Connection connection = conn.getConnection();
+				Statement statement = connection.createStatement();
+				ResultSet resultSet = statement
+						.executeQuery("SELECT COUNT(*) AS count FROM april WHERE Status = 'Released'")) {
+			if (resultSet.next()) {
+				count = resultSet.getInt("count");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return count;
 	}
 }
