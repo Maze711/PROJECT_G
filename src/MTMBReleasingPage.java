@@ -26,6 +26,7 @@ import javax.swing.ImageIcon;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 
 import javax.swing.JScrollPane;
@@ -52,6 +53,8 @@ public class MTMBReleasingPage extends JPanel {
 	private JButton searchTableButton;
 	private String tableName;
 	private JButton importButton;
+	private JButton filterButton;
+	private JButton releaseButton;
 
 
 	public void refresh() {
@@ -111,25 +114,26 @@ public class MTMBReleasingPage extends JPanel {
 		errorMessage.setVisible(false); // Initially hide the error message
 		recordPanel.add(errorMessage); // Add the error message label to the panel
 
-		searchTable.addActionListener(new ActionListener() {
-		    @Override
-		    public void actionPerformed(ActionEvent e) {
-		        tableName = searchTable.getText().trim(); // Update the class field
-		        if (!tableName.isEmpty()) {
-		            errorMessage.setVisible(false); // Hide error message initially
-		            if (tableExists(tableName)) {
-		                fetchData(tableName);
-		                // You can remove or comment out the line below to keep the searchTable visible
-		                searchTable.setVisible(false); // Hide the search field after searching for a table name
-		            } else {
-		                errorMessage.setVisible(true); // Show error message if table doesn't exist
-		            }
-		        }
-		        
-		        // Update the export button validation based on whether a table has been searched
-		        importButton.setEnabled(!tableName.isEmpty());
-		    }
-		});
+		 searchTable.addActionListener(e -> {
+	            tableName = searchTable.getText().trim();
+	            if (!tableName.isEmpty()) {
+	                errorMessage.setVisible(false);
+	                if (tableExists(tableName)) {
+	                    fetchData(tableName);
+	                    searchTable.setVisible(false);
+	                    filterButton.setEnabled(true);
+	                    releaseButton.setEnabled(true); // Reference addButton directly
+	                } else {
+	                    errorMessage.setVisible(true);
+	                    filterButton.setEnabled(false);
+	                    releaseButton.setEnabled(false); // Reference addButton directly
+	                }
+	            } else {
+	                filterButton.setEnabled(false);
+	                releaseButton.setEnabled(false); // Reference addButton directly
+	            }
+	        });
+
 
 
 		searchTable.addMouseListener(new MouseAdapter() {
@@ -187,25 +191,45 @@ public class MTMBReleasingPage extends JPanel {
 		// Add the table to the scroll pane
 		scrollPane.setViewportView(table);
 
-		JButton releaseButton = new RoundButton("Release", 16, Color.decode("#FFBA42"));
+		releaseButton = new RoundButton("Release", 16, Color.decode("#FFBA42"));
 		releaseButton.setBounds(395, 81, 105, 38);
 		releaseButton.setFont(Bold2);
 		releaseButton.setForeground(new Color(11, 30, 51));
+		releaseButton.setEnabled(false); // Initially disable the filter button
 		recordPanel.add(releaseButton);
 
 		releaseButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				MTMBReleasePop releasePop = new MTMBReleasePop();
-				releasePop.showFrame();
-
-			}
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        MTMBReleasePop releasePop = new MTMBReleasePop(tableName); // Pass the tableName
+		        releasePop.showFrame();
+		    }
 		});
 
-		JButton filterButton = new RoundButton("Filter", 16, Color.decode("#D3D9E0"));
+		filterButton = new RoundButton("Filter", 16, Color.decode("#D3D9E0"));
 		filterButton.setBounds(510, 81, 90, 38);
 		filterButton.setFont(Bold2);
 		filterButton.setForeground(new Color(11, 30, 51));
+		filterButton.setEnabled(false); // Initially disable the filter button
+		filterButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                filterButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                filterButton.setCursor(Cursor.getDefaultCursor());
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (filterButton.isEnabled()) { // Check if the button is enabled
+                    FilterFunction filterFunction = new FilterFunction(tableName, model);
+                    filterFunction.getFrame().setVisible(true);
+                }
+            }
+        });
 		recordPanel.add(filterButton);
 
 		JButton importButton = new RoundButton("Export", 16, Color.decode("#00537A"));

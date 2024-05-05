@@ -1,8 +1,11 @@
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.io.File;
@@ -33,6 +36,9 @@ public class ViewRecords {
 	private JFrame frame;
 	private JTextField textField;
 	private JTable table;
+	private String tableName;
+	private JScrollPane scrollPane;
+	private ViewRecordsFilter ViewRecordsFilter;
 	private final MTMBDBArchive conn = new MTMBDBArchive();
 
 	/**
@@ -54,8 +60,14 @@ public class ViewRecords {
 	}
 
 	public ViewRecords(String tableName) {
-		initialize();
-		fetchData(tableName);
+	    initialize();
+	    fetchData(tableName);
+	    ViewRecordsFilter = new ViewRecordsFilter(this, model);
+	    ViewRecordsFilter.setTableName(tableName);
+	}
+
+	public String getTableName() {
+		return tableName;
 	}
 
 	/**
@@ -100,9 +112,17 @@ public class ViewRecords {
 		txtSearch.setBounds(18, 88, 86, 25);
 		panel.add(txtSearch);
 
+		ViewRecordsFilter = new ViewRecordsFilter(this, model); // Initialize FilterFunction
 		RoundButton btnFilter = new RoundButton("Filter", 8, Color.decode("#D3D9E0"));
 		btnFilter.setFont(Bold);
 		btnFilter.setBounds(499, 81, 80, 38);
+		btnFilter.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Make the FilterFunction frame visible
+				ViewRecordsFilter.getFrame();
+			}
+		});
 		panel.add(btnFilter);
 
 		RoundButton btnEdit = new RoundButton("Edit", 8, Color.decode("#FFBA42"));
@@ -115,38 +135,38 @@ public class ViewRecords {
 		btnExport.setFont(Bold);
 		btnExport.setBounds(552, 490, 117, 38);
 		btnExport.addActionListener(new ActionListener() {
-		    @Override
-		    public void actionPerformed(ActionEvent e) {
-		        // Get the table name from the label
-		        String tableName = txtYear.getText().trim();
-		        // Format the table name (remove underscores and convert to lowercase)
-		        tableName = tableName.replaceAll("\\s", "_").toLowerCase();
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Get the table name from the label
+				String tableName = txtYear.getText().trim();
+				// Format the table name (remove underscores and convert to lowercase)
+				tableName = tableName.replaceAll("\\s", "_").toLowerCase();
 
-		        if (tableName != null && !tableName.isEmpty()) {
-		            // Use the table name as part of the file name
-		            String fileName = "Archive_" + formatTableName(tableName); // Call formatTableName here
-		            JFileChooser fileChooser = new JFileChooser();
-		            fileChooser.setDialogTitle("Export Table as Excel");
-		            fileChooser.setSelectedFile(new File(fileName + ".xlsx"));
-		            int userSelection = fileChooser.showSaveDialog(frame);
-		            if (userSelection == JFileChooser.APPROVE_OPTION) {
-		                File fileToSave = fileChooser.getSelectedFile();
-		                String filePath = fileToSave.getAbsolutePath(); // No need to add file extension, it's already included
-		                // Export the table to Excel
-		                TableExporter.exportToExcel(table, filePath);
-		                JOptionPane.showMessageDialog(frame, "Table exported successfully to: " + filePath);
-		            }
-		        } else {
-		            JOptionPane.showMessageDialog(frame, "Please select a table before exporting.");
-		        }
-		    }
+				if (tableName != null && !tableName.isEmpty()) {
+					// Use the table name as part of the file name
+					String fileName = "Archive_" + formatTableName(tableName); // Call formatTableName here
+					JFileChooser fileChooser = new JFileChooser();
+					fileChooser.setDialogTitle("Export Table as Excel");
+					fileChooser.setSelectedFile(new File(fileName + ".xlsx"));
+					int userSelection = fileChooser.showSaveDialog(frame);
+					if (userSelection == JFileChooser.APPROVE_OPTION) {
+						File fileToSave = fileChooser.getSelectedFile();
+						String filePath = fileToSave.getAbsolutePath(); // No need to add file extension, it's already
+																		// included
+						// Export the table to Excel
+						TableExporter.exportToExcel(table, filePath);
+						JOptionPane.showMessageDialog(frame, "Table exported successfully to: " + filePath);
+					}
+				} else {
+					JOptionPane.showMessageDialog(frame, "Please select a table before exporting.");
+				}
+			}
 
-		    // Method to format table name (remove white spaces and convert to lowercase)
-		    private String formatTableName(String tableName) {
-		        return tableName.replaceAll("\\s", "_").toLowerCase();
-		    }
+			// Method to format table name (remove white spaces and convert to lowercase)
+			private String formatTableName(String tableName) {
+				return tableName.replaceAll("\\s", "_").toLowerCase();
+			}
 		});
-
 
 		panel.add(btnExport);
 
@@ -166,7 +186,7 @@ public class ViewRecords {
 		panel.add(tablePanel);
 		tablePanel.setLayout(null);
 
-		JScrollPane scrollPane = new JScrollPane();
+		scrollPane = new JScrollPane();
 		scrollPane.setBounds(2, 5, 666, 351);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		tablePanel.add(scrollPane);
@@ -212,6 +232,7 @@ public class ViewRecords {
 
 		// Add the table to the scroll pane
 		scrollPane.setViewportView(table);
+		fetchData();
 	}
 
 	// Fetch data from the specified table name
@@ -245,5 +266,11 @@ public class ViewRecords {
 		// display an empty table.
 		// Since the behavior isn't explicitly specified, you can adjust this method as
 		// needed.
+	}
+
+	private void refresher() {
+		fetchData(tableName); // Fetch data for the specific table
+		scrollPane.revalidate();
+		scrollPane.repaint();
 	}
 }

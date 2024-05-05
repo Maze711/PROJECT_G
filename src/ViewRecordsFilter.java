@@ -27,13 +27,13 @@ import javax.swing.JTable;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 
-public class FilterFunction {
+public class ViewRecordsFilter {
 
 	DefaultTableModel model;
 	private JFrame frame;
 	private JTable table;
 	private String tableName;
-	private final MTMBDBCONN conn = new MTMBDBCONN();
+	private final MTMBDBArchive conn = new MTMBDBArchive();
 
 	/**
 	 * Launch the application.
@@ -50,17 +50,18 @@ public class FilterFunction {
 	}
 
 	public JFrame getFrame() {
+		frame.setVisible(true);
 		return frame;
+		
 	}
 
 	/**
 	 * @wbp.parser.entryPoint
 	 */
-	public FilterFunction(String tableName, DefaultTableModel model) {
-		this.tableName = tableName;
-		this.model = model;
-
-		initialize();
+	public ViewRecordsFilter(ViewRecords viewRecords, DefaultTableModel model) {
+	    this.tableName = viewRecords.getTableName(); // Access tableName from ViewRecords
+	    this.model = model;
+	    initialize(); // Initialize the FilterFunction
 	}
 	
 	public void setTableName(String tableName) {
@@ -89,7 +90,7 @@ public class FilterFunction {
 	    frame.setTitle("Muntinlupa Traffic Management Buereau Impounding System");
 	    frame.setLocationRelativeTo(null);
 	    frame.setUndecorated(true); // Set undecorated before making it visible
-	    frame.setVisible(true);
+	    
 
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 0, 690, 275);

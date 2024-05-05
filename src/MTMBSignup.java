@@ -163,40 +163,39 @@ public class MTMBSignup extends JFrame {
 
 		JButton btnNewButton = new RoundButton("Create", 60, Color.decode("#0B1E33"));
 		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (txtUsername.getText().equals("")) {
-					JOptionPane.showMessageDialog(null, "Please enter username.", "MTMB",
-							JOptionPane.INFORMATION_MESSAGE);
-				} else if (password.getText().equals("")) {
-					JOptionPane.showMessageDialog(null, "Please enter password.", "MTMB",
-							JOptionPane.INFORMATION_MESSAGE);
-				} else if (verifyPassword.getText().equals("")) {
-					JOptionPane.showMessageDialog(null, "Please verify your password", "MTMB",
-							JOptionPane.INFORMATION_MESSAGE);
-				} else {
-					String username = txtUsername.getText();
-					String userPassword = password.getText();
-					try {
-						String query = "INSERT INTO users (username, password) VALUES (?, ?)";
-						try (PreparedStatement preparedStatement = conn.getConnection().prepareStatement(query)) {
-							preparedStatement.setString(1, username);
-							preparedStatement.setString(2, userPassword);
-							int rowsAffected = preparedStatement.executeUpdate();
-							if (rowsAffected > 0) {
-								System.out.println("User registered successfully.");
-								MTMBPopUp pop = new MTMBPopUp(frame);
-								pop.showWindow();
-							} else {
-								System.out.println("Failed to register user.");
-							}
-						}
-					} catch (SQLException ex) {
-						System.err.println("Error registering user: " + ex.getMessage());
-						ex.printStackTrace();
-					}
-				}
-			}
+		    public void actionPerformed(ActionEvent e) {
+		        if (txtUsername.getText().isEmpty()) {
+		            JOptionPane.showMessageDialog(null, "Please enter username.", "MTMB", JOptionPane.INFORMATION_MESSAGE);
+		        } else if (password.getText().isEmpty()) {
+		            JOptionPane.showMessageDialog(null, "Please enter password.", "MTMB", JOptionPane.INFORMATION_MESSAGE);
+		        } else if (verifyPassword.getText().isEmpty()) {
+		            JOptionPane.showMessageDialog(null, "Please verify your password", "MTMB", JOptionPane.INFORMATION_MESSAGE);
+		        } else {
+		            String username = txtUsername.getText();
+		            String userPassword = password.getText();
+		            try {
+		                String query = "INSERT INTO users (username, password) VALUES (?, ?)";
+		                try (PreparedStatement preparedStatement = conn.getConnection().prepareStatement(query)) {
+		                    preparedStatement.setString(1, username);
+		                    preparedStatement.setString(2, userPassword);
+		                    int rowsAffected = preparedStatement.executeUpdate();
+		                    if (rowsAffected > 0) {
+		                        System.out.println("User registered successfully.");
+		                        // Create and show the pop-up window
+		                        MTMBPopUp popUp = new MTMBPopUp(frame);
+		                        popUp.showWindow();
+		                    } else {
+		                        System.out.println("Failed to register user.");
+		                    }
+		                }
+		            } catch (SQLException ex) {
+		                System.err.println("Error registering user: " + ex.getMessage());
+		                ex.printStackTrace();
+		            }
+		        }
+		    }
 		});
+
 
 		btnNewButton.setForeground(new Color(255, 255, 255));
 		btnNewButton.setBackground(new Color(11, 30, 51));
@@ -239,6 +238,11 @@ public class MTMBSignup extends JFrame {
 		txtEnterUsername.setFont(Bold);
 		txtEnterUsername.setBounds(60, 197, 199, 14);
 		panel_1.add(txtEnterUsername);
+		
+		JLabel lblBscsa = new JLabel("© 2024 BSCS2A, PLMUN. All Rights Reserved");
+		lblBscsa.setFont(new Font("Poppins Medium", Font.PLAIN, 16));
+		lblBscsa.setBounds(50, 667, 372, 42);
+		panel_1.add(lblBscsa);
 
 		JLabel lblNewLabel_2 = new JLabel("Impound");
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
