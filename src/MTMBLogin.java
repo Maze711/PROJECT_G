@@ -62,7 +62,7 @@ public class MTMBLogin extends JFrame {
 		contentPane.setLayout(null);
 
 		JPanel LoginFrame = new JPanel();
-		LoginFrame.setBounds(95, 190, 334, 417);
+		LoginFrame.setBounds(38, 198, 406, 452);
 		contentPane.setOpaque(false);
 		LoginFrame.setOpaque(false);
 		contentPane.add(LoginFrame);
@@ -70,10 +70,13 @@ public class MTMBLogin extends JFrame {
 //		CUSTOM FONT FAMILY STYLE
 		Font PrimaryFont = FontLoader.getFont("Primary", 64);
 		Font SecondaryFont = FontLoader.getFont("Secondary", 24);
+		Font Secondary16 = FontLoader.getFont("Secondary", 16);
 		Font PrimaryEBFont = FontLoader.getFont("PrimaryEB32", 24);
 		Font SemiB = FontLoader.getFont("SemiB", 24);
+		Font SemiB20 = FontLoader.getFont("SemiB", 20);
 		Font SemiB15 = FontLoader.getFont("SemiB", 15);
 		Font Bold = FontLoader.getFont("PrimaryEB32", 17);
+		Font Bold36 = FontLoader.getFont("Bold", 36);
 		Font PrimaryEB48Font = FontLoader.getFont("PrimaryEB32", 48); // FONT SIZE 48
 
 //		The LoginFrame have properties of ABSOLUTE Layout
@@ -119,10 +122,6 @@ public class MTMBLogin extends JFrame {
 		LoginFrame.add(PanelLoginLabel, BorderLayout.NORTH);
 		PanelLoginLabel.setOpaque(false);
 
-		JLabel LoginLabel = new JLabel("Log In");
-		LoginLabel.setFont(PrimaryFont);
-		PanelLoginLabel.add(LoginLabel, BorderLayout.NORTH);
-
 		JPanel InputPanel = new JPanel();
 		LoginFrame.add(InputPanel, BorderLayout.CENTER);
 		InputPanel.setOpaque(false);
@@ -132,7 +131,7 @@ public class MTMBLogin extends JFrame {
 		ImageIcon eyeIcon = new ImageIcon(MTMBLogin.class.getResource("/Icons/Eye.png"));
 
 		JButton btnNewButton = new JButton(closedEyeIcon);
-		btnNewButton.setBounds(285, 143, closedEyeIcon.getIconWidth(), closedEyeIcon.getIconHeight());
+		btnNewButton.setBounds(350, 183, closedEyeIcon.getIconWidth(), closedEyeIcon.getIconHeight());
 		btnNewButton.setBorderPainted(false);
 		btnNewButton.setContentAreaFilled(false);
 		InputPanel.add(btnNewButton);
@@ -152,7 +151,7 @@ public class MTMBLogin extends JFrame {
 		UsernameTxtField = new RoundTxtField(40, new Color(0x0B1E33), 3);
 		UsernameTxtField.setForeground(new Color(11, 30, 51));
 		UsernameTxtField.setBackground(new Color(232, 248, 255));
-		UsernameTxtField.setBounds(0, 36, 334, 62);
+		UsernameTxtField.setBounds(0, 60, 400, 62);
 		UsernameTxtField.setFont(SecondaryFont);
 		InputPanel.add(UsernameTxtField);
 		UsernameTxtField.setColumns(10);
@@ -160,7 +159,7 @@ public class MTMBLogin extends JFrame {
 		PasswordTxtField = new RoundPasswordField(40, new Color(0x0B1E33), 3);
 		PasswordTxtField.setForeground(new Color(11, 30, 51));
 		PasswordTxtField.setBackground(new Color(232, 248, 255));
-		PasswordTxtField.setBounds(0, 134, 334, 62);
+		PasswordTxtField.setBounds(0, 173, 400, 62);
 		PasswordTxtField.setFont(SecondaryFont);
 		InputPanel.add(PasswordTxtField);
 		PasswordTxtField.setColumns(10);
@@ -209,16 +208,17 @@ public class MTMBLogin extends JFrame {
 		});
 
 		LoginToggleButton.setForeground(new Color(255, 255, 255));
-		LoginToggleButton.setBounds(0, 207, 334, 62);
+		LoginToggleButton.setBounds(0, 255, 400, 62);
 		LoginToggleButton.setFont(PrimaryEBFont);
 		InputPanel.add(LoginToggleButton);
 
 		JLabel lblNewLabel_1_1 = new JLabel("Are you a member?");
-		lblNewLabel_1_1.setFont(SemiB15);
-		lblNewLabel_1_1.setBounds(50, 295, 179, 14);
+		lblNewLabel_1_1.setFont(SemiB20);
+		lblNewLabel_1_1.setBounds(44, 343, 211, 20);
 		InputPanel.add(lblNewLabel_1_1);
 
 		JButton btnNewButton_1 = new RoundButton("Sign Up", 10, Color.decode("#FFFFFF"));
+		btnNewButton_1.setFont(SemiB20);
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				MTMBSignup signup = new MTMBSignup();
@@ -230,18 +230,39 @@ public class MTMBLogin extends JFrame {
 		btnNewButton_1.setForeground(new Color(11, 30, 51));
 		btnNewButton_1.setBackground(new Color(255, 255, 255));
 		btnNewButton_1.setFont(Bold);
-		btnNewButton_1.setBounds(174, 288, 131, 28);
+		btnNewButton_1.setBounds(223, 340, 131, 28);
 		InputPanel.add(btnNewButton_1);
 
 		JLabel txtEnterPassword = new JLabel("Enter Password");
 		txtEnterPassword.setFont(Bold);
-		txtEnterPassword.setBounds(0, 109, 252, 14);
+		txtEnterPassword.setBounds(0, 148, 252, 14);
 		InputPanel.add(txtEnterPassword);
 
 		JLabel txtEnterUsername = new JLabel("Enter Username");
 		txtEnterUsername.setFont(Bold);
-		txtEnterUsername.setBounds(0, 11, 252, 14);
+		txtEnterUsername.setBounds(0, 35, 252, 14);
 		InputPanel.add(txtEnterUsername);
+
+		JLabel LoginLabel = new JLabel("Hello");
+		LoginLabel.setBounds(38, 90, 168, 97);
+		contentPane.add(LoginLabel);
+		LoginLabel.setFont(PrimaryFont);
+
+		JLabel lblPleaseLoginTo = new JLabel("Please login to your system");
+		lblPleaseLoginTo.setFont(Secondary16);
+		lblPleaseLoginTo.setBounds(38, 166, 274, 42);
+		contentPane.add(lblPleaseLoginTo);
+		
+		JLabel lblBscsa = new JLabel("© 2024 BSCS2A, PLMUN. All Rights Reserved");
+		lblBscsa.setFont(new Font("Poppins Medium", Font.PLAIN, 16));
+		lblBscsa.setBounds(59, 665, 372, 42);
+		contentPane.add(lblBscsa);
+		
+		ImageIcon wave = new ImageIcon(MTMBLogin.class.getResource("/Icons/Waving Hand Emoji.png"));
+		JLabel WaveHand = new JLabel("");
+		WaveHand.setIcon(wave);
+		WaveHand.setBounds(204, 109, 64, 65);
+		contentPane.add(WaveHand);
 
 	}
 }
