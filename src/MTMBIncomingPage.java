@@ -70,7 +70,7 @@
 	        searchTable.setText("Search Table");
 	        searchTable.setFont(Bold2);
 	        searchTable.setColumns(10);
-	        searchTable.setBounds(220, 370, 292, 38);
+	        searchTable.setBounds(10, 81, 292, 38);
 	        recordPanel.add(searchTable);
 	        searchTable.setColumns(10);
 	
