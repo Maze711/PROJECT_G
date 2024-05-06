@@ -25,9 +25,9 @@ public class MTMBReleasePop {
     private JComboBox<String> comboBox;
 
     private final MTMBDBCONN conn = new MTMBDBCONN();
-    private final MTMBIncomingPage incoming = new MTMBIncomingPage();
     private final MTMBReleasingPage release = new MTMBReleasingPage();
     private String tableName; // Add a field to store the table name
+    private MTMBReleasingPage releasingPage;; // Add a field to store the table name
 
     /**
      * Launch the application.
@@ -48,11 +48,12 @@ public class MTMBReleasePop {
 
     }
 
-    public MTMBReleasePop(String tableName) {
-        this.tableName = tableName; // Set the table name
+    public MTMBReleasePop(String tableName, MTMBReleasingPage releasingPage) {
+        this.tableName = tableName; // Store the table name
+        this.releasingPage = releasingPage; // Store the instance of MTMBReleasingPage
         initialize();
-        updateComboBox();
     }
+
 
     /**
      * Initialize the contents of the frame.
@@ -106,6 +107,7 @@ public class MTMBReleasePop {
 
                 // Update status in the database regardless of the current status
                 updateStatusInDatabase(input, status);
+                releasingPage.refresh(tableName); // Call refresh on the correct instance
             }
         });
 
@@ -255,8 +257,6 @@ public class MTMBReleasePop {
 
             if (rowsAffected > 0) {
                 System.out.println("Status of Control No. " + ctrlNo + " is changed.");
-                incoming.refresh();
-                release.refresh();
             } else {
                 System.out.println("No rows were updated.");
             }

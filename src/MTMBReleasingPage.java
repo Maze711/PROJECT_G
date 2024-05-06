@@ -55,10 +55,10 @@ public class MTMBReleasingPage extends JPanel {
 	private JButton importButton;
 	private JButton filterButton;
 	private JButton releaseButton;
+	private JScrollPane scrollPane;
 
-
-	public void refresh() {
-		fetchData(); // Update table data from the database
+	public void refresh(String tableName) {
+		refresher();
 	}
 
 	public MTMBReleasingPage() {
@@ -103,7 +103,7 @@ public class MTMBReleasingPage extends JPanel {
 		searchTable.setText("Search Table");
 		searchTable.setFont(Bold2);
 		searchTable.setColumns(10);
-		searchTable.setBounds(220, 370, 292, 38);
+		searchTable.setBounds(10, 81, 292, 38);
 		recordPanel.add(searchTable);
 		searchTable.setColumns(10);
 
@@ -114,27 +114,25 @@ public class MTMBReleasingPage extends JPanel {
 		errorMessage.setVisible(false); // Initially hide the error message
 		recordPanel.add(errorMessage); // Add the error message label to the panel
 
-		 searchTable.addActionListener(e -> {
-	            tableName = searchTable.getText().trim();
-	            if (!tableName.isEmpty()) {
-	                errorMessage.setVisible(false);
-	                if (tableExists(tableName)) {
-	                    fetchData(tableName);
-	                    searchTable.setVisible(false);
-	                    filterButton.setEnabled(true);
-	                    releaseButton.setEnabled(true); // Reference addButton directly
-	                } else {
-	                    errorMessage.setVisible(true);
-	                    filterButton.setEnabled(false);
-	                    releaseButton.setEnabled(false); // Reference addButton directly
-	                }
-	            } else {
-	                filterButton.setEnabled(false);
-	                releaseButton.setEnabled(false); // Reference addButton directly
-	            }
-	        });
-
-
+		searchTable.addActionListener(e -> {
+			tableName = searchTable.getText().trim();
+			if (!tableName.isEmpty()) {
+				errorMessage.setVisible(false);
+				if (tableExists(tableName)) {
+					fetchData(tableName);
+					searchTable.setVisible(false);
+					filterButton.setEnabled(true);
+					releaseButton.setEnabled(true); // Reference addButton directly
+				} else {
+					errorMessage.setVisible(true);
+					filterButton.setEnabled(false);
+					releaseButton.setEnabled(false); // Reference addButton directly
+				}
+			} else {
+				filterButton.setEnabled(false);
+				releaseButton.setEnabled(false); // Reference addButton directly
+			}
+		});
 
 		searchTable.addMouseListener(new MouseAdapter() {
 			@Override
@@ -144,7 +142,7 @@ public class MTMBReleasingPage extends JPanel {
 			}
 		});
 
-		JScrollPane scrollPane = new JScrollPane();
+		scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 130, 716, 627);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		recordPanel.add(scrollPane);
@@ -199,11 +197,18 @@ public class MTMBReleasingPage extends JPanel {
 		recordPanel.add(releaseButton);
 
 		releaseButton.addActionListener(new ActionListener() {
-		    @Override
-		    public void actionPerformed(ActionEvent e) {
-		        MTMBReleasePop releasePop = new MTMBReleasePop(tableName); // Pass the tableName
-		        releasePop.showFrame();
-		    }
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String searchedTableName = searchTable.getText().trim();
+				if (!searchedTableName.isEmpty()) {
+					// No need to hide the search field here
+					fetchData(searchedTableName);
+					// Pass the searched table name and the instance of MTMBIncomingPage
+					// to the AddVehicle constructor
+					MTMBReleasePop releasePop = new MTMBReleasePop(searchedTableName, MTMBReleasingPage.this);
+					releasePop.showFrame();
+				}
+			}
 		});
 
 		filterButton = new RoundButton("Filter", 16, Color.decode("#D3D9E0"));
@@ -212,24 +217,24 @@ public class MTMBReleasingPage extends JPanel {
 		filterButton.setForeground(new Color(11, 30, 51));
 		filterButton.setEnabled(false); // Initially disable the filter button
 		filterButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                filterButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            }
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				filterButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			}
 
-            @Override
-            public void mouseExited(MouseEvent e) {
-                filterButton.setCursor(Cursor.getDefaultCursor());
-            }
+			@Override
+			public void mouseExited(MouseEvent e) {
+				filterButton.setCursor(Cursor.getDefaultCursor());
+			}
 
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (filterButton.isEnabled()) { // Check if the button is enabled
-                    FilterFunction filterFunction = new FilterFunction(tableName, model);
-                    filterFunction.getFrame().setVisible(true);
-                }
-            }
-        });
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (filterButton.isEnabled()) { // Check if the button is enabled
+					FilterFunction filterFunction = new FilterFunction(tableName, model);
+					filterFunction.getFrame().setVisible(true);
+				}
+			}
+		});
 		recordPanel.add(filterButton);
 
 		JButton importButton = new RoundButton("Export", 16, Color.decode("#00537A"));
@@ -237,27 +242,27 @@ public class MTMBReleasingPage extends JPanel {
 		importButton.setFont(Bold2);
 		importButton.setForeground(Color.WHITE);
 		importButton.addActionListener(new ActionListener() {
-		    @Override
-		    public void actionPerformed(ActionEvent e) {
-		        // Check if a table has been searched
-		        if (tableName == null || tableName.isEmpty()) {
-		            JOptionPane.showMessageDialog(null, "Please search for a table before exporting.");
-		            return; // Exit the method if no table has been searched
-		        }
-		        
-		        // Get the file path to save the Excel file
-		        JFileChooser fileChooser = new JFileChooser();
-		        fileChooser.setDialogTitle("Export Table as Excel");
-		        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		        int userSelection = fileChooser.showSaveDialog(null);
-		        if (userSelection == JFileChooser.APPROVE_OPTION) {
-		            File fileToSave = fileChooser.getSelectedFile();
-		            String filePath = fileToSave.getAbsolutePath() + ".xlsx"; // Add file extension if not provided
-		            // Export the table to Excel
-		            TableExporter.exportToExcel(table, filePath);
-		            JOptionPane.showMessageDialog(null, "Table exported successfully to: " + filePath);
-		        }
-		    }
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Check if a table has been searched
+				if (tableName == null || tableName.isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Please search for a table before exporting.");
+					return; // Exit the method if no table has been searched
+				}
+
+				// Get the file path to save the Excel file
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setDialogTitle("Export Table as Excel");
+				fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+				int userSelection = fileChooser.showSaveDialog(null);
+				if (userSelection == JFileChooser.APPROVE_OPTION) {
+					File fileToSave = fileChooser.getSelectedFile();
+					String filePath = fileToSave.getAbsolutePath() + ".xlsx"; // Add file extension if not provided
+					// Export the table to Excel
+					TableExporter.exportToExcel(table, filePath);
+					JOptionPane.showMessageDialog(null, "Table exported successfully to: " + filePath);
+				}
+			}
 		});
 		recordPanel.add(importButton);
 
@@ -298,10 +303,15 @@ public class MTMBReleasingPage extends JPanel {
 
 	// Fetch data from the default table
 	private void fetchData() {
-		// For the initial fetch, you might want to fetch data from a default table or
-		// display an empty table.
-		// Since the behavior isn't explicitly specified, you can adjust this method as
-		// needed.
+
+	}
+
+	// Fetch data from the default table
+	private void refresher() {
+		System.out.println("refresher: " + tableName);
+		fetchData(tableName); // Fetch data for the specific table
+		scrollPane.revalidate();
+		scrollPane.repaint();
 	}
 
 	private boolean tableExists(String tableName) {
