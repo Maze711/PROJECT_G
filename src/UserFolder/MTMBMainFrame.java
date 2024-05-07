@@ -353,7 +353,7 @@ public class MTMBMainFrame {
 		incomingPanel = new MTMBIncomingPage();
 		cards.add(incomingPanel, "MTMBIncomingPage");
 
-		releasePanel = new MTMBReleasingPage();
+		releasePanel = new MTMBReleasingPage(this.username);
 		cards.add(releasePanel, "MTMBReleasingPage");
 
 		// Add mouse listeners to labels...

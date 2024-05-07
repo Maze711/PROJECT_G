@@ -25,7 +25,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 	    private JTable table;
 	    private JTextField searchBar;
 	    private final MTMBDBCONN conn = new MTMBDBCONN();
-	    private JButton searchTableButton;
+	    private String username;
 	    private String tableName;
 	    private JButton filterButton; // Declare filterButton at class level
 	    private JButton addButton;
@@ -126,7 +126,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 	        table = new JTable();
 	        table.setShowHorizontalLines(false);
 	        model = new DefaultTableModel();
-	        Object[] column = { "Ctrl No.", "Type", "Plate No.", "Color", "Date", "Status" };
+	        Object[] column = { "Ctrl No.", "Type", "Plate No.", "Color", "Date", "Status", "Edited By" };
 	        model.setColumnIdentifiers(column);
 	        table.setModel(model);
 	        table.setEnabled(false);
@@ -283,8 +283,9 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 	                String color = resultSet.getString("Color");
 	                String date = resultSet.getString("Date");
 	                String status = resultSet.getString("Status");
+	                String editby = resultSet.getString("Edited_By");
 	
-	                model.addRow(new Object[]{id, type, plateno, color, date, status});
+	                model.addRow(new Object[]{id, type, plateno, color, date, status, editby});
 	            }
 	        } catch (SQLException e) {
 	            e.printStackTrace();

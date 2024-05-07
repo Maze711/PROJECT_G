@@ -26,6 +26,7 @@ public class AddVehicle {
     private JTextField colorField; // Changed variable name to avoid conflict
     private JTextField Plate;
     private JTextField Status;
+    private String username;
     private String tableName; // Add a field to store the table name
     private MTMBIncomingPage incomingPage; // Add a field to store the instance of MTMBIncomingPage
 
