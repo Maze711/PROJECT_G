@@ -31,9 +31,10 @@ public class MTMBReleasePop {
     private JComboBox<String> comboBox;
 
     private final MTMBDBCONN conn = new MTMBDBCONN();
-    private final MTMBReleasingPage release = new MTMBReleasingPage();
+    private final MTMBReleasingPage release = new MTMBReleasingPage(this.username);
     private String tableName; // Add a field to store the table name
     private MTMBReleasingPage releasingPage;; // Add a field to store the table name
+    private String username;
 
     /**
      * Launch the application.
@@ -54,11 +55,13 @@ public class MTMBReleasePop {
 
     }
 
-    public MTMBReleasePop(String tableName, MTMBReleasingPage releasingPage) {
+    public MTMBReleasePop(String tableName, MTMBReleasingPage releasingPage, String username) {
         this.tableName = tableName; // Store the table name
         this.releasingPage = releasingPage; // Store the instance of MTMBReleasingPage
+        this.username = username; // Store the username
         initialize();
     }
+
 
 
     /**
@@ -112,7 +115,7 @@ public class MTMBReleasePop {
                 String status = textField_1.getText();
 
                 // Update status in the database regardless of the current status
-                updateStatusInDatabase(input, status);
+                updateStatusInDatabase(input, status, username);
                 releasingPage.refresh(tableName); // Call refresh on the correct instance
             }
         });
@@ -250,19 +253,20 @@ public class MTMBReleasePop {
         return status;
     }
 
-    private void updateStatusInDatabase(String ctrlNo, String status) {
-        String query = "UPDATE " + tableName + " SET Status = ? WHERE CtrlNo = ?"; // Use the provided table name
+    private void updateStatusInDatabase(String ctrlNo, String status, String username) {
+        String query = "UPDATE " + tableName + " SET Status = ?, edited_by = ? WHERE CtrlNo = ?"; // Include edited_by field
 
         try (Connection conn = this.conn.getConnection();
-                PreparedStatement statement = conn.prepareStatement(query)) {
+             PreparedStatement statement = conn.prepareStatement(query)) {
 
             statement.setString(1, status);
-            statement.setString(2, ctrlNo);
+            statement.setString(2, username); // Set the username for edited_by field
+            statement.setString(3, ctrlNo);
 
             int rowsAffected = statement.executeUpdate();
 
             if (rowsAffected > 0) {
-                System.out.println("Status of Control No. " + ctrlNo + " is changed.");
+                System.out.println("Status of Control No. " + ctrlNo + " is changed by " + username);
             } else {
                 System.out.println("No rows were updated.");
             }
@@ -270,5 +274,6 @@ public class MTMBReleasePop {
             e.printStackTrace();
         }
     }
+
 
 }

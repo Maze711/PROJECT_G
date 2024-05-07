@@ -120,7 +120,7 @@ public class MTMBSignup extends JFrame {
 		ImageIcon closedEyeIcon = new ImageIcon(MTMBLogin.class.getResource("/Icons/Closed Eyes.png"));
 		ImageIcon eyeIcon = new ImageIcon(MTMBLogin.class.getResource("/Icons/Eye.png"));
 		JButton btnNewButton_2 = new JButton(closedEyeIcon);
-		btnNewButton_2.setBounds(350, 324, closedEyeIcon.getIconWidth(), closedEyeIcon.getIconHeight());
+		btnNewButton_2.setBounds(362, 330, closedEyeIcon.getIconWidth(), closedEyeIcon.getIconHeight());
 		btnNewButton_2.setBorderPainted(false);
 		btnNewButton_2.setContentAreaFilled(false);
 		panel_1.add(btnNewButton_2);
@@ -181,8 +181,9 @@ public class MTMBSignup extends JFrame {
 		        } else {
 		            String username = txtUsername.getText();
 		            String userPassword = password.getText();
+		            String auth = "user";
 		            try {
-		                String query = "INSERT INTO users (username, password) VALUES (?, ?)";
+		            	String query = "INSERT INTO users (username, password, authorization) VALUES (?, ?, '" + auth + "')";
 		                try (PreparedStatement preparedStatement = conn.getConnection().prepareStatement(query)) {
 		                    preparedStatement.setString(1, username);
 		                    preparedStatement.setString(2, userPassword);
