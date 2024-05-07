@@ -157,7 +157,7 @@ public class MTMBReleasingPage extends JPanel {
 		table = new JTable();
 		table.setShowHorizontalLines(false);
 		model = new DefaultTableModel();
-		Object[] column = { "Ctrl No.", "Type", "Plate No.", "Color", "Date", "Status" };
+		Object[] column = { "Ctrl No.", "Type", "Plate No.", "Color", "Date", "Status", "Edited By" };
 		model.setColumnIdentifiers(column);
 		table.setModel(model);
 		table.setEnabled(false);
@@ -284,29 +284,30 @@ public class MTMBReleasingPage extends JPanel {
 	}
 
 	// Fetch data from the specified table name
-	private void fetchData(String tableName) {
-		try (Connection connection = conn.getConnection();
-				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT * FROM " + tableName)) {
+    private void fetchData(String tableName) {
+        try (Connection connection = conn.getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery("SELECT * FROM " + tableName)) {
 
-			// Clear existing table data
-			model.setRowCount(0);
+            // Clear existing table data
+            model.setRowCount(0);
 
-			// Populate table with data from the database
-			while (resultSet.next()) {
-				int id = resultSet.getInt("CTRLNo");
-				String type = resultSet.getString("Type");
-				String plateno = resultSet.getString("PlateNo");
-				String color = resultSet.getString("Color");
-				String date = resultSet.getString("Date");
-				String status = resultSet.getString("Status");
+            // Populate table with data from the database
+            while (resultSet.next()) {
+                int id = resultSet.getInt("CTRLNo");
+                String type = resultSet.getString("Type");
+                String plateno = resultSet.getString("PlateNo");
+                String color = resultSet.getString("Color");
+                String date = resultSet.getString("Date");
+                String status = resultSet.getString("Status");
+                String editby = resultSet.getString("Edited_By");
 
-				model.addRow(new Object[] { id, type, plateno, color, date, status });
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
+                model.addRow(new Object[]{id, type, plateno, color, date, status, editby});
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 	// Fetch data from the default table
 	private void fetchData() {

@@ -350,7 +350,7 @@ public class MTMBMainFrame {
 		MTMBRecordPage recordPanel = new MTMBRecordPage();
 		cards.add(recordPanel, "MTMBRecordPage");
 
-		incomingPanel = new MTMBIncomingPage();
+		incomingPanel = new MTMBIncomingPage(this.username);
 		cards.add(incomingPanel, "MTMBIncomingPage");
 
 		releasePanel = new MTMBReleasingPage(this.username);
