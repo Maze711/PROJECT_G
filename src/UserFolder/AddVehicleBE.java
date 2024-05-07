@@ -11,9 +11,10 @@ public class AddVehicleBE {
 
     private final MTMBDBCONN conn = new MTMBDBCONN();
 
-    public boolean saveData(String tableName, String controlNo, String date, String vehicleType, String color, String plateNo, String status) {
+    public boolean saveData(String tableName, String controlNo, String date, String vehicleType, String color, String plateNo, String status, String username) {
         if (tableName == null || tableName.isEmpty()) {
             System.out.println("Table name is null or empty.");
+            System.out.println("Add Vehicle BE " + username);
             return false; // Return false indicating failure
         }
 
@@ -36,7 +37,7 @@ public class AddVehicleBE {
                 return false;
             } else {
                 // Record does not exist, perform insert
-                String insertSql = "INSERT INTO " + tableName + " (CtrlNo, Type, PlateNo, Color, Date, Status) VALUES (?, ?, ?, ?, ?, ?)";
+                String insertSql = "INSERT INTO " + tableName + " (CtrlNo, Type, PlateNo, Color, Date, Status, edited_by) VALUES (?, ?, ?, ?, ?, ?, '" + username + "')";
                 insertStatement = connection.prepareStatement(insertSql);
                 insertStatement.setString(1, controlNo);
                 insertStatement.setString(2, vehicleType);

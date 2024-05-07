@@ -28,10 +28,13 @@ public class AddVehicle {
     private JTextField Status;
     private String tableName; // Add a field to store the table name
     private MTMBIncomingPage incomingPage; // Add a field to store the instance of MTMBIncomingPage
+    private String username; 
 
-    public AddVehicle(String tableName, MTMBIncomingPage incomingPage) {
+    public AddVehicle(String tableName, MTMBIncomingPage incomingPage, String username) {
         this.tableName = tableName; // Store the table name
         this.incomingPage = incomingPage; // Store the instance of MTMBIncomingPage
+        this.username = username;
+        System.out.println("Add Vehicle " + username);
         initialize();
     }
 	/**
@@ -100,7 +103,6 @@ public class AddVehicle {
 		btnCancel.setFont(ExtraBold2);
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MTMBIncomingPage window = new MTMBIncomingPage();
 				frame.dispose();
 			}
 		});
@@ -119,10 +121,11 @@ public class AddVehicle {
 		        String color = colorField.getText();
 		        String plateNo = Plate.getText();
 		        String status = Status.getText();
+		        System.out.println("Going to Create " + username);
 
 		        // Save data to database
 		        AddVehicleBE backend = new AddVehicleBE();
-		        boolean success = backend.saveData(tableName, controlNo, date, vehicleType, color, plateNo, status);
+		        boolean success = backend.saveData(tableName, controlNo, date, vehicleType, color, plateNo, status, username);
 		        if (success) {
 		            System.out.println("Data saved successfully.");
 
