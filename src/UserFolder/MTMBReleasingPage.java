@@ -86,7 +86,7 @@ public class MTMBReleasingPage extends JPanel {
 		setLayout(null);
 
 		JPanel panel = new JPanel();
-		panel.setBounds(-41, 0, 1069, 768);
+		panel.setBounds(-41, 0, 1045, 790);
 		panel.setLayout(null);
 		add(panel);
 
@@ -100,6 +100,11 @@ public class MTMBReleasingPage extends JPanel {
 		insideRecordPanel.setBounds(0, 0, 736, 70);
 		recordPanel.add(insideRecordPanel);
 		insideRecordPanel.setLayout(null);
+		
+		JLabel txtUsertype = new JLabel("User: " + username);
+		txtUsertype.setFont(Bold2);
+		txtUsertype.setBounds(537, 26, 189, 36);
+		insideRecordPanel.add(txtUsertype);
 
 		JLabel recordLabel = new JLabel("Release");
 		recordLabel.setBounds(30, 23, 189, 36);

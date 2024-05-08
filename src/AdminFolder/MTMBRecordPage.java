@@ -37,7 +37,7 @@ public class MTMBRecordPage extends JPanel {
         Font Bold = FontLoader.getFont("Bold", 28);
         Font Bold2 = FontLoader.getFont("Bold", 16);
 
-        setBounds(292, 0, 736, 768);
+        setBounds(292, 0, 1045, 790);
         setLayout(null);
 
         JPanel RecordPanel = new JPanel();

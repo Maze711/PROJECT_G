@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import CustomClassLoader.FontLoader;
 import DatabaseConnection.MTMBDBCONN;
+import UserFolder.MTMBLogin;
 
 import java.sql.*;
 
@@ -26,7 +27,7 @@ public class MTMBHome extends JPanel {
 		Font Bold = FontLoader.getFont("Bold", 28);
 		Font Bold2 = FontLoader.getFont("Bold", 16);
 		
-        setBounds(0, 0, 1028, 768);
+        setBounds(0, 0, 1045, 790);
         setLayout(null);
 
         JPanel panel_1 = new JPanel();
@@ -116,6 +117,12 @@ public class MTMBHome extends JPanel {
         txtInfo.setFont(SemiB);
         txtInfo.setBounds(31, 205, 361, 40);
         panel_3.add(txtInfo);
+        
+        ImageIcon chart = new ImageIcon(MTMBLogin.class.getResource("/Images/Chart.png"));
+        JLabel Chart = new JLabel("");
+        Chart.setIcon(chart);
+        Chart.setBounds(30, 243, 672, 352);
+        panel_3.add(Chart);
     }
 
     private int getImpoundCount() {

@@ -85,7 +85,7 @@ public class MTMBReleasingPage extends JPanel {
 		setLayout(null);
 
 		JPanel panel = new JPanel();
-		panel.setBounds(-41, 0, 1069, 768);
+		panel.setBounds(-41, 0, 1045, 790);
 		panel.setLayout(null);
 		add(panel);
 
