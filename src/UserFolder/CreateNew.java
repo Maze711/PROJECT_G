@@ -29,7 +29,7 @@ public class CreateNew {
 	private JComboBox<String> tableDropdown;
 	private final MTMBDBCONN conn = new MTMBDBCONN();
 	private final MTMBDBArchive archiveCon = new MTMBDBArchive();
-
+	private String username;
 	private MTMBRecordPage recordPage;
 
 
@@ -38,8 +38,9 @@ public class CreateNew {
 	}
 
 	// Constructor that accepts an instance of MTMBRecordPage
-    public CreateNew(MTMBRecordPage recordPage) {
+    public CreateNew(MTMBRecordPage recordPage, String username) {
         this.recordPage = recordPage;
+        this.username = username;
         initialize();
     }
 
@@ -105,7 +106,7 @@ public class CreateNew {
 		RoundButton btnCancel = new RoundButton("Cancel", 8, Color.decode("#FFBA42"));
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MTMBRecordPage window = new MTMBRecordPage();
+				MTMBRecordPage window = new MTMBRecordPage(username);
 				frame.dispose();
 			}
 		});

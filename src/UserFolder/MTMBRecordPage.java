@@ -20,8 +20,10 @@ public class MTMBRecordPage extends JPanel {
     private String tableName;
     private JPanel TableArchive;
     private JScrollPane scrollPane;
+    private String username;
 
-    public MTMBRecordPage() {
+    public MTMBRecordPage(String username) {
+    	this.username = username;
         initialize();
     }
 
@@ -36,7 +38,7 @@ public class MTMBRecordPage extends JPanel {
         Font Bold = FontLoader.getFont("Bold", 28);
         Font Bold2 = FontLoader.getFont("Bold", 16);
 
-        setBounds(292, 0, 736, 768);
+        setBounds(292, 0, 1045, 790);
         setLayout(null);
 
         JPanel RecordPanel = new JPanel();
@@ -47,6 +49,11 @@ public class MTMBRecordPage extends JPanel {
         JPanel InsideRecordPanel = new JPanel();
         InsideRecordPanel.setBounds(0, 0, 736, 70);
         InsideRecordPanel.setLayout(null);
+        
+        JLabel txtUsertype = new JLabel("User: " + username);
+		txtUsertype.setFont(Bold2);
+		txtUsertype.setBounds(537, 26, 189, 36);
+		InsideRecordPanel.add(txtUsertype);
 
         JLabel Record = new JLabel("Records");
         Record.setBounds(30, 23, 189, 36);
@@ -71,7 +78,7 @@ public class MTMBRecordPage extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Create and display the CreateNew window
-                CreateNew createNewWindow = new CreateNew(MTMBRecordPage.this); // Pass instance of MTMBRecordPage
+                CreateNew createNewWindow = new CreateNew(MTMBRecordPage.this, username); // Pass instance of MTMBRecordPage
                 createNewWindow.frame.setVisible(true);
             }
         });

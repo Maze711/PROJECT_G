@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import CustomClassLoader.FontLoader;
 import DatabaseConnection.MTMBDBCONN;
+import UserFolder.MTMBLogin;
 
 import java.awt.event.*;
 import java.sql.Connection;
@@ -59,7 +60,7 @@ public class MTMBAdminMainFrame {
 	private void initialize() {
 
 		frame = new JFrame();
-		frame.setBounds(100, 100, 1044, 808);
+		frame.setBounds(100, 100, 1045, 805);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
@@ -69,6 +70,7 @@ public class MTMBAdminMainFrame {
 		Font SecondaryFont = FontLoader.getFont("Secondary", 24);
 		Font PrimaryEBFont = FontLoader.getFont("PrimaryEB32", 24);
 		Font SemiB = FontLoader.getFont("SemiB", 16);
+		Font SemiB24 = FontLoader.getFont("SemiB", 24);
 		Font SemiB22 = FontLoader.getFont("SemiB", 22);
 		Font Bold = FontLoader.getFont("Bold", 42);
 		Font Bold28 = FontLoader.getFont("Bold16", 28);
@@ -329,9 +331,15 @@ public class MTMBAdminMainFrame {
 		panel_3.add(bgTotal_2);
 
 		JLabel txtInfo = new JLabel("Daily Impounded Records");
-		txtInfo.setFont(SemiB);
-		txtInfo.setBounds(31, 205, 361, 40);
-		panel_3.add(txtInfo);
+        txtInfo.setFont(SemiB24);
+        txtInfo.setBounds(31, 205, 361, 40);
+        panel_3.add(txtInfo);
+        
+        ImageIcon chart = new ImageIcon(MTMBLogin.class.getResource("/Images/Chart.png"));
+        JLabel Chart = new JLabel("");
+        Chart.setIcon(chart);
+        Chart.setBounds(30, 243, 672, 352);
+        panel_3.add(Chart);
 
 		// Create CardLayout and JPanel for cards
 		cardLayout = new CardLayout();
