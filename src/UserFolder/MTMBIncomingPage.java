@@ -1,6 +1,9 @@
 package UserFolder;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -8,9 +11,13 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.regex.Pattern;
+
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import CustomClassLoader.FontLoader;
 import CustomClassLoader.RoundButton;
@@ -32,6 +39,7 @@ public class MTMBIncomingPage extends JPanel {
 	private JButton addButton;
 	private JScrollPane scrollPane;
 	private JButton CreateTable;
+	private Color placeholderColor;
 
 	public void refresh() {
 		refresher(); // Update table data from the database
@@ -64,23 +72,23 @@ public class MTMBIncomingPage extends JPanel {
 		recordPanel.setBounds(42, 11, 736, 768);
 		panel.add(recordPanel);
 		recordPanel.setLayout(null);
-		
+
 		CreateTable = new RoundButton("Create Table", 16, Color.decode("#FFBA42"));
 		CreateTable.setBounds(420, 81, 180, 38);
 		CreateTable.setFont(Bold2);
 		CreateTable.setForeground(new Color(11, 30, 51));
-		
+
 		CreateTable.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Show a JFrame to input the table name
-                String tableName = JOptionPane.showInputDialog(MTMBIncomingPage.this, "Enter table name:");
-                if (tableName != null && !tableName.isEmpty()) {
-                    // Create the table in the database
-                    createTableInDatabase(tableName);
-                }
-            }
-        });
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Show a JFrame to input the table name
+				String tableName = JOptionPane.showInputDialog(MTMBIncomingPage.this, "Enter table name:");
+				if (tableName != null && !tableName.isEmpty()) {
+					// Create the table in the database
+					createTableInDatabase(tableName);
+				}
+			}
+		});
 		recordPanel.add(CreateTable);
 
 		// Header
@@ -88,7 +96,7 @@ public class MTMBIncomingPage extends JPanel {
 		insideRecordPanel.setBounds(0, 0, 736, 70);
 		recordPanel.add(insideRecordPanel);
 		insideRecordPanel.setLayout(null);
-		
+
 		JLabel txtUsertype = new JLabel("User: " + username);
 		txtUsertype.setFont(Bold2);
 		txtUsertype.setBounds(537, 26, 189, 36);
@@ -102,10 +110,29 @@ public class MTMBIncomingPage extends JPanel {
 		// Create search table text field
 		RoundTxtField searchTable = new RoundTxtField(18, new Color(132, 132, 132), 1);
 		searchTable.setText("Search Table");
+		placeholderColor = new Color(132, 132, 132);
+		searchTable.setForeground(placeholderColor);
 		searchTable.setFont(Bold2);
 		searchTable.setColumns(10);
 		searchTable.setBounds(10, 81, 292, 38);
 		recordPanel.add(searchTable);
+		searchTable.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				if (searchTable.getText().equals("Search")) {
+					searchTable.setText("");
+					searchTable.setForeground(Color.BLACK); // Change text color to black when focused
+				}
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (searchTable.getText().isEmpty()) {
+					searchTable.setText("Search");
+					searchTable.setForeground(placeholderColor); // Reset text color to placeholder color when focus lost
+				}
+			}
+		});
 		searchTable.setColumns(10);
 
 		JLabel errorMessage = new JLabel("Table doesn't exist, try again");
@@ -284,10 +311,31 @@ public class MTMBIncomingPage extends JPanel {
 
 		searchBar = new RoundTxtField(18, new Color(132, 132, 132), 1);
 		searchBar.setText("Search");
+		placeholderColor = new Color(132, 132, 132);
+		searchBar.setForeground(placeholderColor);
 		searchBar.setBounds(10, 81, 292, 38);
 		searchBar.setFont(Bold2);
+		searchBar.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				if (searchBar.getText().equals("Search")) {
+					searchBar.setText("");
+					searchBar.setForeground(Color.BLACK); // Change text color to black when focused
+				}
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (searchBar.getText().isEmpty()) {
+					searchBar.setText("Search");
+					searchBar.setForeground(placeholderColor); // Reset text color to placeholder color when focus lost
+				}
+			}
+		});
 		recordPanel.add(searchBar);
 		searchBar.setColumns(10);
+
+		setupSearchFunctionality();
 
 		fetchData();
 	}
@@ -340,27 +388,53 @@ public class MTMBIncomingPage extends JPanel {
 			return false; // In case of any exception, return false
 		}
 	}
-	
+
+	private void setupSearchFunctionality() {
+	    searchBar.getDocument().addDocumentListener(new DocumentListener() {
+	        @Override
+	        public void insertUpdate(DocumentEvent e) {
+	            filterTable(searchBar.getText().trim().toLowerCase());
+	        }
+
+	        @Override
+	        public void removeUpdate(DocumentEvent e) {
+	            filterTable(searchBar.getText().trim().toLowerCase());
+	        }
+
+	        @Override
+	        public void changedUpdate(DocumentEvent e) {
+	            filterTable(searchBar.getText().trim().toLowerCase());
+	        }
+	    });
+	}
+
+	private void filterTable(String searchText) {
+	    TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+	    table.setRowSorter(sorter);
+	    
+	    if (!searchText.isEmpty()) {
+	        RowFilter<TableModel, Integer> filter = RowFilter.regexFilter("(?i)" + Pattern.quote(searchText));
+	        sorter.setRowFilter(filter);
+	    } else {
+	        sorter.setRowFilter(null);
+	    }
+	}
+
 	private void createTableInDatabase(String tableName) {
-        // SQL query to create the table with specified columns
-        String query = "CREATE TABLE " + tableName + " (" +
-                "CtrlNo INT(11) PRIMARY KEY AUTO_INCREMENT," +
-                "Type VARCHAR(255)," +
-                "PlateNo VARCHAR(255)," +
-                "Color VARCHAR(255)," +
-                "Date VARCHAR(255)," +
-                "Status VARCHAR(255)," +
-                "edited_by VARCHAR(225)" +
-                ")";
-        
-        try (Connection connection = conn.getConnection();
-             Statement statement = connection.createStatement()) {
-            // Execute the query to create the table
-            statement.executeUpdate(query);
-            JOptionPane.showMessageDialog(MTMBIncomingPage.this, "Table created successfully!");
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(MTMBIncomingPage.this, "Error creating table: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
+		// SQL query to create the table with specified columns
+		String query = "CREATE TABLE " + tableName + " (" + "CtrlNo INT(11) PRIMARY KEY AUTO_INCREMENT,"
+				+ "Type VARCHAR(255)," + "PlateNo VARCHAR(255)," + "Color VARCHAR(255)," + "Date VARCHAR(255),"
+				+ "Status VARCHAR(255)," + "edited_by VARCHAR(225)" + ")";
+
+		try (Connection connection = conn.getConnection(); Statement statement = connection.createStatement()) {
+			// Execute the query to create the table
+			statement.executeUpdate(query);
+			JOptionPane.showMessageDialog(MTMBIncomingPage.this, "Table created successfully!");
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			JOptionPane.showMessageDialog(MTMBIncomingPage.this, "Error creating table: " + ex.getMessage(), "Error",
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
 }
