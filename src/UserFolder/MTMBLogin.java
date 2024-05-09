@@ -57,9 +57,6 @@ public class MTMBLogin extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public MTMBLogin() {
 		setTitle("Muntinlupa Traffic Management Bureau Impounding System");
 		setBackground(new Color(238, 246, 255));
