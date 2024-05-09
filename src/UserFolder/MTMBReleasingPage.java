@@ -1,4 +1,5 @@
 package UserFolder;
+
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -7,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -16,6 +19,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -33,14 +37,19 @@ import java.awt.Dimension;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import CustomClassLoader.FontLoader;
 import CustomClassLoader.RoundButton;
@@ -63,6 +72,7 @@ public class MTMBReleasingPage extends JPanel {
 	private JButton filterButton;
 	private JButton releaseButton;
 	private JScrollPane scrollPane;
+	private Color placeholderColor;
 
 	public void refresh(String tableName) {
 		refresher();
@@ -100,7 +110,7 @@ public class MTMBReleasingPage extends JPanel {
 		insideRecordPanel.setBounds(0, 0, 736, 70);
 		recordPanel.add(insideRecordPanel);
 		insideRecordPanel.setLayout(null);
-		
+
 		JLabel txtUsertype = new JLabel("User: " + username);
 		txtUsertype.setFont(Bold2);
 		txtUsertype.setBounds(537, 26, 189, 36);
@@ -114,11 +124,30 @@ public class MTMBReleasingPage extends JPanel {
 		// Create search table text field
 		RoundTxtField searchTable = new RoundTxtField(18, new Color(132, 132, 132), 1);
 		searchTable.setText("Search Table");
+		placeholderColor = new Color(132, 132, 132);
+		searchTable.setForeground(placeholderColor);
 		searchTable.setFont(Bold2);
 		searchTable.setColumns(10);
 		searchTable.setBounds(10, 81, 292, 38);
 		recordPanel.add(searchTable);
-		searchTable.setColumns(10);
+		searchTable.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				if (searchTable.getText().equals("Search")) {
+					searchTable.setText("");
+					searchTable.setForeground(Color.BLACK); // Change text color to black when focused
+				}
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (searchTable.getText().isEmpty()) {
+					searchTable.setText("Search");
+					searchTable.setForeground(placeholderColor); // Reset text color to placeholder color when focus
+																	// lost
+				}
+			}
+		});
 
 		JLabel errorMessage = new JLabel("Table doesn't exist, try again");
 		errorMessage.setForeground(Color.RED); // Set color to red
@@ -279,13 +308,34 @@ public class MTMBReleasingPage extends JPanel {
 		});
 		recordPanel.add(importButton);
 
-		SearchBar = new RoundTxtField(18, new Color(132, 132, 132), 1);
-		SearchBar.setText("Search");
-		SearchBar.setBounds(10, 81, 292, 38);
-		SearchBar.setFont(Bold2);
-		recordPanel.add(SearchBar);
-		SearchBar.setColumns(10);
+		searchBar = new RoundTxtField(18, new Color(132, 132, 132), 1);
+		searchBar.setText("Search");
+		placeholderColor = new Color(132, 132, 132);
+		searchBar.setForeground(placeholderColor);
+		searchBar.setBounds(10, 81, 292, 38);
+		searchBar.setFont(Bold2);
+		searchBar.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				if (searchBar.getText().equals("Search")) {
+					searchBar.setText("");
+					searchBar.setForeground(Color.BLACK); // Change text color to black when focused
+				}
+			}
 
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (searchBar.getText().isEmpty()) {
+					searchBar.setText("Search");
+					searchBar.setForeground(placeholderColor); // Reset text color to placeholder color when focus lost
+				}
+			}
+		});
+		recordPanel.add(searchBar);
+		searchBar.setColumns(10);
+
+		setupSearchFunctionality();
+		
 		fetchData();
 	}
 
@@ -337,6 +387,46 @@ public class MTMBReleasingPage extends JPanel {
 			e.printStackTrace();
 			return false; // In case of any exception, return false
 		}
+	}
+	
+	private void setupSearchFunctionality() {
+	    searchBar.getDocument().addDocumentListener(new DocumentListener() {
+	        @Override
+	        public void insertUpdate(DocumentEvent e) {
+	            filterTable(searchBar.getText().trim().toLowerCase());
+	        }
+
+	        @Override
+	        public void removeUpdate(DocumentEvent e) {
+	            filterTable(searchBar.getText().trim().toLowerCase());
+	        }
+
+	        @Override
+	        public void changedUpdate(DocumentEvent e) {
+	            filterTable(searchBar.getText().trim().toLowerCase());
+	        }
+	    });
+	    
+	    // Apply row sorter when setting up search functionality
+	    TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+	    table.setRowSorter(sorter);
+	}
+
+
+	private void filterTable(String searchText) {
+	    if ("Search".equals(searchText)) {
+	        searchText = ""; // Treat "Search" placeholder as empty search text
+	    }
+	    
+	    TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+	    table.setRowSorter(sorter);
+	    
+	    if (!searchText.isEmpty()) {
+	        RowFilter<TableModel, Integer> filter = RowFilter.regexFilter("(?i)" + Pattern.quote(searchText));
+	        sorter.setRowFilter(filter);
+	    } else {
+	        sorter.setRowFilter(null);
+	    }
 	}
 
 }
