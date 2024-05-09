@@ -435,11 +435,10 @@ public class MTMBMainFrame {
 	}
 
 	private void clearDataAndCloseWindow() {
-		// Clear any data or session information
-		// For example, you can reset any session variables or clear user data
-
-		// Close the window
-		frame.dispose();
+		frame.setVisible(false);
+		MTMBLogin show = new MTMBLogin();
+		show.setVisible(true);
+		show.setLocationRelativeTo(null);
 	}
 
 	private int getImpoundCount() {

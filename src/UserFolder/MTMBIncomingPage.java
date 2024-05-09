@@ -31,6 +31,7 @@ public class MTMBIncomingPage extends JPanel {
 	private JButton filterButton; // Declare filterButton at class level
 	private JButton addButton;
 	private JScrollPane scrollPane;
+	private JButton CreateTable;
 
 	public void refresh() {
 		refresher(); // Update table data from the database
@@ -63,6 +64,24 @@ public class MTMBIncomingPage extends JPanel {
 		recordPanel.setBounds(42, 11, 736, 768);
 		panel.add(recordPanel);
 		recordPanel.setLayout(null);
+		
+		CreateTable = new RoundButton("Create Table", 16, Color.decode("#FFBA42"));
+		CreateTable.setBounds(420, 81, 180, 38);
+		CreateTable.setFont(Bold2);
+		CreateTable.setForeground(new Color(11, 30, 51));
+		
+		CreateTable.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Show a JFrame to input the table name
+                String tableName = JOptionPane.showInputDialog(MTMBIncomingPage.this, "Enter table name:");
+                if (tableName != null && !tableName.isEmpty()) {
+                    // Create the table in the database
+                    createTableInDatabase(tableName);
+                }
+            }
+        });
+		recordPanel.add(CreateTable);
 
 		// Header
 		JPanel insideRecordPanel = new JPanel();
@@ -104,15 +123,18 @@ public class MTMBIncomingPage extends JPanel {
 					fetchData(tableName);
 					searchTable.setVisible(false);
 					filterButton.setEnabled(true);
-					addButton.setEnabled(true); // Reference addButton directly
+					addButton.setEnabled(true);
+					CreateTable.setVisible(false);
 				} else {
 					errorMessage.setVisible(true);
 					filterButton.setEnabled(false);
-					addButton.setEnabled(false); // Reference addButton directly
+					addButton.setEnabled(false);
+					CreateTable.setVisible(true);
 				}
 			} else {
 				filterButton.setEnabled(false);
-				addButton.setEnabled(false); // Reference addButton directly
+				addButton.setEnabled(false);
+				CreateTable.setVisible(true);
 			}
 		});
 
@@ -318,4 +340,27 @@ public class MTMBIncomingPage extends JPanel {
 			return false; // In case of any exception, return false
 		}
 	}
+	
+	private void createTableInDatabase(String tableName) {
+        // SQL query to create the table with specified columns
+        String query = "CREATE TABLE " + tableName + " (" +
+                "CtrlNo INT(11) PRIMARY KEY AUTO_INCREMENT," +
+                "Type VARCHAR(255)," +
+                "PlateNo VARCHAR(255)," +
+                "Color VARCHAR(255)," +
+                "Date VARCHAR(255)," +
+                "Status VARCHAR(255)," +
+                "edited_by VARCHAR(225)" +
+                ")";
+        
+        try (Connection connection = conn.getConnection();
+             Statement statement = connection.createStatement()) {
+            // Execute the query to create the table
+            statement.executeUpdate(query);
+            JOptionPane.showMessageDialog(MTMBIncomingPage.this, "Table created successfully!");
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(MTMBIncomingPage.this, "Error creating table: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 }
