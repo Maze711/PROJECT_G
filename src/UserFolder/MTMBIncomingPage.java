@@ -19,6 +19,7 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import AdminFolder.MTMBHome;
 import CustomClassLoader.FontLoader;
 import CustomClassLoader.RoundButton;
 import CustomClassLoader.RoundTxtField;
@@ -64,7 +65,7 @@ public class MTMBIncomingPage extends JPanel {
 		setLayout(null);
 
 		JPanel panel = new JPanel();
-		panel.setBounds(-41, 0, 1045, 790);
+		panel.setBounds(-41, 0, 858, 790);
 		panel.setLayout(null);
 		add(panel);
 
@@ -72,24 +73,27 @@ public class MTMBIncomingPage extends JPanel {
 		recordPanel.setBounds(42, 11, 736, 768);
 		panel.add(recordPanel);
 		recordPanel.setLayout(null);
-
-		CreateTable = new RoundButton("Create Table", 16, Color.decode("#FFBA42"));
-		CreateTable.setBounds(420, 81, 180, 38);
-		CreateTable.setFont(Bold2);
-		CreateTable.setForeground(new Color(11, 30, 51));
-
-		CreateTable.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// Show a JFrame to input the table name
-				String tableName = JOptionPane.showInputDialog(MTMBIncomingPage.this, "Enter table name:");
-				if (tableName != null && !tableName.isEmpty()) {
-					// Create the table in the database
-					createTableInDatabase(tableName);
-				}
-			}
-		});
-		recordPanel.add(CreateTable);
+		
+				CreateTable = new RoundButton("Create Table", 16, Color.decode("#FFBA42"));
+				CreateTable.setBounds(419, 81, 180, 38);
+				recordPanel.add(CreateTable);
+				CreateTable.setFont(Bold2);
+				CreateTable.setForeground(new Color(11, 30, 51));
+				
+						CreateTable.addActionListener(new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								// Show a JFrame to input the table name
+								String tableName = JOptionPane.showInputDialog(MTMBIncomingPage.this, "Enter table name:");
+								if (tableName != null && !tableName.isEmpty()) {
+									// Create the table in the database
+									createTableInDatabase(tableName);
+								}
+							}
+						});
+						CreateTable.setVisible(false);
+						CreateTable.setVisible(true);
+						CreateTable.setVisible(true);
 
 		// Header
 		JPanel insideRecordPanel = new JPanel();
@@ -143,26 +147,27 @@ public class MTMBIncomingPage extends JPanel {
 		recordPanel.add(errorMessage); // Add the error message label to the panel
 
 		searchTable.addActionListener(e -> {
-			tableName = searchTable.getText().trim();
-			if (!tableName.isEmpty()) {
-				errorMessage.setVisible(false);
-				if (tableExists(tableName)) {
-					fetchData(tableName);
-					searchTable.setVisible(false);
-					filterButton.setEnabled(true);
-					addButton.setEnabled(true);
-					CreateTable.setVisible(false);
-				} else {
-					errorMessage.setVisible(true);
-					filterButton.setEnabled(false);
-					addButton.setEnabled(false);
-					CreateTable.setVisible(true);
-				}
-			} else {
-				filterButton.setEnabled(false);
-				addButton.setEnabled(false);
-				CreateTable.setVisible(true);
-			}
+		    tableName = searchTable.getText().trim();
+		    if (!tableName.isEmpty()) {
+		        errorMessage.setVisible(false);
+		        if (tableExists(tableName)) {
+		            fetchData(tableName);
+		            searchBar.setVisible(true);
+		            searchTable.setVisible(false);
+		            filterButton.setEnabled(true);
+		            addButton.setEnabled(true);
+		            CreateTable.setVisible(false);
+		        } else {
+		            errorMessage.setVisible(true);
+		            filterButton.setEnabled(false);
+		            addButton.setEnabled(false);
+		            CreateTable.setVisible(true);
+		        }
+		    } else {
+		        filterButton.setEnabled(false);
+		        addButton.setEnabled(false);
+		        CreateTable.setVisible(true);
+		    }
 		});
 
 		searchTable.addMouseListener(new MouseAdapter() {
@@ -174,7 +179,7 @@ public class MTMBIncomingPage extends JPanel {
 		});
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 130, 716, 627);
+		scrollPane.setBounds(0, 130, 736, 627);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		recordPanel.add(scrollPane);
 
@@ -221,7 +226,7 @@ public class MTMBIncomingPage extends JPanel {
 		scrollPane.setViewportView(table);
 
 		filterButton = new RoundButton("Filter", 16, Color.decode("#D3D9E0"));
-		filterButton.setBounds(420, 81, 80, 38);
+		filterButton.setBounds(419, 82, 80, 38);
 		filterButton.setFont(Bold2);
 		filterButton.setForeground(new Color(11, 30, 51));
 		filterButton.setEnabled(false); // Initially disable the filter button
@@ -247,7 +252,7 @@ public class MTMBIncomingPage extends JPanel {
 		recordPanel.add(filterButton);
 
 		addButton = new RoundButton("ADD +", 16, Color.decode("#FFBA42"));
-		addButton.setBounds(510, 81, 90, 38);
+		addButton.setBounds(509, 81, 90, 38);
 		addButton.setFont(Bold2);
 		addButton.setForeground(new Color(11, 30, 51));
 		addButton.setEnabled(false);
@@ -268,7 +273,7 @@ public class MTMBIncomingPage extends JPanel {
 		});
 
 		JButton importButton = new RoundButton("Import", 16, Color.decode("#00537A"));
-		importButton.setBounds(609, 81, 117, 38);
+		importButton.setBounds(609, 80, 117, 38);
 		importButton.setFont(Bold2);
 		importButton.setForeground(Color.WHITE);
 		recordPanel.add(importButton);
@@ -327,17 +332,32 @@ public class MTMBIncomingPage extends JPanel {
 			@Override
 			public void focusLost(FocusEvent e) {
 				if (searchBar.getText().isEmpty()) {
-					searchBar.setText("Search");
 					searchBar.setForeground(placeholderColor); // Reset text color to placeholder color when focus lost
 				}
 			}
 		});
 		recordPanel.add(searchBar);
 		searchBar.setColumns(10);
-
+		searchBar.addKeyListener(new KeyAdapter() {
+		    @Override
+		    public void keyPressed(KeyEvent e) {
+		        if (e.getKeyCode() == KeyEvent.VK_F5) {
+		            // Hide unnecessary components and show only "Create Table" button
+		            searchBar.setVisible(false);
+		            searchTable.setVisible(true);
+		            CreateTable.setVisible(true);
+		            clearTable();
+		        }
+		    }
+		});
 		setupSearchFunctionality();
 
 		fetchData();
+	}
+	
+	private void clearTable() {
+	    DefaultTableModel model = (DefaultTableModel) table.getModel();
+	    model.setRowCount(0); // Clear all rows
 	}
 
 	// Fetch data from the specified table name

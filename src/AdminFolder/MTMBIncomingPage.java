@@ -137,26 +137,27 @@ public class MTMBIncomingPage extends JPanel {
 		recordPanel.add(errorMessage); // Add the error message label to the panel
 
 		searchTable.addActionListener(e -> {
-			tableName = searchTable.getText().trim();
-			if (!tableName.isEmpty()) {
-				errorMessage.setVisible(false);
-				if (tableExists(tableName)) {
-					fetchData(tableName);
-					searchTable.setVisible(false);
-					filterButton.setEnabled(true);
-					addButton.setEnabled(true);
-					CreateTable.setVisible(false);
-				} else {
-					errorMessage.setVisible(true);
-					filterButton.setEnabled(false);
-					addButton.setEnabled(false);
-					CreateTable.setVisible(true);
-				}
-			} else {
-				filterButton.setEnabled(false);
-				addButton.setEnabled(false);
-				CreateTable.setVisible(true);
-			}
+		    tableName = searchTable.getText().trim();
+		    if (!tableName.isEmpty()) {
+		        errorMessage.setVisible(false);
+		        if (tableExists(tableName)) {
+		            fetchData(tableName);
+		            searchBar.setVisible(true);
+		            searchTable.setVisible(false);
+		            filterButton.setEnabled(true);
+		            addButton.setEnabled(true);
+		            CreateTable.setVisible(false);
+		        } else {
+		            errorMessage.setVisible(true);
+		            filterButton.setEnabled(false);
+		            addButton.setEnabled(false);
+		            CreateTable.setVisible(true);
+		        }
+		    } else {
+		        filterButton.setEnabled(false);
+		        addButton.setEnabled(false);
+		        CreateTable.setVisible(true);
+		    }
 		});
 
 		searchTable.addMouseListener(new MouseAdapter() {
@@ -321,17 +322,32 @@ public class MTMBIncomingPage extends JPanel {
 			@Override
 			public void focusLost(FocusEvent e) {
 				if (searchBar.getText().isEmpty()) {
-					searchBar.setText("Search");
 					searchBar.setForeground(placeholderColor); // Reset text color to placeholder color when focus lost
 				}
 			}
 		});
 		recordPanel.add(searchBar);
 		searchBar.setColumns(10);
+		searchBar.addKeyListener(new KeyAdapter() {
+		    @Override
+		    public void keyPressed(KeyEvent e) {
+		        if (e.getKeyCode() == KeyEvent.VK_F5) {
+		            // Hide unnecessary components and show only "Create Table" button
+		            searchBar.setVisible(false);
+		            searchTable.setVisible(true);
+		            CreateTable.setVisible(true);
+		            clearTable();
+		        }
+		    }
+		});
 
 		setupSearchFunctionality();
 
 		fetchData();
+	}
+	private void clearTable() {
+	    DefaultTableModel model = (DefaultTableModel) table.getModel();
+	    model.setRowCount(0); // Clear all rows
 	}
 
 	// Fetch data from the specified table name
@@ -373,34 +389,34 @@ public class MTMBIncomingPage extends JPanel {
 	}
 
 	private void setupSearchFunctionality() {
-	    searchBar.getDocument().addDocumentListener(new DocumentListener() {
-	        @Override
-	        public void insertUpdate(DocumentEvent e) {
-	            filterTable(searchBar.getText().trim().toLowerCase());
-	        }
+		searchBar.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				filterTable(searchBar.getText().trim().toLowerCase());
+			}
 
-	        @Override
-	        public void removeUpdate(DocumentEvent e) {
-	            filterTable(searchBar.getText().trim().toLowerCase());
-	        }
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				filterTable(searchBar.getText().trim().toLowerCase());
+			}
 
-	        @Override
-	        public void changedUpdate(DocumentEvent e) {
-	            filterTable(searchBar.getText().trim().toLowerCase());
-	        }
-	    });
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				filterTable(searchBar.getText().trim().toLowerCase());
+			}
+		});
 	}
 
 	private void filterTable(String searchText) {
-	    TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
-	    table.setRowSorter(sorter);
-	    
-	    if (!searchText.isEmpty()) {
-	        RowFilter<TableModel, Integer> filter = RowFilter.regexFilter("(?i)" + Pattern.quote(searchText));
-	        sorter.setRowFilter(filter);
-	    } else {
-	        sorter.setRowFilter(null);
-	    }
+		TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+		table.setRowSorter(sorter);
+
+		if (!searchText.isEmpty()) {
+			RowFilter<TableModel, Integer> filter = RowFilter.regexFilter("(?i)" + Pattern.quote(searchText));
+			sorter.setRowFilter(filter);
+		} else {
+			sorter.setRowFilter(null);
+		}
 	}
 
 	private boolean tableExists(String tableName) {

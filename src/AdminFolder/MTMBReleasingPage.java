@@ -9,6 +9,8 @@ import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -155,7 +157,8 @@ public class MTMBReleasingPage extends JPanel {
 				errorMessage.setVisible(false);
 				if (tableExists(tableName)) {
 					fetchData(tableName);
-					searchTable.setVisible(false);
+		            searchBar.setVisible(true);
+		            searchTable.setVisible(false);
 					filterButton.setEnabled(true);
 					releaseButton.setEnabled(true); // Reference addButton directly
 				} else {
@@ -302,6 +305,7 @@ public class MTMBReleasingPage extends JPanel {
 		recordPanel.add(importButton);
 
 		searchBar = new RoundTxtField(18, new Color(132, 132, 132), 1);
+		searchBar.setText("Search");
 		placeholderColor = new Color(132, 132, 132);
 		searchBar.setForeground(placeholderColor);
 		searchBar.setBounds(10, 81, 292, 38);
@@ -318,17 +322,35 @@ public class MTMBReleasingPage extends JPanel {
 			@Override
 			public void focusLost(FocusEvent e) {
 				if (searchBar.getText().isEmpty()) {
-					searchBar.setText("Search");
 					searchBar.setForeground(placeholderColor); // Reset text color to placeholder color when focus lost
 				}
 			}
 		});
 		recordPanel.add(searchBar);
 		searchBar.setColumns(10);
-
+		searchBar.addKeyListener(new KeyAdapter() {
+		    @Override
+		    public void keyPressed(KeyEvent e) {
+		        if (e.getKeyCode() == KeyEvent.VK_F5) {
+		            // Hide unnecessary components and show only "Create Table" button
+		            searchBar.setVisible(false);
+		            searchTable.setVisible(true);
+		            filterButton.setEnabled(false);
+					releaseButton.setEnabled(false);
+		            clearTable();
+		        }
+		    }
+		});
+		
 		setupSearchFunctionality();
 		fetchData();
 	}
+	
+	private void clearTable() {
+	    DefaultTableModel model = (DefaultTableModel) table.getModel();
+	    model.setRowCount(0); // Clear all rows
+	}
+
 
 	// Fetch data from the specified table name
     private void fetchData(String tableName) {
