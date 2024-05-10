@@ -79,6 +79,8 @@ public class ViewRecordsFilter {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		
+		System.out.println("tableName: " + tableName);
 
 		// Fonts
 		Font PrimaryFont = FontLoader.getFont("Primary", 30);
