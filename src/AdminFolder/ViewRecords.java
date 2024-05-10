@@ -14,6 +14,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -21,10 +22,15 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import CustomClassLoader.FontLoader;
 import CustomClassLoader.RoundButton;
@@ -236,7 +242,7 @@ public class ViewRecords {
 		table.setFocusable(true);
 		table.setTableHeader(header);
 
-		// Add the table to the scroll pane
+		setupSearchFunctionality();
 		scrollPane.setViewportView(table);
 		fetchData();
 	}
@@ -278,5 +284,41 @@ public class ViewRecords {
 		fetchData(tableName); // Fetch data for the specific table
 		scrollPane.revalidate();
 		scrollPane.repaint();
+	}
+	
+	private void setupSearchFunctionality() {
+		textField.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				filterTable(textField.getText().trim().toLowerCase());
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				filterTable(textField.getText().trim().toLowerCase());
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				filterTable(textField.getText().trim().toLowerCase());
+			}
+		});
+
+		// Apply row sorter when setting up search functionality
+		TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+		table.setRowSorter(sorter);
+	}
+
+	private void filterTable(String searchText) {
+
+		TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+		table.setRowSorter(sorter);
+
+		if (!searchText.isEmpty()) {
+			RowFilter<TableModel, Integer> filter = RowFilter.regexFilter("(?i)" + Pattern.quote(searchText));
+			sorter.setRowFilter(filter);
+		} else {
+			sorter.setRowFilter(null);
+		}
 	}
 }
