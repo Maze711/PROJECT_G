@@ -52,6 +52,7 @@ public class ViewRecords {
 	private String tableName;
 	private JScrollPane scrollPane;
 	private ViewRecordsFilter ViewRecordsFilter;
+	private EditPopUp EditPopUp;
 	private final MTMBDBArchive conn = new MTMBDBArchive();
 
 	/**
@@ -72,6 +73,9 @@ public class ViewRecords {
 		return frame;
 	}
 
+	public void refresh(String tableName) {
+		refresher();
+	}
 	/**
 	 * @wbp.parser.entryPoint
 	 */
@@ -80,6 +84,9 @@ public class ViewRecords {
 		fetchData(tableName);
 		ViewRecordsFilter = new ViewRecordsFilter(this, model);
 		ViewRecordsFilter.setTableName(tableName);
+		
+		EditPopUp = new EditPopUp(this, model);
+		EditPopUp.setTableName(tableName);
 	}
 
 	public String getTableName() {
@@ -141,10 +148,19 @@ public class ViewRecords {
 		});
 		panel.add(btnFilter);
 
+		// Update the ActionListener for btnEdit to pass the table name to EditPopUp
 		RoundButton btnEdit = new RoundButton("Edit", 8, Color.decode("#FFBA42"));
 		btnEdit.setBounds(589, 81, 80, 38);
 		btnEdit.setFont(Bold);
+		btnEdit.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        // Show the EditPopUp JFrame with the table name
+		    	EditPopUp.getFrame();
+		    }
+		});
 		panel.add(btnEdit);
+
 
 		RoundButton btnExport = new RoundButton("Export", 8, Color.decode("#0B1E33"));
 		btnExport.setForeground(new Color(255, 255, 255));
@@ -251,39 +267,41 @@ public class ViewRecords {
 		fetchData();
 	}
 
-	// Fetch data from the specified table name
 	private void fetchData(String tableName) {
-		try (Connection connection = conn.getConnection();
-				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT * FROM " + tableName)) {
+	    if (tableName == null) {
+	        // Handle null tableName gracefully
+	        return;
+	    }
+	    try (Connection connection = conn.getConnection();
+	         Statement statement = connection.createStatement();
+	         ResultSet resultSet = statement.executeQuery("SELECT * FROM " + tableName)) {
 
-			// Clear existing table data
-			model.setRowCount(0);
+	        // Clear existing table data
+	        model.setRowCount(0);
 
-			// Populate table with data from the database
-			while (resultSet.next()) {
-				int id = resultSet.getInt("CTRLNo");
-				String type = resultSet.getString("Type");
-				String plateno = resultSet.getString("PlateNo");
-				String color = resultSet.getString("Color");
-				String date = resultSet.getString("Date");
-				String status = resultSet.getString("Status");
+	        // Populate table with data from the database
+	        while (resultSet.next()) {
+	            int id = resultSet.getInt("CTRLNo");
+	            String type = resultSet.getString("Type");
+	            String plateno = resultSet.getString("PlateNo");
+	            String color = resultSet.getString("Color");
+	            String date = resultSet.getString("Date");
+	            String status = resultSet.getString("Status");
 
-				model.addRow(new Object[] { id, type, plateno, color, date, status });
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	            model.addRow(new Object[]{id, type, plateno, color, date, status});
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
 	}
+
 
 	// Fetch data from the default table
 	private void fetchData() {
-		// For the initial fetch, you might want to fetch data from a default table or
-		// display an empty table.
-		// Since the behavior isn't explicitly specified, you can adjust this method as
-		// needed.
+
 	}
 
+	// Fetch data from the default table
 	private void refresher() {
 		fetchData(tableName); // Fetch data for the specific table
 		scrollPane.revalidate();

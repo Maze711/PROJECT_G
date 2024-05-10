@@ -35,6 +35,7 @@ import javax.swing.table.TableRowSorter;
 import CustomClassLoader.FontLoader;
 import CustomClassLoader.RoundButton;
 import DatabaseConnection.MTMBDBArchive;
+import AdminFolder.EditPopUp;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -51,6 +52,7 @@ public class ViewRecords {
 	private String tableName;
 	private JScrollPane scrollPane;
 	private ViewRecordsFilter ViewRecordsFilter;
+	private EditPopUp EditPopUp;
 	private final MTMBDBArchive conn = new MTMBDBArchive();
 
 	/**
@@ -70,12 +72,19 @@ public class ViewRecords {
 	public JFrame getFrame() {
 		return frame;
 	}
+	
+	public void refresh(String tableName) {
+		refresher();
+	}
 
 	public ViewRecords(String tableName) {
 	    initialize();
 	    fetchData(tableName);
 	    ViewRecordsFilter = new ViewRecordsFilter(this, model);
 	    ViewRecordsFilter.setTableName(tableName);
+	    
+	    EditPopUp = new EditPopUp(this, model);
+		EditPopUp.setTableName(tableName);
 	}
 
 	public String getTableName() {
@@ -249,27 +258,31 @@ public class ViewRecords {
 
 	// Fetch data from the specified table name
 	private void fetchData(String tableName) {
-		try (Connection connection = conn.getConnection();
-				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT * FROM " + tableName)) {
+	    if (tableName == null) {
+	        // Handle null tableName gracefully
+	        return;
+	    }
+	    try (Connection connection = conn.getConnection();
+	         Statement statement = connection.createStatement();
+	         ResultSet resultSet = statement.executeQuery("SELECT * FROM " + tableName)) {
 
-			// Clear existing table data
-			model.setRowCount(0);
+	        // Clear existing table data
+	        model.setRowCount(0);
 
-			// Populate table with data from the database
-			while (resultSet.next()) {
-				int id = resultSet.getInt("CTRLNo");
-				String type = resultSet.getString("Type");
-				String plateno = resultSet.getString("PlateNo");
-				String color = resultSet.getString("Color");
-				String date = resultSet.getString("Date");
-				String status = resultSet.getString("Status");
+	        // Populate table with data from the database
+	        while (resultSet.next()) {
+	            int id = resultSet.getInt("CTRLNo");
+	            String type = resultSet.getString("Type");
+	            String plateno = resultSet.getString("PlateNo");
+	            String color = resultSet.getString("Color");
+	            String date = resultSet.getString("Date");
+	            String status = resultSet.getString("Status");
 
-				model.addRow(new Object[] { id, type, plateno, color, date, status });
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	            model.addRow(new Object[]{id, type, plateno, color, date, status});
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
 	}
 
 	// Fetch data from the default table
