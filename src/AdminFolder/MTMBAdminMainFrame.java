@@ -61,9 +61,9 @@ public class MTMBAdminMainFrame {
 
 		frame = new JFrame();
 		frame.setBounds(100, 100, 1045, 805);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
+		frame.setDefaultCloseOperation(0);
 
 		// CUSTOM FONT FAMILY STYLE
 		Font PrimaryFont = FontLoader.getFont("Primary", 64);
@@ -288,7 +288,7 @@ public class MTMBAdminMainFrame {
 		JLabel txtTotalVehicle = new JLabel(String.valueOf(impoundCount));
 		txtTotalVehicle.setHorizontalAlignment(SwingConstants.CENTER);
 		txtTotalVehicle.setForeground(Color.WHITE);
-		txtTotalVehicle.setFont(Bold);
+		txtTotalVehicle.setFont(Bold28);
 		txtTotalVehicle.setBounds(37, 96, 274, 49);
 		panel_3.add(txtTotalVehicle);
 
@@ -302,7 +302,7 @@ public class MTMBAdminMainFrame {
 		JLabel txtTotalVehicle_2 = new JLabel(String.valueOf(releaseCount));
 		txtTotalVehicle_2.setHorizontalAlignment(SwingConstants.CENTER);
 		txtTotalVehicle_2.setForeground(Color.WHITE);
-		txtTotalVehicle_2.setFont(Bold);
+		txtTotalVehicle_2.setFont(Bold28);
 		txtTotalVehicle_2.setBounds(440, 96, 274, 49);
 		panel_3.add(txtTotalVehicle_2);
 
@@ -361,7 +361,7 @@ public class MTMBAdminMainFrame {
 		incomingPanel = new MTMBIncomingPage();
 		cards.add(incomingPanel, "MTMBIncomingPage");
 
-		releasePanel = new MTMBReleasingPage();
+		releasePanel = new MTMBReleasingPage(this.username);
 		cards.add(releasePanel, "MTMBReleasingPage");
 
 		// Add mouse listeners to labels...

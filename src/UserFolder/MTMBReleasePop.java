@@ -29,6 +29,7 @@ public class MTMBReleasePop {
     private JTextField textField;
     private JTextField textField_1;
     private JComboBox<String> comboBox;
+    private JComboBox<String> comboBox1;
 
     private final MTMBDBCONN conn = new MTMBDBCONN();
     private final MTMBReleasingPage release = new MTMBReleasingPage(this.username);
@@ -112,11 +113,10 @@ public class MTMBReleasePop {
         btnNewButton_3.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String input = textField.getText();
-                String status = textField_1.getText();
+                String status = (String) comboBox1.getSelectedItem(); // Get selected status from comboBox
 
-                // Update status in the database regardless of the current status
-                updateStatusInDatabase(input, status, username);
-                releasingPage.refresh(tableName); // Call refresh on the correct instance
+                updateStatusInDatabase(input, status, username); // Update status in the database
+                releasingPage.refresh(tableName); // Refresh the releasing page
             }
         });
 
@@ -146,13 +146,14 @@ public class MTMBReleasePop {
         frame.getContentPane().add(textField);
         textField.setColumns(10);
 
-        textField_1 = new RoundTxtField(10, new Color(0x0B1E33), 3);
-        textField_1.setForeground(new Color(11, 30, 51));
-        textField_1.setBackground(new Color(211, 211, 211));
-        textField_1.setBounds(10, 187, 350, 39);
-        textField_1.setFont(SecondaryFont);
-        frame.getContentPane().add(textField_1);
-        textField_1.setColumns(10);
+        comboBox1 = new JComboBox<>();
+        comboBox1.setBounds(10, 187, 350, 39);
+        comboBox1.setFont(SecondaryFont);
+        frame.getContentPane().add(comboBox1);
+
+        // Add "Released" and "Impounded" options
+        comboBox1.addItem("Released");
+        comboBox1.addItem("Impounded");
 
         JLabel lblNewLabel_1 = new JLabel("Control No.");
         lblNewLabel_1.setBounds(10, 73, 94, 16);
@@ -229,7 +230,7 @@ public class MTMBReleasePop {
         textField.setText(input);
 
         String status = fetchStatusFromDatabase(input, tableName); // Pass the table name
-        textField_1.setText(status);
+        comboBox1.setSelectedItem(status); // Set selected item in comboBox1
 
         comboBox.setVisible(false);
     }

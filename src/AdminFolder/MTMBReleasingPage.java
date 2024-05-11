@@ -74,14 +74,17 @@ public class MTMBReleasingPage extends JPanel {
 	private JButton releaseButton;
 	private JScrollPane scrollPane;
 	private Color placeholderColor;
+	private String username;
 
 	public void refresh(String tableName) {
 		refresher();
 	}
 
-	public MTMBReleasingPage() {
+	public MTMBReleasingPage(String username) {
+		this.username = username;
 		initialize();
 	}
+
 
 	private void initialize() {
 
@@ -243,7 +246,7 @@ public class MTMBReleasingPage extends JPanel {
 					fetchData(searchedTableName);
 					// Pass the searched table name and the instance of MTMBIncomingPage
 					// to the AddVehicle constructor
-					MTMBReleasePop releasePop = new MTMBReleasePop(searchedTableName, MTMBReleasingPage.this);
+					MTMBReleasePop releasePop = new MTMBReleasePop(searchedTableName, MTMBReleasingPage.this, username);
 					releasePop.showFrame();
 				}
 			}
