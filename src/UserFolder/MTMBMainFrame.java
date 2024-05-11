@@ -46,6 +46,7 @@ public class MTMBMainFrame {
 	public MTMBMainFrame(String username) {
 		this.username = username;
 		initialize();
+		
 
 		// Add a window listener to the frame
 		frame.addWindowListener(new WindowAdapter() {
@@ -61,9 +62,10 @@ public class MTMBMainFrame {
 
 		frame = new JFrame();
 		frame.setBounds(100, 100, 1045, 805);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
+		frame.setDefaultCloseOperation(0);
+
 
 		// CUSTOM FONT FAMILY STYLE
 		Font PrimaryFont = FontLoader.getFont("Primary", 64);
@@ -288,7 +290,7 @@ public class MTMBMainFrame {
 		JLabel txtTotalVehicle = new JLabel(String.valueOf(impoundCount));
 		txtTotalVehicle.setHorizontalAlignment(SwingConstants.CENTER);
 		txtTotalVehicle.setForeground(Color.WHITE);
-		txtTotalVehicle.setFont(Bold);
+		txtTotalVehicle.setFont(Bold28);
 		txtTotalVehicle.setBounds(37, 96, 274, 49);
 		panel_3.add(txtTotalVehicle);
 
@@ -302,7 +304,7 @@ public class MTMBMainFrame {
 		JLabel txtTotalVehicle_2 = new JLabel(String.valueOf(releaseCount));
 		txtTotalVehicle_2.setHorizontalAlignment(SwingConstants.CENTER);
 		txtTotalVehicle_2.setForeground(Color.WHITE);
-		txtTotalVehicle_2.setFont(Bold);
+		txtTotalVehicle_2.setFont(Bold28);
 		txtTotalVehicle_2.setBounds(440, 96, 274, 49);
 		panel_3.add(txtTotalVehicle_2);
 

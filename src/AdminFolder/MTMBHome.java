@@ -1,5 +1,8 @@
 package AdminFolder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
 
 import CustomClassLoader.FontLoader;
@@ -9,10 +12,18 @@ import UserFolder.MTMBLogin;
 import java.sql.*;
 
 public class MTMBHome extends JPanel {
-
+	private JLabel txtTotalVehicle;
+	private JLabel txtTotalVehicle_2;
     private final MTMBDBCONN conn = new MTMBDBCONN();
 
-    public MTMBHome(String username) { // Modified constructor to accept username
+    public MTMBHome(String username) {
+    	Timer timer = new Timer(2000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateVehicleCounts(); // Update counts every 5 seconds
+            }
+        });
+        timer.start();
         initialize(username);
     }
 
@@ -71,7 +82,7 @@ public class MTMBHome extends JPanel {
 
         int impoundCount = getImpoundCount();
 
-        JLabel txtTotalVehicle = new JLabel(String.valueOf(impoundCount));
+        txtTotalVehicle = new JLabel(String.valueOf(impoundCount));
         txtTotalVehicle.setHorizontalAlignment(SwingConstants.CENTER);
         txtTotalVehicle.setForeground(Color.WHITE);
         txtTotalVehicle.setFont(Bold);
@@ -87,7 +98,7 @@ public class MTMBHome extends JPanel {
 
         int releaseCount = getReleaseCount();
 
-        JLabel txtTotalVehicle_2 = new JLabel(String.valueOf(releaseCount));
+        txtTotalVehicle_2 = new JLabel(String.valueOf(releaseCount));
         txtTotalVehicle_2.setHorizontalAlignment(SwingConstants.CENTER);
         txtTotalVehicle_2.setForeground(Color.WHITE);
         txtTotalVehicle_2.setFont(Bold);
@@ -124,6 +135,15 @@ public class MTMBHome extends JPanel {
         Chart.setBounds(30, 243, 672, 352);
         panel_3.add(Chart);
     }
+    
+    public void updateVehicleCounts() {
+        int impoundCount = getImpoundCount();
+        txtTotalVehicle.setText(String.valueOf(impoundCount));
+
+        int releaseCount = getReleaseCount();
+        txtTotalVehicle_2.setText(String.valueOf(releaseCount));
+    }
+
 
     private int getImpoundCount() {
         int count = 0;

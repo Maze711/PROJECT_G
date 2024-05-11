@@ -1,4 +1,5 @@
 package UserFolder;
+
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -8,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.SwingConstants;
 
 import CustomClassLoader.FontLoader;
@@ -15,28 +17,31 @@ import CustomClassLoader.RoundButton;
 import CustomClassLoader.RoundTxtField;
 
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.awt.event.ActionEvent;
 
 public class AddVehicle {
 
 	private JFrame frame;
-    private JTextField CtrlNo;
-    private JTextField Date;
-    private JTextField Type;
-    private JTextField colorField; // Changed variable name to avoid conflict
-    private JTextField Plate;
-    private JTextField Status;
-    private String tableName; // Add a field to store the table name
-    private MTMBIncomingPage incomingPage; // Add a field to store the instance of MTMBIncomingPage
-    private String username; 
+	private JTextField CtrlNo;
+	private JTextField Date;
+	private JComboBox<String> Type;
+	private JTextField colorField; // Changed variable name to avoid conflict
+	private JTextField Plate;
+	private JTextField Status;
+	private String tableName; // Add a field to store the table name
+	private MTMBIncomingPage incomingPage; // Add a field to store the instance of MTMBIncomingPage
+	private String username;
 
-    public AddVehicle(String tableName, MTMBIncomingPage incomingPage, String username) {
-        this.tableName = tableName; // Store the table name
-        this.incomingPage = incomingPage; // Store the instance of MTMBIncomingPage
-        this.username = username;
-        System.out.println("Add Vehicle " + username);
-        initialize();
-    }
+	public AddVehicle(String tableName, MTMBIncomingPage incomingPage, String username) {
+		this.tableName = tableName; // Store the table name
+		this.incomingPage = incomingPage; // Store the instance of MTMBIncomingPage
+		this.username = username;
+		System.out.println("Add Vehicle " + username);
+		initialize();
+	}
+
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -113,28 +118,29 @@ public class AddVehicle {
 		btnCreate.setFont(ExtraBold2);
 		// ActionListener for the "Create" button
 		btnCreate.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		        // Extract data from text fields and save to database
-		        String controlNo = CtrlNo.getText();
-		        String date = Date.getText();
-		        String vehicleType = Type.getText();
-		        String color = colorField.getText();
-		        String plateNo = Plate.getText();
-		        String status = Status.getText();
-		        System.out.println("Going to Create " + username);
+			public void actionPerformed(ActionEvent e) {
+				// Extract data from text fields and save to database
+				String controlNo = CtrlNo.getText();
+				String date = Date.getText();
+				String vehicleType = (String) Type.getSelectedItem();
+				String color = colorField.getText();
+				String plateNo = Plate.getText();
+				String status = Status.getText();
+				System.out.println("Going to Create " + username);
 
-		        // Save data to database
-		        AddVehicleBE backend = new AddVehicleBE();
-		        boolean success = backend.saveData(tableName, controlNo, date, vehicleType, color, plateNo, status, username);
-		        if (success) {
-		            System.out.println("Data saved successfully.");
+				// Save data to database
+				AddVehicleBE backend = new AddVehicleBE();
+				boolean success = backend.saveData(tableName, controlNo, date, vehicleType, color, plateNo, status,
+						username);
+				if (success) {
+					System.out.println("Data saved successfully.");
 
-		            // Refresh MTMBIncomingPage
-		            refreshMTMBIncomingPage();
-		        } else {
-		            System.out.println("Failed to save data.");
-		        }
-		    }
+					// Refresh MTMBIncomingPage
+					refreshMTMBIncomingPage();
+				} else {
+					System.out.println("Failed to save data.");
+				}
+			}
 		});
 
 		btnCreate.setBounds(328, 372, 112, 40);
@@ -142,43 +148,57 @@ public class AddVehicle {
 
 		CtrlNo = new RoundTxtField(8, new Color(0x0B1E33), 3);
 		CtrlNo.setBounds(20, 128, 232, 46);
+		CtrlNo.setFont(SemiB);
 		panel.add(CtrlNo);
 		CtrlNo.setColumns(10);
 
 		Date = new RoundTxtField(8, new Color(0x0B1E33), 3);
-		Date.setColumns(10);
-		Date.setBounds(258, 128, 182, 46);
-		panel.add(Date);
+        Date.setText(getCurrentDate());
+        Date.setEditable(false); // Make it non-editable
+        Date.setBounds(258, 128, 182, 46);
+        Date.setFont(SemiB);
+        panel.add(Date);
 
-		Type = new RoundTxtField(8, new Color(0x0B1E33), 3);
-		Type.setColumns(10);
+		String[] vehicleTypes = {"MOTORCYCLE", "CAR", "TRUCK", "TRICYCLE"};
+		Type = new JComboBox<>(vehicleTypes);
+		Type.setFont(SemiB);
 		Type.setBounds(20, 220, 198, 46);
 		panel.add(Type);
 
 		colorField = new RoundTxtField(8, new Color(0x0B1E33), 3); // Changed variable name
 		colorField.setColumns(10);
+		colorField.setFont(SemiB);
 		colorField.setBounds(228, 220, 212, 46); // Changed variable name
 		panel.add(colorField); // Changed variable name
 
 		Plate = new RoundTxtField(8, new Color(0x0B1E33), 3);
 		Plate.setColumns(10);
+		Plate.setFont(SemiB);
 		Plate.setBounds(20, 312, 198, 46);
 		panel.add(Plate);
 
 		Status = new RoundTxtField(8, new Color(0x0B1E33), 3);
-		Status.setColumns(10);
-		Status.setBounds(228, 312, 212, 46);
-		panel.add(Status);
-
+        Status.setText("Impounded");
+        Status.setFont(SemiB);
+        Status.setEditable(false); // Make it non-editable
+        Status.setBounds(228, 312, 212, 46);
+        panel.add(Status);
 	}
-	
+
+	private String getCurrentDate() {
+	    LocalDate currentDate = LocalDate.now();
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+	    return formatter.format(currentDate);
+	}
+
+
 	public void showFrame() {
-        frame.setVisible(true);
-    }
+		frame.setVisible(true);
+	}
 
 	private void refreshMTMBIncomingPage() {
 		// Call the refresh method on the existing instance of MTMBIncomingPage
-        incomingPage.refresh();
+		incomingPage.refresh();
 	}
 
 }
